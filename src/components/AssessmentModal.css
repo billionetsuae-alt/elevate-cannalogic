@@ -256,7 +256,32 @@
 .success-icon {
     font-size: 3rem;
     margin-bottom: 1.5rem;
-    animation: bounce 1s infinite;
+}
+
+.results-page h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.ai-response {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.cta-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 0.75rem;
+}
+
+.results-page .btn-outline {
+    width: 100%;
 }
 
 @keyframes bounce {

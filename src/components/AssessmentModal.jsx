@@ -16,6 +16,7 @@ const AssessmentModal = ({ isOpen, onClose }) => {
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [aiResponse, setAiResponse] = useState(null);
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -51,16 +52,23 @@ const AssessmentModal = ({ isOpen, onClose }) => {
             };
 
             // Submit to n8n webhook
-            await fetch('https://n8n.billionets.com/webhook/assesment-data', {
+            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook-test/assesment-data', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            setIsSubmitted(true);
+            const data = await response.json();
+
+            if (data.success) {
+                setAiResponse(data);
+                setIsSubmitted(true);
+            } else {
+                throw new Error('Failed to get response');
+            }
         } catch (error) {
             console.error('Submission error:', error);
-            alert('Something went wrong. Please try again.');
+            alert(`Error: ${error.message}. Check console for details.`);
         } finally {
             setIsSubmitting(false);
         }
@@ -69,6 +77,7 @@ const AssessmentModal = ({ isOpen, onClose }) => {
     const resetAndClose = () => {
         setStep(1);
         setIsSubmitted(false);
+        setAiResponse(null);
         setFormData({
             fullName: '',
             email: '',
@@ -87,12 +96,20 @@ const AssessmentModal = ({ isOpen, onClose }) => {
             <div className="modal-container" onClick={e => e.stopPropagation()}>
                 <button className="modal-close" onClick={resetAndClose}>×</button>
 
-                {isSubmitted ? (
-                    <div className="modal-success">
-                        <div className="success-icon">🎉</div>
-                        <h2>You're Eligible!</h2>
-                        <p>Based on your profile, you are a great candidate for our protocol. We've sent the details to your email.</p>
-                        <button className="btn btn-primary" onClick={resetAndClose}>Close</button>
+                {isSubmitted && aiResponse ? (
+                    <div className="modal-success results-page">
+                        <div className="success-icon">🌿</div>
+                        <h2>Great News, {aiResponse.name?.split(' ')[0] || 'there'}!</h2>
+                        <p className="ai-response">{aiResponse.message}</p>
+                        <a
+                            href="https://calendly.com/cannalogic/consultation"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary cta-button"
+                        >
+                            Book Your Free Consultation
+                        </a>
+                        <button className="btn btn-outline" onClick={resetAndClose}>Maybe Later</button>
                     </div>
                 ) : (
                     <>
