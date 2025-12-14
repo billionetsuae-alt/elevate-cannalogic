@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Hero from './components/Hero'
 import VideoSection from './components/VideoSection'
 import ProblemSection from './components/ProblemSection'
@@ -14,12 +14,31 @@ import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
 import AssessmentModal from './components/AssessmentModal'
+import ScrollProgress from './components/ScrollProgress'
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+
+  // Scroll Animation Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const hiddenElements = document.querySelectorAll('.animate-on-scroll');
+    hiddenElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      hiddenElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []); // Run once on mount
 
   const scrollToVideo = () => {
     const videoSection = document.querySelector('.video-section')
@@ -30,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+      <ScrollProgress />
       <main style={{ paddingBottom: '5rem' }}>
         <Hero onOpenAssessment={openModal} onWatchVideo={scrollToVideo} />
         <VideoSection />

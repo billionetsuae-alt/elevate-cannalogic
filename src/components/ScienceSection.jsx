@@ -113,7 +113,7 @@ const ScienceSection = () => {
                         <div
                             key={level.id}
                             id={level.id}
-                            className={`level-block ${activeLevel === level.id ? 'active' : ''}`}
+                            className={`level-block ${activeLevel === level.id ? 'active' : ''} animate-on-scroll`}
                             ref={(el) => sectionRefs.current[level.id] = el}
                         >
                             <div className="level-header">

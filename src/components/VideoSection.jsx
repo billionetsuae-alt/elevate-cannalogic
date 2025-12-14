@@ -23,12 +23,12 @@ const VideoSection = () => {
             </div>
 
             <div className="video-section container">
-                <div className="video-header">
+                <div className="video-header animate-on-scroll">
                     <p className="video-label">DISCOVER THE SCIENCE BEHIND THE HEALING</p>
                     <h3>Elevate Cannalogic: Nature's Answer to Inner Balance</h3>
                 </div>
 
-                <div className="fullwidth-video-container">
+                <div className="fullwidth-video-container animate-on-scroll">
                     <button className="sound-toggle-btn" onClick={toggleSound}>
                         <svg className="sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             {isMuted ? (

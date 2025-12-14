@@ -11,7 +11,7 @@ const TruthSection = () => {
                 </div>
 
                 <div className="workflow-comparison">
-                    <div className="workflow-card the-lie">
+                    <div className="workflow-card the-lie animate-on-scroll">
                         <div className="card-header">
                             <h3>The Lie</h3>
                             <p>What they want you to believe</p>
@@ -25,7 +25,11 @@ const TruthSection = () => {
                         </ul>
                     </div>
 
-                    <div className="workflow-card the-truth">
+                    <div className="vs-badge">
+                        <span>VS</span>
+                    </div>
+
+                    <div className="workflow-card the-truth animate-on-scroll">
                         <div className="card-header">
                             <h3>The Truth</h3>
                             <p>The reality of the Medical Cannabis Revolution</p>

@@ -30,7 +30,7 @@ const BenefitsSection = () => {
 
                 <div className="audience-grid">
                     {features.map((item, index) => (
-                        <div key={index} className="audience-card">
+                        <div key={index} className="audience-card animate-on-scroll">
                             <div className="card-bg-placeholder"></div>
                             <div className="card-content">
                                 <h3>{item.years}</h3>

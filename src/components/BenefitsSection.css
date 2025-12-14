@@ -40,8 +40,37 @@
     left: 0;
     width: 100%;
     height: 100%;
+    /* Default fallback */
     background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent);
     z-index: 0;
+    transition: transform 0.5s ease;
+}
+
+/* Card Specific Backgrounds with Dark Overlay for Readability */
+.audience-card:nth-child(1) .card-bg-placeholder {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
+        url('/bg-calm.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.audience-card:nth-child(2) .card-bg-placeholder {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
+        url('/bg-stability.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.audience-card:nth-child(3) .card-bg-placeholder {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
+        url('/bg-sleep.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Slight zoom effect on hover for the background */
+.audience-card:hover .card-bg-placeholder {
+    transform: scale(1.05);
 }
 
 .card-content {
