@@ -9,7 +9,6 @@ import ScienceSection from './components/ScienceSection'
 import PartnersMarquee from './components/PartnersMarquee'
 import LegalitySection from './components/LegalitySection'
 import Mentors from './components/Mentors'
-import MovementSection from './components/MovementSection'
 import QualificationSection from './components/QualificationSection'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
@@ -42,7 +41,6 @@ function App() {
         <PartnersMarquee />
         <LegalitySection />
         <Mentors />
-        <MovementSection />
         <QualificationSection onOpenAssessment={openModal} />
         <FAQ />
       </main>
