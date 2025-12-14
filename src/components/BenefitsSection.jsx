@@ -1,5 +1,5 @@
 import React from 'react';
-import './TargetAudience.css';
+import './BenefitsSection.css';
 
 const features = [
     {
@@ -19,7 +19,7 @@ const features = [
     }
 ];
 
-const TargetAudience = () => {
+const BenefitsSection = () => {
     return (
         <section className="target-section">
             <div className="container">
@@ -45,4 +45,4 @@ const TargetAudience = () => {
     );
 };
 
-export default TargetAudience;
+export default BenefitsSection;

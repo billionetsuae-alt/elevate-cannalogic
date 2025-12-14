@@ -1,7 +1,7 @@
 import React from 'react';
-import './ToolsMarquee.css';
+import './PartnersMarquee.css';
 
-const ToolsMarquee = () => {
+const PartnersMarquee = () => {
     // Cannabis/wellness related partner logos as text placeholders
     const partners = [
         "AYUSH Ministry",
@@ -28,4 +28,4 @@ const ToolsMarquee = () => {
     );
 };
 
-export default ToolsMarquee;
+export default PartnersMarquee;

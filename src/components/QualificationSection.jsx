@@ -1,5 +1,5 @@
 import React from 'react';
-import './Pricing.css';
+import './QualificationSection.css';
 
 const criteria = [
     'Mentally Ready',
@@ -10,7 +10,7 @@ const criteria = [
     'Commitment to Balance'
 ];
 
-const Pricing = ({ onOpenAssessment }) => {
+const QualificationSection = ({ onOpenAssessment }) => {
     return (
         <section className="pricing-section">
             <div className="container">
@@ -46,4 +46,4 @@ const Pricing = ({ onOpenAssessment }) => {
     );
 };
 
-export default Pricing;
+export default QualificationSection;

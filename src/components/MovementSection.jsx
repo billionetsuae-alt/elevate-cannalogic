@@ -1,5 +1,5 @@
 import React from 'react';
-import './GlobalCommunity.css';
+import './MovementSection.css';
 
 const stats = [
     {
@@ -57,7 +57,7 @@ const stats = [
     }
 ];
 
-const GlobalCommunity = () => {
+const MovementSection = () => {
     return (
         <section className="community-section">
             <div className="container">
@@ -80,4 +80,4 @@ const GlobalCommunity = () => {
     );
 };
 
-export default GlobalCommunity;
+export default MovementSection;

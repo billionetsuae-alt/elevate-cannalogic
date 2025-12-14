@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import Hero from './components/Hero'
-import MarqueeAlumni from './components/MarqueeAlumni'
-import VennSection from './components/VennSection'
-import TargetAudience from './components/TargetAudience'
-import AgenticWorkflows from './components/AgenticWorkflows'
-import QuotesSlider from './components/QuotesSlider'
-import Curriculum from './components/Curriculum'
-import ToolsMarquee from './components/ToolsMarquee'
-import DemoDay from './components/DemoDay'
+import VideoSection from './components/VideoSection'
+import ProblemSection from './components/ProblemSection'
+import BenefitsSection from './components/BenefitsSection'
+import TruthSection from './components/TruthSection'
+import QuoteSection from './components/QuotesSlider'
+import ScienceSection from './components/ScienceSection'
+import PartnersMarquee from './components/PartnersMarquee'
+import LegalitySection from './components/LegalitySection'
 import Mentors from './components/Mentors'
-import GlobalCommunity from './components/GlobalCommunity'
-import Pricing from './components/Pricing'
+import MovementSection from './components/MovementSection'
+import QualificationSection from './components/QualificationSection'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
@@ -33,17 +33,17 @@ function App() {
     <div className="App">
       <main style={{ paddingBottom: '5rem' }}>
         <Hero onOpenAssessment={openModal} onWatchVideo={scrollToVideo} />
-        <MarqueeAlumni />
-        <VennSection onOpenAssessment={openModal} />
-        <TargetAudience />
-        <AgenticWorkflows />
-        <QuotesSlider />
-        <Curriculum />
-        <ToolsMarquee />
-        <DemoDay />
+        <VideoSection />
+        <ProblemSection onOpenAssessment={openModal} />
+        <BenefitsSection />
+        <TruthSection />
+        <QuoteSection />
+        <ScienceSection />
+        <PartnersMarquee />
+        <LegalitySection />
         <Mentors />
-        <GlobalCommunity />
-        <Pricing onOpenAssessment={openModal} />
+        <MovementSection />
+        <QualificationSection onOpenAssessment={openModal} />
         <FAQ />
       </main>
       <Footer />

@@ -1,7 +1,7 @@
 import React from 'react';
-import './VennSection.css';
+import './ProblemSection.css';
 
-const VennSection = ({ onOpenAssessment }) => {
+const ProblemSection = ({ onOpenAssessment }) => {
     return (
         <section className="venn-section">
             <div className="container venn-container">
@@ -25,4 +25,4 @@ const VennSection = ({ onOpenAssessment }) => {
     );
 };
 
-export default VennSection;
+export default ProblemSection;

@@ -1,5 +1,5 @@
 import React from 'react';
-import './DemoDay.css';
+import './LegalitySection.css';
 
 const features = [
     {
@@ -33,7 +33,7 @@ const features = [
     }
 ];
 
-const DemoDay = () => {
+const LegalitySection = () => {
     return (
         <section className="demoday-section">
             <div className="container">
@@ -56,4 +56,4 @@ const DemoDay = () => {
     );
 };
 
-export default DemoDay;
+export default LegalitySection;

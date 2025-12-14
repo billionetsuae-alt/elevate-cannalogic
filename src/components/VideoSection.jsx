@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import './MarqueeAlumni.css';
-import ToolsMarquee from './ToolsMarquee';
+import './VideoSection.css';
+import PartnersMarquee from './PartnersMarquee';
 
-const MarqueeAlumni = () => {
+const VideoSection = () => {
     const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef(null);
 
@@ -14,11 +14,11 @@ const MarqueeAlumni = () => {
     };
 
     return (
-        <section className="marquee-alumni-section">
+        <section className="video-testimonial-section">
             <div className="section-header">
                 <p className="endorsement-subtitle">Endorsed by Ancient Wisdom & Modern Science</p>
                 <div className="logo-marquee-wrapper">
-                    <ToolsMarquee />
+                    <PartnersMarquee />
                 </div>
             </div>
 
@@ -64,4 +64,4 @@ const MarqueeAlumni = () => {
     );
 };
 
-export default MarqueeAlumni;
+export default VideoSection;

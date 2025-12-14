@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Curriculum.css';
+import './ScienceSection.css';
 
 const levels = [
     {
@@ -40,7 +40,7 @@ const levels = [
     }
 ];
 
-const Curriculum = () => {
+const ScienceSection = () => {
     const [activeLevel, setActiveLevel] = useState('level1');
     const sectionRefs = useRef({});
     const contentRef = useRef(null);
@@ -135,4 +135,4 @@ const Curriculum = () => {
     );
 };
 
-export default Curriculum;
+export default ScienceSection;

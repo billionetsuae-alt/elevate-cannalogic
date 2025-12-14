@@ -1,7 +1,7 @@
 import React from 'react';
-import './AgenticWorkflows.css';
+import './TruthSection.css';
 
-const AgenticWorkflows = () => {
+const TruthSection = () => {
     return (
         <section className="agentic-workflows-section">
             <div className="container">
@@ -44,4 +44,4 @@ const AgenticWorkflows = () => {
     );
 };
 
-export default AgenticWorkflows;
+export default TruthSection;
