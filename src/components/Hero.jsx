@@ -1,7 +1,7 @@
 import React from 'react';
 import './Hero.css';
 
-const Hero = () => {
+const Hero = ({ onOpenAssessment, onWatchVideo }) => {
     return (
         <section className="hero">
             <div className="hero-container container">
@@ -69,8 +69,8 @@ const Hero = () => {
                             </div>
 
                             <div className="hero-actions">
-                                <a href="#" className="btn btn-primary">Take the Assessment</a>
-                                <button className="btn btn-outline">Watch Video</button>
+                                <button onClick={onOpenAssessment} className="btn btn-primary">Take the Assessment</button>
+                                <button onClick={onWatchVideo} className="btn btn-outline">Watch Video</button>
                             </div>
                         </div>
                     </div>

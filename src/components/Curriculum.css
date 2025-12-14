@@ -1,16 +1,35 @@
 .curriculum-section {
     background-color: #121212;
-    padding: 6rem 0;
+    padding: 4rem 0 6rem;
 }
 
 .curriculum-layout {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
 }
 
+/* Mobile Section Header */
+.mobile-section-header {
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.mobile-section-header h2 {
+    font-size: 1.75rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.mobile-section-header p {
+    font-size: 0.95rem;
+    color: #9ca3af;
+}
+
+/* Desktop Sidebar - hidden on mobile */
 .curriculum-sidebar {
-    width: 100%;
+    display: none;
 }
 
 .sticky-wrapper {
@@ -72,24 +91,24 @@
 .curriculum-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.25rem;
 }
 
 .level-block {
     background: #1c1c1c;
     border-radius: 16px;
-    padding: 2rem;
-    border: 1px solid transparent;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
 }
 
 .level-block.active {
     border-color: var(--color-primary);
-    box-shadow: 0 0 30px rgba(184, 239, 67, 0.1);
+    box-shadow: 0 0 20px rgba(184, 239, 67, 0.1);
 }
 
 .level-header h3 {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--color-primary);
     margin-bottom: 0.25rem;
     font-weight: 500;
@@ -98,23 +117,25 @@
 }
 
 .level-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: white;
     font-weight: 500;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .level-details ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .level-details li {
-    padding: 0.5rem 0;
-    padding-left: 1.5rem;
+    padding: 0.4rem 0;
+    padding-left: 1.25rem;
     position: relative;
     color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .level-details li::before {
@@ -126,18 +147,32 @@
 
 /* Desktop Layout */
 @media (min-width: 768px) {
+    .curriculum-section {
+        padding: 6rem 0;
+    }
+
+    .mobile-section-header {
+        display: none;
+    }
+
+    .curriculum-sidebar {
+        display: block;
+        width: 35%;
+        flex-shrink: 0;
+    }
+
     .curriculum-layout {
         flex-direction: row;
         gap: 4rem;
     }
 
-    .curriculum-sidebar {
-        width: 35%;
-        flex-shrink: 0;
-    }
-
     .curriculum-content {
         width: 65%;
+        gap: 2rem;
+    }
+
+    .level-block {
+        padding: 2rem;
     }
 
     .sticky-wrapper h2 {
@@ -146,33 +181,12 @@
 
     .level-subtitle {
         font-size: 1.75rem;
-    }
-}
-
-/* Mobile header (hidden on desktop) */
-.mobile-header {
-    display: none;
-}
-
-@media (max-width: 767px) {
-    .curriculum-sidebar {
-        display: none;
+        margin-bottom: 1.5rem;
     }
 
-    .mobile-header {
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .mobile-header h3 {
+    .level-details li {
         font-size: 1rem;
-        color: var(--color-primary);
-        margin-bottom: 0.25rem;
-    }
-
-    .mobile-header p {
-        font-size: 1.25rem;
-        color: white;
-        font-weight: 500;
+        padding: 0.5rem 0;
+        padding-left: 1.5rem;
     }
 }

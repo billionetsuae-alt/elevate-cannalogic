@@ -1,12 +1,12 @@
 import React from 'react';
 import './BottomStickyBar.css';
 
-const BottomStickyBar = () => {
+const BottomStickyBar = ({ onOpenAssessment }) => {
     return (
         <div className="bottom-sticky-bar">
             <div className="sticky-glass-container">
                 <p className="sticky-text">Limited Intakes Only.</p>
-                <a href="#" className="btn btn-primary sticky-btn">Check Eligibility</a>
+                <button onClick={onOpenAssessment} className="btn btn-primary sticky-btn">Check Eligibility</button>
             </div>
         </div>
     );

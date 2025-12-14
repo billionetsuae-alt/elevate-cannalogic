@@ -10,7 +10,7 @@ const criteria = [
     'Commitment to Balance'
 ];
 
-const Pricing = () => {
+const Pricing = ({ onOpenAssessment }) => {
     return (
         <section className="pricing-section">
             <div className="container">
@@ -29,7 +29,7 @@ const Pricing = () => {
                             <p>Access begins with a simple assessment.</p>
                         </div>
 
-                        <a href="#" className="btn btn-primary btn-block">Begin Qualification</a>
+                        <button onClick={onOpenAssessment} className="btn btn-primary btn-block">Begin Qualification</button>
 
                         <div className="pricing-list-container">
                             <p style={{ marginBottom: '1rem', color: 'gray' }}>We are looking for those who are:</p>

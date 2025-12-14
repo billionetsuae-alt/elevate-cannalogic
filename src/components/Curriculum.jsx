@@ -62,7 +62,6 @@ const Curriculum = () => {
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-        // Observe each level block
         levels.forEach((level) => {
             const element = sectionRefs.current[level.id];
             if (element) {
@@ -83,6 +82,13 @@ const Curriculum = () => {
     return (
         <section className="curriculum-section">
             <div className="container curriculum-layout">
+                {/* Mobile Header - visible only on small screens */}
+                <div className="mobile-section-header">
+                    <h2>The Science</h2>
+                    <p>Your Body Was Designed to Work with This Plant.</p>
+                </div>
+
+                {/* Desktop Sidebar */}
                 <div className="curriculum-sidebar">
                     <div className="sticky-wrapper">
                         <h2>The Science</h2>

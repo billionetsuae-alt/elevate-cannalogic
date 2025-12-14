@@ -14,14 +14,27 @@ import Pricing from './components/Pricing'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
+import AssessmentModal from './components/AssessmentModal'
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
+
+  const scrollToVideo = () => {
+    const videoSection = document.querySelector('.video-section')
+    if (videoSection) {
+      videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+
   return (
     <div className="App">
-      <main>
-        <Hero />
+      <main style={{ paddingBottom: '5rem' }}>
+        <Hero onOpenAssessment={openModal} onWatchVideo={scrollToVideo} />
         <MarqueeAlumni />
-        <VennSection />
+        <VennSection onOpenAssessment={openModal} />
         <TargetAudience />
         <AgenticWorkflows />
         <QuotesSlider />
@@ -30,11 +43,12 @@ function App() {
         <DemoDay />
         <Mentors />
         <GlobalCommunity />
-        <Pricing />
+        <Pricing onOpenAssessment={openModal} />
         <FAQ />
       </main>
       <Footer />
-      <BottomStickyBar />
+      <BottomStickyBar onOpenAssessment={openModal} />
+      <AssessmentModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   )
 }
