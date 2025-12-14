@@ -44,7 +44,7 @@ const LegalitySection = () => {
 
                 <div className="demoday-grid">
                     {features.map((item, index) => (
-                        <div key={index} className="demoday-card">
+                        <div key={index} className="demoday-card animate-on-scroll">
                             <div className="demoday-icon">{item.icon}</div>
                             <h3>{item.title}</h3>
                             <p>{item.desc}</p>

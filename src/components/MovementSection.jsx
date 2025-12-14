@@ -68,7 +68,7 @@ const MovementSection = () => {
 
                 <div className="stats-grid">
                     {stats.map((stat, index) => (
-                        <div key={index} className="stat-card">
+                        <div key={index} className="stat-card animate-on-scroll">
                             <div className="stat-icon">{stat.icon}</div>
                             <h3>{stat.value}</h3>
                             <p>{stat.label}</p>

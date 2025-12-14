@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './AssessmentModal.css';
 
 const lifestyleOptions = [
-    'Stress & Anxiety',
-    'Sleep Issues',
-    'Chronic Pain',
-    'Mood Imbalance',
-    'Low Energy',
-    'Focus Problems',
-    'Digestive Issues',
-    'Other'
+    { label: 'Stress & Anxiety', icon: '😰' },
+    { label: 'Sleep Issues', icon: '😴' },
+    { label: 'Chronic Pain', icon: '⚡' },
+    { label: 'Mood Imbalance', icon: '🌊' },
+    { label: 'Low Energy', icon: '🔋' },
+    { label: 'Focus Problems', icon: '🧠' },
+    { label: 'Digestive Issues', icon: '🔥' },
+    { label: 'Other', icon: '✨' }
 ];
 
 const AssessmentModal = ({ isOpen, onClose }) => {
@@ -89,25 +89,78 @@ const AssessmentModal = ({ isOpen, onClose }) => {
 
                 {isSubmitted ? (
                     <div className="modal-success">
-                        <div className="success-icon">✓</div>
+                        <div className="success-icon">🎉</div>
                         <h2>You're Eligible!</h2>
-                        <p>Thank you for completing the assessment. Our team will reach out to you shortly with personalized recommendations.</p>
+                        <p>Based on your profile, you are a great candidate for our protocol. We've sent the details to your email.</p>
                         <button className="btn btn-primary" onClick={resetAndClose}>Close</button>
                     </div>
                 ) : (
                     <>
                         <div className="modal-header">
-                            <h2>Consciousness Assessment</h2>
-                            <p>Step {step} of 3</p>
+                            {step === 1 && <h2>What brings you here?</h2>}
+                            {step === 2 && <h2>Help us understand you</h2>}
+                            {step === 3 && <h2>Your Results are Ready</h2>}
+
                             <div className="progress-bar">
                                 <div className="progress-fill" style={{ width: `${(step / 3) * 100}%` }}></div>
                             </div>
                         </div>
 
                         <div className="modal-body">
+                            {/* STEP 1: LIFESTYLE (The Hook) */}
                             {step === 1 && (
-                                <div className="form-step">
-                                    <h3>Personal Information</h3>
+                                <div className="form-step slide-in">
+                                    <p className="form-hint">Select all that apply to you</p>
+                                    <div className="lifestyle-grid">
+                                        {lifestyleOptions.map((option) => (
+                                            <button
+                                                key={option.label}
+                                                type="button"
+                                                className={`lifestyle-option ${formData.lifestyleIssues.includes(option.label) ? 'selected' : ''}`}
+                                                onClick={() => handleLifestyleToggle(option.label)}
+                                            >
+                                                <span className="option-icon">{option.icon}</span>
+                                                <span className="option-label">{option.label}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* STEP 2: STATS */}
+                            {step === 2 && (
+                                <div className="form-step slide-in">
+                                    <p className="form-hint">This helps us calibrate your dosage.</p>
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label>Age</label>
+                                            <input
+                                                type="number"
+                                                name="age"
+                                                value={formData.age}
+                                                onChange={handleInputChange}
+                                                placeholder="ex. 35"
+                                                autoFocus
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Weight (kg)</label>
+                                            <input
+                                                type="number"
+                                                name="weight"
+                                                value={formData.weight}
+                                                onChange={handleInputChange}
+                                                placeholder="ex. 75"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* STEP 3: CONTACT (The Capture) */}
+                            {step === 3 && (
+                                <div className="form-step slide-in">
+                                    <p className="form-hint">Where should we send your eligibility report?</p>
                                     <div className="form-group">
                                         <label>Full Name</label>
                                         <input
@@ -116,6 +169,7 @@ const AssessmentModal = ({ isOpen, onClose }) => {
                                             value={formData.fullName}
                                             onChange={handleInputChange}
                                             placeholder="Enter your full name"
+                                            autoFocus
                                         />
                                     </div>
                                     <div className="form-group">
@@ -140,74 +194,40 @@ const AssessmentModal = ({ isOpen, onClose }) => {
                                     </div>
                                 </div>
                             )}
-
-                            {step === 2 && (
-                                <div className="form-step">
-                                    <h3>Health Profile</h3>
-                                    <div className="form-row">
-                                        <div className="form-group">
-                                            <label>Age</label>
-                                            <input
-                                                type="number"
-                                                name="age"
-                                                value={formData.age}
-                                                onChange={handleInputChange}
-                                                placeholder="Your age"
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Weight (kg)</label>
-                                            <input
-                                                type="number"
-                                                name="weight"
-                                                value={formData.weight}
-                                                onChange={handleInputChange}
-                                                placeholder="Your weight"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {step === 3 && (
-                                <div className="form-step">
-                                    <h3>What are you seeking help with?</h3>
-                                    <p className="form-hint">Select all that apply</p>
-                                    <div className="lifestyle-grid">
-                                        {lifestyleOptions.map((issue) => (
-                                            <button
-                                                key={issue}
-                                                type="button"
-                                                className={`lifestyle-option ${formData.lifestyleIssues.includes(issue) ? 'selected' : ''}`}
-                                                onClick={() => handleLifestyleToggle(issue)}
-                                            >
-                                                {issue}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </div>
 
                         <div className="modal-footer">
                             {step > 1 && (
                                 <button className="btn btn-outline" onClick={prevStep}>Back</button>
                             )}
-                            {step < 3 ? (
+
+                            {step === 1 && (
                                 <button
                                     className="btn btn-primary"
                                     onClick={nextStep}
-                                    disabled={step === 1 && (!formData.fullName || !formData.email || !formData.phoneNumber)}
+                                    disabled={formData.lifestyleIssues.length === 0}
                                 >
                                     Continue
                                 </button>
-                            ) : (
+                            )}
+
+                            {step === 2 && (
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={nextStep}
+                                    disabled={!formData.age || !formData.weight}
+                                >
+                                    Continue
+                                </button>
+                            )}
+
+                            {step === 3 && (
                                 <button
                                     className="btn btn-primary"
                                     onClick={handleSubmit}
-                                    disabled={isSubmitting || formData.lifestyleIssues.length === 0}
+                                    disabled={isSubmitting || !formData.fullName || !formData.email || !formData.phoneNumber}
                                 >
-                                    {isSubmitting ? 'Submitting...' : 'Check Eligibility'}
+                                    {isSubmitting ? 'Analysing...' : 'Get My Results'}
                                 </button>
                             )}
                         </div>

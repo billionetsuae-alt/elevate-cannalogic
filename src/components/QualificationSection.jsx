@@ -14,7 +14,7 @@ const QualificationSection = ({ onOpenAssessment }) => {
     return (
         <section className="pricing-section">
             <div className="container">
-                <div className="pricing-card">
+                <div className="pricing-card animate-on-scroll">
                     <div className="pricing-header">
                         <h2>This Medicine Is Not for Everyone</h2>
                         <p>Only the Ready Will Be Invited.</p>

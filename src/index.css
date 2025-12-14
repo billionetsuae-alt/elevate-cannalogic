@@ -242,6 +242,8 @@ section .cta-wrapper {
 }
 
 /* Scroll Reveal Utility Classes */
+/* Scroll Reveal Utility Classes - DISABLED via User Request */
+/*
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -252,6 +254,7 @@ section .cta-wrapper {
   opacity: 1;
   transform: translateY(0);
 }
+*/
 
 /* Stagger delays for children */
 .stagger-children>*:nth-child(1) {
