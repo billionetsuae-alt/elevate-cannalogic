@@ -47,7 +47,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2.5rem 1rem 0;
+    padding: 3.5rem 1rem 0;
 }
 
 .badge-wrapper {
@@ -61,12 +61,13 @@
 .badge {
     background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
     backdrop-filter: blur(4px);
-    padding: 0.5rem 1.5rem;
+    padding: 0.4rem 1rem;
     border-radius: 0 0 10px 10px;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
     color: white;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .hero-logo {

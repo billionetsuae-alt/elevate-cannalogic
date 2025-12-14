@@ -423,6 +423,7 @@ section:nth-child(4) {
 
   .hero,
   .hero-card {
+    padding-top: 0 !important;
     padding-bottom: 1.5rem !important;
   }
 
