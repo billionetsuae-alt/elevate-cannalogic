@@ -117,3 +117,29 @@ a {
 .btn-outline:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+/* CTA Wrapper - centered buttons */
+.cta-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+/* Make section CTAs centered by default */
+section .btn {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section .hero-actions,
+section .cta-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

@@ -24,8 +24,8 @@ const MarqueeAlumni = () => {
 
             <div className="video-section container">
                 <div className="video-header">
-                    <p className="video-label">REAL EXPERIENCES. REAL TRANSFORMATION.</p>
-                    <h3>Hear What Our Community Has to Say</h3>
+                    <p className="video-label">DISCOVER THE SCIENCE BEHIND THE HEALING</p>
+                    <h3>Elevate Cannalogic: Nature's Answer to Inner Balance</h3>
                 </div>
 
                 <div className="fullwidth-video-container">

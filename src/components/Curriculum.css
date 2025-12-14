@@ -1,7 +1,6 @@
 .curriculum-section {
     background-color: #121212;
-    /* Dark bg fallback */
-    padding: 5rem 0;
+    padding: 6rem 0;
 }
 
 .curriculum-layout {
@@ -14,55 +13,62 @@
     width: 100%;
 }
 
-.curriculum-sidebar h2 {
+.sticky-wrapper {
+    position: sticky;
+    top: 2rem;
+}
+
+.sticky-wrapper h2 {
     font-size: 2rem;
     color: white;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
 }
 
 .level-nav {
-    display: flex;
-    white-space: nowrap;
-    overflow-x: auto;
-    gap: 1rem;
-    padding-bottom: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .level-nav li {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.5rem;
+    border-radius: 12px;
     cursor: pointer;
-    min-width: 160px;
     transition: all 0.3s ease;
+    background: transparent;
+    border-left: 3px solid transparent;
+}
+
+.level-nav li:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .level-nav li.active {
-    background: var(--color-primary);
-    color: black;
-    border-color: var(--color-primary);
-}
-
-.level-nav li.active .level-num,
-.level-nav li.active .level-sub {
-    color: black;
+    background: rgba(184, 239, 67, 0.1);
+    border-left-color: var(--color-primary);
 }
 
 .level-num {
     display: block;
-    font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 600;
     color: white;
     margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.level-nav li.active .level-num {
+    color: var(--color-primary);
 }
 
 .level-sub {
     display: block;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: #9ca3af;
 }
 
+/* Content Cards */
 .curriculum-content {
     display: flex;
     flex-direction: column;
@@ -71,66 +77,102 @@
 
 .level-block {
     background: #1c1c1c;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
 }
 
-.mobile-header h3 {
+.level-block.active {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 30px rgba(184, 239, 67, 0.1);
+}
+
+.level-header h3 {
+    font-size: 1rem;
     color: var(--color-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.mobile-header p {
+.level-subtitle {
+    font-size: 1.5rem;
     color: white;
-    font-size: 1.2rem;
+    font-weight: 500;
     margin-bottom: 1.5rem;
 }
 
 .level-details ul {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 .level-details li {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
     padding-left: 1.5rem;
     position: relative;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
 }
 
 .level-details li::before {
     content: '•';
-    color: var(--color-primary);
     position: absolute;
     left: 0;
+    color: var(--color-primary);
 }
 
-@media (min-width: 1024px) {
+/* Desktop Layout */
+@media (min-width: 768px) {
     .curriculum-layout {
         flex-direction: row;
-        align-items: flex-start;
+        gap: 4rem;
     }
 
     .curriculum-sidebar {
-        width: 30%;
-        position: sticky;
-        top: 2rem;
-    }
-
-    .level-nav {
-        flex-direction: column;
-        overflow-x: visible;
-        padding-bottom: 0;
-    }
-
-    .level-nav li {
-        width: 100%;
-        min-width: auto;
+        width: 35%;
+        flex-shrink: 0;
     }
 
     .curriculum-content {
         width: 65%;
+    }
+
+    .sticky-wrapper h2 {
+        font-size: 2.5rem;
+    }
+
+    .level-subtitle {
+        font-size: 1.75rem;
+    }
+}
+
+/* Mobile header (hidden on desktop) */
+.mobile-header {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .curriculum-sidebar {
+        display: none;
+    }
+
+    .mobile-header {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .mobile-header h3 {
+        font-size: 1rem;
+        color: var(--color-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .mobile-header p {
+        font-size: 1.25rem;
+        color: white;
+        font-weight: 500;
     }
 }

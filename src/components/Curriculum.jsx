@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Curriculum.css';
 
 const levels = [
@@ -42,6 +42,43 @@ const levels = [
 
 const Curriculum = () => {
     const [activeLevel, setActiveLevel] = useState('level1');
+    const sectionRefs = useRef({});
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-30% 0px -50% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveLevel(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        // Observe each level block
+        levels.forEach((level) => {
+            const element = sectionRefs.current[level.id];
+            if (element) {
+                observer.observe(element);
+            }
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    const scrollToLevel = (levelId) => {
+        const element = sectionRefs.current[levelId];
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
 
     return (
         <section className="curriculum-section">
@@ -55,7 +92,7 @@ const Curriculum = () => {
                                 <li
                                     key={level.id}
                                     className={activeLevel === level.id ? 'active' : ''}
-                                    onClick={() => setActiveLevel(level.id)}
+                                    onClick={() => scrollToLevel(level.id)}
                                 >
                                     <span className="level-num">{level.title}</span>
                                     <span className="level-sub">{level.subtitle}</span>
@@ -65,12 +102,17 @@ const Curriculum = () => {
                     </div>
                 </div>
 
-                <div className="curriculum-content">
+                <div className="curriculum-content" ref={contentRef}>
                     {levels.map(level => (
-                        <div key={level.id} id={level.id} className="level-block">
-                            <div className="mobile-header">
+                        <div
+                            key={level.id}
+                            id={level.id}
+                            className={`level-block ${activeLevel === level.id ? 'active' : ''}`}
+                            ref={(el) => sectionRefs.current[level.id] = el}
+                        >
+                            <div className="level-header">
                                 <h3>{level.title}</h3>
-                                <p>{level.subtitle}</p>
+                                <p className="level-subtitle">{level.subtitle}</p>
                             </div>
                             <div className="level-details">
                                 <ul>

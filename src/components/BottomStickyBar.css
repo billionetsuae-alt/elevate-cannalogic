@@ -4,47 +4,55 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #1c1c1c;
-    border-top: 1px solid #333;
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     z-index: 100;
+    pointer-events: none;
 }
 
-.bar-content {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
+.sticky-glass-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
+    background: rgba(28, 28, 28, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.75rem 1rem 0.75rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    pointer-events: auto;
 }
 
-.program-info {
+.sticky-text {
     color: white;
-}
-
-.program-info h4 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.program-price {
     font-size: 0.9rem;
-    color: #9ca3af;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
 }
 
-.bar-actions {
-    display: flex;
-    gap: 1rem;
+.sticky-btn {
+    padding: 0.6rem 1.25rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 50px !important;
+    white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-    .bottom-sticky-bar {
-        display: none;
-        /* Often hidden on mobile or simplified */
+@media (max-width: 480px) {
+    .sticky-glass-container {
+        gap: 1rem;
+        padding: 0.6rem 0.75rem 0.6rem 1rem;
+    }
+
+    .sticky-text {
+        font-size: 0.8rem;
+    }
+
+    .sticky-btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
     }
 }
