@@ -47,7 +47,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3.5rem 1rem 0;
+    padding: 3rem 1rem 0;
 }
 
 .badge-wrapper {
@@ -72,8 +72,8 @@
 
 .hero-logo {
     width: 160px;
-    margin-top: 0.25rem;
-    margin-bottom: 1rem;
+    margin-top: .5rem;
+    margin-bottom: 1.5rem;
 }
 
 .content-inner {
