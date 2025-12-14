@@ -52,7 +52,7 @@ const AssessmentModal = ({ isOpen, onClose }) => {
             };
 
             // Submit to n8n webhook
-            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook-test/assesment-data', {
+            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/assesment-data', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
