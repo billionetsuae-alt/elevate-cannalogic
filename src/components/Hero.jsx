@@ -34,15 +34,25 @@ const Hero = () => {
 
                             <div className="hero-stats">
                                 <div className="stat-item">
-                                    <img src="/assets/osc1.svg" alt="Icon" />
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        <path d="M9 12l2 2 4-4" />
+                                    </svg>
                                     <span>100% Legal</span>
                                 </div>
                                 <div className="stat-item">
-                                    <img src="/assets/osc2.svg" alt="Icon" />
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z" />
+                                        <circle cx="7.5" cy="11.5" r="1.5" />
+                                        <circle cx="12" cy="7.5" r="1.5" />
+                                        <circle cx="16.5" cy="11.5" r="1.5" />
+                                    </svg>
                                     <span>Ayurvedic</span>
                                 </div>
                                 <div className="stat-item">
-                                    <img src="/assets/osc3.svg" alt="Icon" />
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
                                     <span>Doctor Prescribed</span>
                                 </div>
                             </div>

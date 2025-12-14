@@ -1,67 +1,72 @@
 .demoday-section {
-    background-color: #121212;
-    padding: 5rem 0;
+    padding: 6rem 0;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+.demoday-header {
     text-align: center;
+    margin-bottom: 4rem;
 }
 
 .demoday-header h2 {
     font-size: 2.5rem;
-    color: white;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .demoday-header p {
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 4rem;
-    font-size: 1.2rem;
+    color: #9ca3af;
+    font-size: 1.1rem;
 }
 
 .demoday-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .demoday-card {
-    background: #1c1c1c;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #121212;
     border-radius: 16px;
-    padding: 2.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 2rem;
+    text-align: center;
     transition: transform 0.3s ease;
 }
 
 .demoday-card:hover {
     transform: translateY(-5px);
-    border-color: var(--color-primary);
 }
 
 .demoday-icon {
-    width: 64px;
-    height: 64px;
     margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.demoday-icon svg {
+    color: #028B77;
 }
 
 .demoday-card h3 {
     font-size: 1.25rem;
+    margin-bottom: 0.75rem;
     color: white;
-    margin-bottom: 1rem;
 }
 
 .demoday-card p {
-    color: rgba(255, 255, 255, 0.6);
+    color: #9ca3af;
+    font-size: 0.95rem;
     line-height: 1.5;
 }
 
-@media (min-width: 768px) {
-    .demoday-grid {
-        flex-direction: row;
-        justify-content: center;
+@media (max-width: 768px) {
+    .demoday-header h2 {
+        font-size: 1.75rem;
     }
 
-    .demoday-card {
-        width: 30%;
+    .demoday-grid {
+        grid-template-columns: 1fr;
     }
 }

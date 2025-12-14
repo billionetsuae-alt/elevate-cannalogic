@@ -18,7 +18,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 100px;
+    min-width: 120px;
+}
+
+.partner-text {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.partner-text:hover {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .tool-logo {
