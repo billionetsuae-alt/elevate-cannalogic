@@ -1,0 +1,77 @@
+.venn-section {
+    background-color: #121212;
+    padding: 4rem 0;
+}
+
+.venn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.venn-text {
+    width: 100%;
+    text-align: left;
+}
+
+.section-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-family: var(--font-body);
+}
+
+.venn-text h2 {
+    font-size: 1.75rem;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.venn-description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+.venn-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.venn-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .venn-section {
+        padding: 6rem 0;
+    }
+
+    .venn-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .venn-text {
+        width: 45%;
+    }
+
+    .venn-image {
+        width: 50%;
+    }
+
+    .venn-text h2 {
+        font-size: 2.5rem;
+    }
+
+    .venn-description {
+        font-size: 1.25rem;
+    }
+}

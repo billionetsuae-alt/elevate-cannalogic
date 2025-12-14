@@ -1,0 +1,36 @@
+.quotes-section {
+    background-color: #121212;
+    padding: 4rem 0;
+}
+
+.quote-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+blockquote {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: white;
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+cite {
+    font-size: 1rem;
+    color: var(--color-primary);
+    font-style: normal;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    blockquote {
+        font-size: 2.25rem;
+    }
+}

@@ -1,0 +1,105 @@
+.marquee-alumni-section {
+    padding: 2rem 0 4rem;
+    background-color: #121212;
+    overflow: hidden;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+.endorsement-subtitle {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.logo-marquee-wrapper {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+/* Video Section Styles */
+.video-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.video-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.video-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.video-header h3 {
+    font-size: 1.75rem;
+    color: white;
+    font-weight: 400;
+}
+
+.fullwidth-video-container {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1c1c1c;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.fullwidth-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sound-toggle-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.sound-toggle-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.sound-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .marquee-alumni-section {
+        padding: 4rem 0 6rem;
+    }
+
+    .video-header h3 {
+        font-size: 2.25rem;
+    }
+}

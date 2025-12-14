@@ -1,0 +1,67 @@
+.demoday-section {
+    background-color: #121212;
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.demoday-header h2 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.demoday-header p {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 4rem;
+    font-size: 1.2rem;
+}
+
+.demoday-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.demoday-card {
+    background: #1c1c1c;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.demoday-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+}
+
+.demoday-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+}
+
+.demoday-card h3 {
+    font-size: 1.25rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.demoday-card p {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+    .demoday-grid {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .demoday-card {
+        width: 30%;
+    }
+}

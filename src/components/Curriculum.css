@@ -1,0 +1,136 @@
+.curriculum-section {
+    background-color: #121212;
+    /* Dark bg fallback */
+    padding: 5rem 0;
+}
+
+.curriculum-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.curriculum-sidebar {
+    width: 100%;
+}
+
+.curriculum-sidebar h2 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.level-nav {
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.level-nav li {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 160px;
+    transition: all 0.3s ease;
+}
+
+.level-nav li.active {
+    background: var(--color-primary);
+    color: black;
+    border-color: var(--color-primary);
+}
+
+.level-nav li.active .level-num,
+.level-nav li.active .level-sub {
+    color: black;
+}
+
+.level-num {
+    display: block;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.level-sub {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.curriculum-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.level-block {
+    background: #1c1c1c;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.mobile-header h3 {
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.mobile-header p {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.level-details ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.level-details li {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.level-details li::before {
+    content: '•';
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+}
+
+@media (min-width: 1024px) {
+    .curriculum-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .curriculum-sidebar {
+        width: 30%;
+        position: sticky;
+        top: 2rem;
+    }
+
+    .level-nav {
+        flex-direction: column;
+        overflow-x: visible;
+        padding-bottom: 0;
+    }
+
+    .level-nav li {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .curriculum-content {
+        width: 65%;
+    }
+}
