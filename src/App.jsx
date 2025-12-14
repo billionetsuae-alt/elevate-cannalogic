@@ -11,7 +11,6 @@ import DemoDay from './components/DemoDay'
 import Mentors from './components/Mentors'
 import GlobalCommunity from './components/GlobalCommunity'
 import Pricing from './components/Pricing'
-import Scholarships from './components/Scholarships'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
@@ -32,7 +31,6 @@ function App() {
         <Mentors />
         <GlobalCommunity />
         <Pricing />
-        <Scholarships />
         <FAQ />
       </main>
       <Footer />
