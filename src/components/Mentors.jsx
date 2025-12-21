@@ -6,26 +6,30 @@ const Mentors = () => {
         {
             name: "Dr. Ravi Shankar",
             role: "Chief Scientific Officer",
-            image: "/assets/raghumm.webp",
-            company: "Ayureda Institute"
+            company: "Ayureda Institute",
+            initials: "RS",
+            color: "#4caf50"
         },
         {
             name: "Meera Patel",
             role: "Holistic Health Coach",
-            image: "/assets/parimala.webp",
-            company: "Wellness Collective"
+            company: "Wellness Collective",
+            initials: "MP",
+            color: "#8bc34a"
         },
         {
             name: "Arjun Singh",
             role: "Cannabis Researcher",
-            image: "/assets/ub.webp",
-            company: "Green Science Lab"
+            company: "Green Science Lab",
+            initials: "AS",
+            color: "#26a69a"
         },
         {
             name: "Priya Sharma",
             role: "Ayurvedic Practitioner",
-            image: "/assets/tamaranew.webp",
-            company: "Veda Health"
+            company: "Veda Health",
+            initials: "PS",
+            color: "#66bb6a"
         }
     ];
 
@@ -40,8 +44,9 @@ const Mentors = () => {
                 <div className="mentors-grid">
                     {mentors.map((mentor, index) => (
                         <div key={index} className="mentor-card">
-                            <div className="mentor-image">
-                                <img src={mentor.image} alt={mentor.name} />
+                            <div className="mentor-avatar" style={{ background: `linear-gradient(135deg, ${mentor.color}, ${mentor.color}dd)` }}>
+                                <span className="avatar-initials">{mentor.initials}</span>
+                                <div className="avatar-ring" style={{ borderColor: mentor.color }}></div>
                             </div>
                             <div className="mentor-info">
                                 <h3>{mentor.name}</h3>
