@@ -1160,22 +1160,168 @@
 }
 
 @media (max-width: 480px) {
+    .pp-container {
+        padding: 0 1rem;
+    }
+
     .pp-badge-row {
         flex-direction: column;
         align-items: center;
     }
 
     .pp-hero-title {
+        font-size: 1.5rem;
+    }
+
+    .pp-score-card {
+        padding: 1.25rem;
+    }
+
+    .pp-score-visual {
+        width: 90px;
+        height: 90px;
+    }
+
+    .pp-score-value {
         font-size: 1.75rem;
     }
 
-    .pp-product-image {
-        width: 240px;
-        height: 280px;
+    .pp-score-level {
+        font-size: 1.2rem;
     }
 
-    .pp-floating-badge {
-        font-size: 0.7rem;
-        padding: 0.4rem 0.7rem;
+    .pp-product-img {
+        max-width: 200px;
+        max-height: 240px;
+    }
+
+    .pp-product-title {
+        font-size: 1.6rem;
+    }
+
+    .pp-product-tagline {
+        font-size: 1rem;
+    }
+
+    .pp-pricing-block {
+        padding: 1rem;
+    }
+
+    .pp-price-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pp-price-main {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .pp-price-original {
+        font-size: 1rem;
+    }
+
+    .pp-price-current {
+        font-size: 1.75rem;
+    }
+
+    .pp-price-savings {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .pp-quantity-row {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .pp-quantity-label {
+        font-size: 0.85rem;
+    }
+
+    .pp-qty-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pp-qty-value {
+        min-width: 40px;
+        font-size: 1rem;
+    }
+
+    .pp-qty-note {
+        font-size: 0.75rem;
+        width: 100%;
+    }
+
+    .pp-cta-button {
+        padding: 0.9rem 1.25rem;
+        font-size: 0.95rem;
+        gap: 0.5rem;
+    }
+
+    .pp-cta-button svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .pp-trust-row {
+        gap: 0.5rem;
+    }
+
+    .pp-trust-item {
+        font-size: 0.75rem;
+        gap: 0.35rem;
+    }
+
+    .pp-trust-item svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .pp-section-title {
+        font-size: 1.4rem;
+    }
+
+    .pp-section-label {
+        font-size: 0.75rem;
+    }
+
+    .pp-benefit-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .pp-benefit-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .pp-benefit-card h3 {
+        font-size: 1rem;
+    }
+
+    .pp-ingredient-item {
+        padding: 1rem;
+    }
+
+    .pp-testimonial-card {
+        padding: 1.25rem;
+    }
+
+    .pp-testimonial-text {
+        font-size: 0.85rem;
+    }
+
+    .pp-faq-item {
+        padding: 1.25rem;
+    }
+
+    .pp-faq-item h3 {
+        font-size: 0.9rem;
+    }
+
+    .pp-faq-item p {
+        font-size: 0.8rem;
     }
 }
