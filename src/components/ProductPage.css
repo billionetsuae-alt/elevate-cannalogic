@@ -1,0 +1,639 @@
+/* ===========================================
+   STANDALONE PRODUCT PAGE
+   =========================================== */
+
+.product-page {
+    min-height: 100vh;
+    background: var(--color-bg-dark);
+    color: white;
+}
+
+/* Container */
+.pp-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ===========================================
+   HERO SECTION - PERSONALIZED
+   =========================================== */
+
+.pp-hero {
+    padding: 2rem 0 3rem;
+    background: linear-gradient(180deg, rgba(76, 175, 80, 0.05) 0%, transparent 100%);
+}
+
+.pp-back-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+}
+
+.pp-back-btn:hover {
+    color: white;
+}
+
+.pp-personalized-header {
+    text-align: center;
+}
+
+.pp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(139, 195, 74, 0.1) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    border-radius: 100px;
+    color: #8bc34a;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.pp-score-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pp-score-circle {
+    width: 100px;
+    height: 100px;
+    border: 4px solid;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.pp-score-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.pp-score-max {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.pp-score-info {
+    text-align: left;
+}
+
+.pp-score-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.pp-score-info p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+.pp-personalized-message {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.pp-personalized-message p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* ===========================================
+   PRODUCT HERO
+   =========================================== */
+
+.pp-product-hero {
+    padding: 3rem 0;
+}
+
+.pp-product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.pp-product-image {
+    display: flex;
+    justify-content: center;
+}
+
+.pp-image-placeholder {
+    width: 300px;
+    height: 350px;
+    background: linear-gradient(145deg, rgba(76, 175, 80, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 2px solid rgba(76, 175, 80, 0.2);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: #4caf50;
+}
+
+.pp-image-placeholder span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+}
+
+.pp-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.pp-product-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 6px;
+    color: #4caf50;
+    font-size: 0.8rem;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.pp-product-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.pp-product-tagline {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.pp-product-description {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+}
+
+.pp-product-pricing {
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pp-price-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pp-price-original {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: line-through;
+}
+
+.pp-price-current {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.pp-price-save {
+    padding: 0.4rem 0.9rem;
+    background: rgba(76, 175, 80, 0.15);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: #8bc34a;
+    font-weight: 600;
+}
+
+.pp-price-note {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.pp-cta-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+    border: none;
+    border-radius: 14px;
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
+}
+
+.pp-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(76, 175, 80, 0.4);
+}
+
+.pp-cta-primary.large {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.2rem;
+}
+
+.pp-trust-badges {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pp-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.pp-trust-item svg {
+    color: #4caf50;
+}
+
+/* ===========================================
+   WHY SECTION
+   =========================================== */
+
+.pp-why-section {
+    padding: 4rem 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.pp-section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.pp-why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.pp-why-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.pp-why-card:hover {
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-4px);
+}
+
+.pp-why-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4caf50;
+}
+
+.pp-why-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.pp-why-card p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ===========================================
+   FEATURES SECTION
+   =========================================== */
+
+.pp-features-section {
+    padding: 4rem 0;
+}
+
+.pp-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.pp-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.pp-feature-item svg {
+    flex-shrink: 0;
+    color: #4caf50;
+    margin-top: 2px;
+}
+
+.pp-feature-item div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pp-feature-item strong {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.pp-feature-item span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===========================================
+   TESTIMONIALS
+   =========================================== */
+
+.pp-testimonials {
+    padding: 4rem 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.pp-testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.pp-testimonial-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 1.75rem;
+}
+
+.pp-testimonial-stars {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.pp-testimonial-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    font-style: italic;
+}
+
+.pp-testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pp-author-name {
+    font-weight: 500;
+}
+
+.pp-author-location {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+}
+
+/* ===========================================
+   FAQ SECTION
+   =========================================== */
+
+.pp-faq {
+    padding: 4rem 0;
+}
+
+.pp-faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pp-faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.pp-faq-item h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: white;
+}
+
+.pp-faq-item p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ===========================================
+   FINAL CTA
+   =========================================== */
+
+.pp-final-cta {
+    padding: 4rem 0;
+}
+
+.pp-cta-box {
+    background: linear-gradient(145deg, rgba(76, 175, 80, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.pp-cta-box h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.pp-cta-box>p {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+}
+
+.pp-cta-pricing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pp-cta-original {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: line-through;
+}
+
+.pp-cta-current {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.pp-cta-guarantees {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.pp-cta-guarantees>div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.pp-cta-guarantees svg {
+    color: #4caf50;
+}
+
+/* ===========================================
+   FOOTER
+   =========================================== */
+
+.pp-footer {
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.pp-footer p {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+}
+
+.pp-disclaimer {
+    margin-top: 1rem;
+    font-size: 0.75rem !important;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===========================================
+   MOBILE RESPONSIVE
+   =========================================== */
+
+@media (max-width: 900px) {
+    .pp-product-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .pp-product-image {
+        order: -1;
+    }
+
+    .pp-image-placeholder {
+        width: 250px;
+        height: 280px;
+    }
+
+    .pp-why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pp-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pp-testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .pp-hero {
+        padding: 1.5rem 0 2rem;
+    }
+
+    .pp-score-summary {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .pp-score-info {
+        text-align: center;
+    }
+
+    .pp-product-title {
+        font-size: 2rem;
+    }
+
+    .pp-price-current {
+        font-size: 2rem;
+    }
+
+    .pp-trust-badges {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .pp-why-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-section-title {
+        font-size: 1.5rem;
+    }
+
+    .pp-cta-box {
+        padding: 2rem 1.5rem;
+    }
+
+    .pp-cta-current {
+        font-size: 2.5rem;
+    }
+
+    .pp-cta-guarantees {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

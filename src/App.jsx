@@ -14,46 +14,71 @@ import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
 import AssessmentModal from './components/AssessmentModal'
+import ProductPage from './components/ProductPage'
 import ScrollProgress from './components/ScrollProgress'
 
 function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [showProductPage, setShowProductPage] = useState(false)
+    const [userData, setUserData] = useState(null)
 
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
+    const openModal = () => setIsModalOpen(true)
+    const closeModal = () => setIsModalOpen(false)
 
-  // Scroll Animation Observer - REMOVED
-
-
-  const scrollToVideo = () => {
-    const videoSection = document.querySelector('.video-section')
-    if (videoSection) {
-      videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    // Called when quiz is completed - transition to product page
+    const handleQuizComplete = (data) => {
+        setUserData(data)
+        setIsModalOpen(false)
+        setShowProductPage(true)
+        // Scroll to top when showing product page
+        window.scrollTo(0, 0)
     }
-  }
 
-  return (
-    <div className="App">
-      <ScrollProgress />
-      <main>
-        <Hero onOpenAssessment={openModal} onWatchVideo={scrollToVideo} />
-        <VideoSection />
-        <ProblemSection onOpenAssessment={openModal} />
-        <BenefitsSection />
-        <TruthSection />
-        <QuoteSection />
-        <ScienceSection />
-        <PartnersMarquee />
-        <LegalitySection />
-        <Mentors />
-        <QualificationSection onOpenAssessment={openModal} />
-        <FAQ />
-      </main>
-      <Footer />
-      <BottomStickyBar onOpenAssessment={openModal} />
-      <AssessmentModal isOpen={isModalOpen} onClose={closeModal} />
-    </div>
-  )
+    // Called when user leaves product page
+    const handleProductPageClose = () => {
+        setShowProductPage(false)
+        setUserData(null)
+    }
+
+    const scrollToVideo = () => {
+        const videoSection = document.querySelector('.video-section')
+        if (videoSection) {
+            videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+    }
+
+    // Show standalone product page if quiz is complete
+    if (showProductPage) {
+        return <ProductPage userData={userData} onClose={handleProductPageClose} />
+    }
+
+    // Otherwise show normal landing page
+    return (
+        <div className="App">
+            <ScrollProgress />
+            <main>
+                <Hero onOpenAssessment={openModal} onWatchVideo={scrollToVideo} />
+                <VideoSection />
+                <ProblemSection onOpenAssessment={openModal} />
+                <BenefitsSection />
+                <TruthSection />
+                <QuoteSection />
+                <ScienceSection />
+                <PartnersMarquee />
+                <LegalitySection />
+                <Mentors />
+                <QualificationSection onOpenAssessment={openModal} />
+                <FAQ />
+            </main>
+            <Footer />
+            <BottomStickyBar onOpenAssessment={openModal} />
+            <AssessmentModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                onQuizComplete={handleQuizComplete}
+            />
+        </div>
+    )
 }
 
 export default App

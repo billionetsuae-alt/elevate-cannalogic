@@ -1,29 +1,116 @@
 import React, { useState } from 'react';
 import './AssessmentModal.css';
+import {
+    Sparkles, Brain, Scale, HelpCircle,
+    Flower2, Waves, Cloud, MessageCircleQuestion,
+    Flame, Sprout, Lightbulb, Eye,
+    Target, Star, FileText, Moon,
+    Leaf, Handshake, Search, Ban,
+    Zap, Compass, CircleHelp,
+    Dumbbell, Map, CircleDashed, Pause,
+    Rocket, Calendar, CalendarDays, Hourglass,
+    Clock, Heart, Check, ArrowRight,
+    ChevronLeft, Mail, Phone, User,
+    Package, ShieldCheck, Award, Truck
+} from 'lucide-react';
 
-const lifestyleOptions = [
-    { label: 'Stress & Anxiety', icon: '😰' },
-    { label: 'Sleep Issues', icon: '😴' },
-    { label: 'Chronic Pain', icon: '⚡' },
-    { label: 'Mood Imbalance', icon: '🌊' },
-    { label: 'Low Energy', icon: '🔋' },
-    { label: 'Focus Problems', icon: '🧠' },
-    { label: 'Digestive Issues', icon: '🔥' },
-    { label: 'Other', icon: '✨' }
+// Quiz questions data with point values and icons
+const quizQuestions = [
+    {
+        id: 1,
+        question: "What do you want to become?",
+        options: [
+            { text: "A consciously living and purpose-led individual", points: 4, icon: Sparkles },
+            { text: "A clear-minded and thoughtful individual", points: 3, icon: Brain },
+            { text: "A more stable, balanced version of who I am now", points: 2, icon: Scale },
+            { text: "I haven't yet connected with a future identity", points: 1, icon: HelpCircle }
+        ]
+    },
+    {
+        id: 2,
+        question: "What inner state do you want to live from daily?",
+        options: [
+            { text: "Deep inner peace and presence", points: 4, icon: Flower2 },
+            { text: "Emotional balance and steady flow", points: 3, icon: Waves },
+            { text: "General mental calm and clarity", points: 2, icon: Cloud },
+            { text: "I haven't thought much about this", points: 1, icon: MessageCircleQuestion }
+        ]
+    },
+    {
+        id: 3,
+        question: "Why is this transformation important to you now?",
+        options: [
+            { text: "I feel a strong inner calling for change", points: 4, icon: Flame },
+            { text: "I feel ready for meaningful personal growth", points: 3, icon: Sprout },
+            { text: "I think change could be helpful", points: 2, icon: Lightbulb },
+            { text: "I'm just casually exploring ideas", points: 1, icon: Eye }
+        ]
+    },
+    {
+        id: 4,
+        question: "How do you approach personal growth today?",
+        options: [
+            { text: "I actively and consistently work on myself", points: 4, icon: Target },
+            { text: "I engage in growth when something resonates", points: 3, icon: Star },
+            { text: "I think about growth but act inconsistently", points: 2, icon: FileText },
+            { text: "I haven't really focused on it yet", points: 1, icon: Moon }
+        ]
+    },
+    {
+        id: 5,
+        question: "How open are you to natural, plant-based tools used consciously?",
+        options: [
+            { text: "Very open and already informed", points: 4, icon: Leaf },
+            { text: "Open with the right guidance and context", points: 3, icon: Handshake },
+            { text: "Neutral or mildly curious", points: 2, icon: Search },
+            { text: "Not open to this approach", points: 1, icon: Ban }
+        ]
+    },
+    {
+        id: 6,
+        question: "How do you view consciousness and awareness in transformation?",
+        options: [
+            { text: "They are the foundation of real change", points: 4, icon: Zap },
+            { text: "They play an important role", points: 3, icon: Compass },
+            { text: "I see some value but don't focus on them much", points: 2, icon: Search },
+            { text: "I don't really see their relevance yet", points: 1, icon: CircleHelp }
+        ]
+    },
+    {
+        id: 7,
+        question: "How committed are you to becoming this version of yourself?",
+        options: [
+            { text: "Fully committed and ready to act", points: 4, icon: Dumbbell },
+            { text: "Committed but still clarifying the path", points: 3, icon: Map },
+            { text: "Interested but not fully committed", points: 2, icon: CircleDashed },
+            { text: "Not ready to commit right now", points: 1, icon: Pause }
+        ]
+    },
+    {
+        id: 8,
+        question: "When do you want to begin this journey?",
+        options: [
+            { text: "Now — I feel ready", points: 4, icon: Rocket },
+            { text: "Soon — within the coming weeks", points: 3, icon: Calendar },
+            { text: "Later — in a few months", points: 2, icon: CalendarDays },
+            { text: "No clear timeline yet", points: 1, icon: Hourglass }
+        ]
+    }
 ];
 
-const AssessmentModal = ({ isOpen, onClose }) => {
-    const [step, setStep] = useState(1);
+const TOTAL_STEPS = 12; // intro + personal + 8 questions + contact + results
+
+const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
+    const [step, setStep] = useState(0); // 0=intro, 1=personal, 2-9=questions, 10=contact, 11=results
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const [aiResponse, setAiResponse] = useState(null);
     const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        phoneNumber: '',
+        name: '',
         age: '',
+        sex: '',
         weight: '',
-        lifestyleIssues: []
+        phone: '',
+        email: '',
+        answers: {}
     });
 
     const handleInputChange = (e) => {
@@ -31,13 +118,56 @@ const AssessmentModal = ({ isOpen, onClose }) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleLifestyleToggle = (issue) => {
+    const handleAnswerSelect = (questionId, points) => {
         setFormData(prev => ({
             ...prev,
-            lifestyleIssues: prev.lifestyleIssues.includes(issue)
-                ? prev.lifestyleIssues.filter(i => i !== issue)
-                : [...prev.lifestyleIssues, issue]
+            answers: { ...prev.answers, [`q${questionId}`]: points }
         }));
+        // Auto-advance after selection with a small delay for visual feedback
+        setTimeout(() => {
+            if (step < 9) {
+                setStep(prev => prev + 1);
+            } else {
+                setStep(10); // Go to contact step
+            }
+        }, 400);
+    };
+
+    const calculateScore = () => {
+        return Object.values(formData.answers).reduce((sum, val) => sum + val, 0);
+    };
+
+    const getScoreInterpretation = () => {
+        const score = calculateScore();
+        if (score >= 28) {
+            return {
+                level: "Highly Ready",
+                message: "You show exceptional readiness for profound inner transformation. Your clarity, commitment, and openness position you perfectly for this journey.",
+                color: "#4caf50",
+                recommendation: "We recommend starting with our complete transformation protocol."
+            };
+        } else if (score >= 21) {
+            return {
+                level: "Ready",
+                message: "You have strong foundations for transformation. With the right guidance, you're well-positioned to begin this meaningful journey.",
+                color: "#8bc34a",
+                recommendation: "Our guided approach will help accelerate your transformation."
+            };
+        } else if (score >= 14) {
+            return {
+                level: "Approaching Readiness",
+                message: "You're developing the awareness needed for transformation. A guided approach can help you clarify your path forward.",
+                color: "#ffc107",
+                recommendation: "Start gently with our introductory support system."
+            };
+        } else {
+            return {
+                level: "Exploring",
+                message: "You're at the beginning of your exploration. This is a beautiful place to start building awareness and understanding.",
+                color: "#ff9800",
+                recommendation: "Begin with education and awareness building."
+            };
+        }
     };
 
     const nextStep = () => setStep(prev => prev + 1);
@@ -46,213 +176,339 @@ const AssessmentModal = ({ isOpen, onClose }) => {
     const handleSubmit = async () => {
         setIsSubmitting(true);
         try {
+            const totalScore = calculateScore();
             const payload = {
-                ...formData,
-                lifestyleIssues: formData.lifestyleIssues.join(', ')
+                name: formData.name,
+                age: parseInt(formData.age),
+                sex: formData.sex,
+                weight: parseInt(formData.weight),
+                phone: formData.phone,
+                email: formData.email,
+                answers: formData.answers,
+                totalScore: totalScore,
+                maxScore: 32
             };
 
-            // Submit to n8n webhook
-            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/assesment-data', {
+            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/assesment-data', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            const data = await response.json();
-
-            if (data.success) {
-                setAiResponse(data);
-                setIsSubmitted(true);
-            } else {
-                throw new Error('Failed to get response');
-            }
+            setStep(11); // Results step
         } catch (error) {
             console.error('Submission error:', error);
-            alert(`Error: ${error.message}. Check console for details.`);
+            setStep(11); // Still show results
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const resetAndClose = () => {
-        setStep(1);
-        setIsSubmitted(false);
-        setAiResponse(null);
+        setStep(0);
         setFormData({
-            fullName: '',
-            email: '',
-            phoneNumber: '',
+            name: '',
             age: '',
+            sex: '',
             weight: '',
-            lifestyleIssues: []
+            phone: '',
+            email: '',
+            answers: {}
         });
         onClose();
     };
 
+    const getProgress = () => {
+        return ((step + 1) / TOTAL_STEPS) * 100;
+    };
+
+    const isPersonalInfoValid = () => {
+        return formData.name && formData.age && formData.sex && formData.weight;
+    };
+
+    const isContactInfoValid = () => {
+        return formData.phone && formData.email;
+    };
+
     if (!isOpen) return null;
 
+    const currentQuestionIndex = step - 2;
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+
     return (
-        <div className="modal-overlay" onClick={resetAndClose}>
-            <div className="modal-container" onClick={e => e.stopPropagation()}>
-                <button className="modal-close" onClick={resetAndClose}>×</button>
+        <div className="assessment-overlay" onClick={resetAndClose}>
+            <div className="assessment-container" onClick={e => e.stopPropagation()}>
+                <button className="assessment-close" onClick={resetAndClose}>×</button>
 
-                {isSubmitted && aiResponse ? (
-                    <div className="modal-success results-page">
-                        <div className="success-icon">🌿</div>
-                        <h2>Great News, {aiResponse.name?.split(' ')[0] || 'there'}!</h2>
-                        <p className="ai-response">{aiResponse.message}</p>
-                        <a
-                            href="https://calendly.com/cannalogic/consultation"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-primary cta-button"
-                        >
-                            Book Your Free Consultation
-                        </a>
-                        <button className="btn btn-outline" onClick={resetAndClose}>Maybe Later</button>
-                    </div>
-                ) : (
-                    <>
-                        <div className="modal-header">
-                            {step === 1 && <h2>What brings you here?</h2>}
-                            {step === 2 && <h2>Help us understand you</h2>}
-                            {step === 3 && <h2>Your Results are Ready</h2>}
-
-                            <div className="progress-bar">
-                                <div className="progress-fill" style={{ width: `${(step / 3) * 100}%` }}></div>
-                            </div>
+                {/* Progress Bar - shown during quiz flow */}
+                {step > 0 && step < 11 && (
+                    <div className="assessment-progress">
+                        <div className="progress-track">
+                            <div
+                                className="progress-fill"
+                                style={{ width: `${getProgress()}%` }}
+                            />
                         </div>
+                        <span className="progress-text">
+                            {step <= 1 ? 'Getting Started' :
+                                step <= 9 ? `Question ${step - 1} of 8` :
+                                    'Almost Done'}
+                        </span>
+                    </div>
+                )}
 
-                        <div className="modal-body">
-                            {/* STEP 1: LIFESTYLE (The Hook) */}
-                            {step === 1 && (
-                                <div className="form-step slide-in">
-                                    <p className="form-hint">Select all that apply to you</p>
-                                    <div className="lifestyle-grid">
-                                        {lifestyleOptions.map((option) => (
+                <div className="assessment-content">
+                    {/* STEP 0: INTRO */}
+                    {step === 0 && (
+                        <div className="step-content intro-step">
+                            <div className="intro-icon">
+                                <Leaf size={48} strokeWidth={1.5} />
+                            </div>
+                            <h2>Discover Your Readiness</h2>
+                            <p className="intro-subtitle">
+                                A short self-assessment designed to understand your readiness for inner transformation.
+                            </p>
+                            <div className="intro-details">
+                                <div className="detail-item">
+                                    <Clock size={18} />
+                                    <span>Takes 2–3 minutes</span>
+                                </div>
+                                <div className="detail-item">
+                                    <Sprout size={18} />
+                                    <span>Plant-based support journey</span>
+                                </div>
+                                <div className="detail-item">
+                                    <Check size={18} />
+                                    <span>No right or wrong answers</span>
+                                </div>
+                            </div>
+                            <p className="intro-note">Answer honestly. This helps us see if this journey is right for you.</p>
+                            <button className="btn-start" onClick={nextStep}>
+                                Begin Assessment
+                                <ArrowRight size={20} />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* STEP 1: PERSONAL INFO */}
+                    {step === 1 && (
+                        <div className="step-content personal-step">
+                            <h2>Let's Get To Know You</h2>
+                            <p className="step-hint">This helps us personalize your journey</p>
+
+                            <div className="form-grid">
+                                <div className="form-field">
+                                    <label><User size={14} /> Your Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter your name"
+                                        autoFocus
+                                    />
+                                </div>
+
+                                <div className="form-row-2">
+                                    <div className="form-field">
+                                        <label>Age</label>
+                                        <input
+                                            type="number"
+                                            name="age"
+                                            value={formData.age}
+                                            onChange={handleInputChange}
+                                            placeholder="25"
+                                        />
+                                    </div>
+                                    <div className="form-field">
+                                        <label>Weight (kg)</label>
+                                        <input
+                                            type="number"
+                                            name="weight"
+                                            value={formData.weight}
+                                            onChange={handleInputChange}
+                                            placeholder="70"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-field">
+                                    <label>Sex</label>
+                                    <div className="sex-options">
+                                        {['Male', 'Female', 'Other'].map(option => (
                                             <button
-                                                key={option.label}
+                                                key={option}
                                                 type="button"
-                                                className={`lifestyle-option ${formData.lifestyleIssues.includes(option.label) ? 'selected' : ''}`}
-                                                onClick={() => handleLifestyleToggle(option.label)}
+                                                className={`sex-option ${formData.sex === option ? 'selected' : ''}`}
+                                                onClick={() => setFormData(prev => ({ ...prev, sex: option }))}
                                             >
-                                                <span className="option-icon">{option.icon}</span>
-                                                <span className="option-label">{option.label}</span>
+                                                {option}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
-                            )}
+                            </div>
 
-                            {/* STEP 2: STATS */}
-                            {step === 2 && (
-                                <div className="form-step slide-in">
-                                    <p className="form-hint">This helps us calibrate your dosage.</p>
-                                    <div className="form-row">
-                                        <div className="form-group">
-                                            <label>Age</label>
-                                            <input
-                                                type="number"
-                                                name="age"
-                                                value={formData.age}
-                                                onChange={handleInputChange}
-                                                placeholder="ex. 35"
-                                                autoFocus
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Weight (kg)</label>
-                                            <input
-                                                type="number"
-                                                name="weight"
-                                                value={formData.weight}
-                                                onChange={handleInputChange}
-                                                placeholder="ex. 75"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* STEP 3: CONTACT (The Capture) */}
-                            {step === 3 && (
-                                <div className="form-step slide-in">
-                                    <p className="form-hint">Where should we send your eligibility report?</p>
-                                    <div className="form-group">
-                                        <label>Full Name</label>
-                                        <input
-                                            type="text"
-                                            name="fullName"
-                                            value={formData.fullName}
-                                            onChange={handleInputChange}
-                                            placeholder="Enter your full name"
-                                            autoFocus
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Email Address</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            placeholder="Enter your email"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Phone Number</label>
-                                        <input
-                                            type="tel"
-                                            name="phoneNumber"
-                                            value={formData.phoneNumber}
-                                            onChange={handleInputChange}
-                                            placeholder="Enter your phone number"
-                                        />
-                                    </div>
-                                </div>
-                            )}
+                            <div className="step-actions">
+                                <button className="btn-secondary" onClick={prevStep}>
+                                    <ChevronLeft size={18} /> Back
+                                </button>
+                                <button
+                                    className="btn-primary"
+                                    onClick={nextStep}
+                                    disabled={!isPersonalInfoValid()}
+                                >
+                                    Continue
+                                </button>
+                            </div>
                         </div>
+                    )}
 
-                        <div className="modal-footer">
-                            {step > 1 && (
-                                <button className="btn btn-outline" onClick={prevStep}>Back</button>
-                            )}
+                    {/* STEPS 2-9: QUIZ QUESTIONS */}
+                    {step >= 2 && step <= 9 && currentQuestion && (
+                        <div className="step-content question-step">
+                            <div className="question-number">Q{currentQuestion.id}</div>
+                            <h2>{currentQuestion.question}</h2>
 
-                            {step === 1 && (
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={nextStep}
-                                    disabled={formData.lifestyleIssues.length === 0}
-                                >
-                                    Continue
+                            <div className="options-list">
+                                {currentQuestion.options.map((option, index) => {
+                                    const IconComponent = option.icon;
+                                    return (
+                                        <button
+                                            key={index}
+                                            type="button"
+                                            className={`option-card ${formData.answers[`q${currentQuestion.id}`] === option.points ? 'selected' : ''}`}
+                                            onClick={() => handleAnswerSelect(currentQuestion.id, option.points)}
+                                        >
+                                            <span className="option-icon">
+                                                <IconComponent size={22} strokeWidth={1.5} />
+                                            </span>
+                                            <span className="option-text">{option.text}</span>
+                                            {formData.answers[`q${currentQuestion.id}`] === option.points && (
+                                                <span className="option-check">
+                                                    <Check size={14} strokeWidth={3} />
+                                                </span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <button className="btn-back-small" onClick={prevStep}>
+                                <ChevronLeft size={16} /> Back
+                            </button>
+                        </div>
+                    )}
+
+                    {/* STEP 10: CONTACT INFO */}
+                    {step === 10 && (
+                        <div className="step-content contact-step">
+                            <div className="contact-icon">
+                                <Mail size={40} strokeWidth={1.5} />
+                            </div>
+                            <h2>Get Your FREE Action Plan</h2>
+                            <p className="step-hint">Enter your details to receive a personalized transformation roadmap</p>
+
+                            <div className="form-grid">
+                                <div className="form-field">
+                                    <label><Phone size={14} /> Phone Number</label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        placeholder="+91 98765 43210"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <label><Mail size={14} /> Email Address</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="step-actions">
+                                <button className="btn-secondary" onClick={prevStep}>
+                                    <ChevronLeft size={18} /> Back
                                 </button>
-                            )}
-
-                            {step === 2 && (
                                 <button
-                                    className="btn btn-primary"
-                                    onClick={nextStep}
-                                    disabled={!formData.age || !formData.weight}
-                                >
-                                    Continue
-                                </button>
-                            )}
-
-                            {step === 3 && (
-                                <button
-                                    className="btn btn-primary"
+                                    className="btn-primary btn-submit"
                                     onClick={handleSubmit}
-                                    disabled={isSubmitting || !formData.fullName || !formData.email || !formData.phoneNumber}
+                                    disabled={!isContactInfoValid() || isSubmitting}
                                 >
-                                    {isSubmitting ? 'Analysing...' : 'Get My Results'}
+                                    {isSubmitting ? (
+                                        <>
+                                            <span className="spinner"></span>
+                                            Analyzing...
+                                        </>
+                                    ) : 'See My Results'}
                                 </button>
-                            )}
+                            </div>
                         </div>
-                    </>
-                )}
+                    )}
+
+                    {/* STEP 11: PERSONALIZED RESULTS */}
+                    {step === 11 && (
+                        <div className="step-content results-step">
+                            <div className="results-score">
+                                <div className="score-circle" style={{ borderColor: getScoreInterpretation().color }}>
+                                    <span className="score-value">{calculateScore()}</span>
+                                    <span className="score-max">/32</span>
+                                </div>
+                            </div>
+
+                            <h2 style={{ color: getScoreInterpretation().color }}>
+                                {getScoreInterpretation().level}
+                            </h2>
+
+                            <p className="results-message">
+                                {getScoreInterpretation().message}
+                            </p>
+
+                            <div className="results-recommendation">
+                                <Heart size={18} style={{ color: getScoreInterpretation().color }} />
+                                <span>{getScoreInterpretation().recommendation}</span>
+                            </div>
+
+                            <div className="results-name">
+                                {formData.name.split(' ')[0]}, your personalized action plan is ready.
+                            </div>
+
+                            <button className="btn-cta" onClick={() => {
+                                // Transition to standalone product page with user data
+                                if (onQuizComplete) {
+                                    onQuizComplete({
+                                        name: formData.name,
+                                        age: formData.age,
+                                        sex: formData.sex,
+                                        weight: formData.weight,
+                                        phone: formData.phone,
+                                        email: formData.email,
+                                        totalScore: calculateScore(),
+                                        maxScore: 32
+                                    });
+                                }
+                            }}>
+                                <Rocket size={20} />
+                                See Your Recommended Solution
+                            </button>
+
+                            <button className="btn-close-results" onClick={resetAndClose}>
+                                Maybe Later
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
 export default AssessmentModal;
+
