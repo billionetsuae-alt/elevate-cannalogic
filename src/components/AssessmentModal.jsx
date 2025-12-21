@@ -195,10 +195,34 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                 body: JSON.stringify(payload)
             });
 
-            setStep(11); // Results step
+            // Go directly to product page instead of results screen
+            if (onQuizComplete) {
+                onQuizComplete({
+                    name: formData.name,
+                    age: formData.age,
+                    sex: formData.sex,
+                    weight: formData.weight,
+                    phone: formData.phone,
+                    email: formData.email,
+                    totalScore: totalScore,
+                    maxScore: 32
+                });
+            }
         } catch (error) {
             console.error('Submission error:', error);
-            setStep(11); // Still show results
+            // Still go to product page even on error
+            if (onQuizComplete) {
+                onQuizComplete({
+                    name: formData.name,
+                    age: formData.age,
+                    sex: formData.sex,
+                    weight: formData.weight,
+                    phone: formData.phone,
+                    email: formData.email,
+                    totalScore: calculateScore(),
+                    maxScore: 32
+                });
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -453,57 +477,6 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                         </div>
                     )}
 
-                    {/* STEP 11: PERSONALIZED RESULTS */}
-                    {step === 11 && (
-                        <div className="step-content results-step">
-                            <div className="results-score">
-                                <div className="score-circle" style={{ borderColor: getScoreInterpretation().color }}>
-                                    <span className="score-value">{calculateScore()}</span>
-                                    <span className="score-max">/32</span>
-                                </div>
-                            </div>
-
-                            <h2 style={{ color: getScoreInterpretation().color }}>
-                                {getScoreInterpretation().level}
-                            </h2>
-
-                            <p className="results-message">
-                                {getScoreInterpretation().message}
-                            </p>
-
-                            <div className="results-recommendation">
-                                <Heart size={18} style={{ color: getScoreInterpretation().color }} />
-                                <span>{getScoreInterpretation().recommendation}</span>
-                            </div>
-
-                            <div className="results-name">
-                                {formData.name.split(' ')[0]}, your personalized action plan is ready.
-                            </div>
-
-                            <button className="btn-cta" onClick={() => {
-                                // Transition to standalone product page with user data
-                                if (onQuizComplete) {
-                                    onQuizComplete({
-                                        name: formData.name,
-                                        age: formData.age,
-                                        sex: formData.sex,
-                                        weight: formData.weight,
-                                        phone: formData.phone,
-                                        email: formData.email,
-                                        totalScore: calculateScore(),
-                                        maxScore: 32
-                                    });
-                                }
-                            }}>
-                                <Rocket size={20} />
-                                See Your Recommended Solution
-                            </button>
-
-                            <button className="btn-close-results" onClick={resetAndClose}>
-                                Maybe Later
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
