@@ -1,0 +1,133 @@
+{
+    "name": "Elevate Assessment to Airtable",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "elevate-assessment",
+                "options": {
+                    "responseMode": "responseNode"
+                }
+            },
+            "id": "webhook-node",
+            "name": "Assessment Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                250,
+                300
+            ],
+            "webhookId": "elevate-assessment-webhook"
+        },
+        {
+            "parameters": {
+                "operation": "create",
+                "base": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "YOUR_AIRTABLE_BASE_ID"
+                },
+                "table": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "assesmentData"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Name": "={{ $json.name }}",
+                        "Email": "={{ $json.email }}",
+                        "Phone": "={{ $json.phone }}",
+                        "Age": "={{ $json.age }}",
+                        "Sex": "={{ $json.sex }}",
+                        "Weight": "={{ $json.weight }}",
+                        "Q1_Identity": "={{ $json.answers.q1 }}",
+                        "Q2_InnerState": "={{ $json.answers.q2 }}",
+                        "Q3_WhyNow": "={{ $json.answers.q3 }}",
+                        "Q4_GrowthApproach": "={{ $json.answers.q4 }}",
+                        "Q5_PlantOpenness": "={{ $json.answers.q5 }}",
+                        "Q6_Consciousness": "={{ $json.answers.q6 }}",
+                        "Q7_Commitment": "={{ $json.answers.q7 }}",
+                        "Q8_Timeline": "={{ $json.answers.q8 }}",
+                        "Total_Score": "={{ $json.totalScore }}",
+                        "Max_Score": "={{ $json.maxScore }}",
+                        "Source": "={{ $json.source }}",
+                        "UTM_Medium": "={{ $json.utm_medium }}",
+                        "UTM_Campaign": "={{ $json.utm_campaign }}",
+                        "Status": "={{ $json.status }}",
+                        "Readiness_Level": "={{ $json.readinessLevel }}",
+                        "User_Agent": "={{ $json.userAgent }}",
+                        "Page_URL": "={{ $json.pageUrl }}",
+                        "Submitted_At": "={{ $json.submittedAt }}"
+                    }
+                },
+                "options": {}
+            },
+            "id": "airtable-node",
+            "name": "Save to Airtable",
+            "type": "n8n-nodes-base.airtable",
+            "typeVersion": 2,
+            "position": [
+                500,
+                300
+            ],
+            "credentials": {
+                "airtableTokenApi": {
+                    "id": "YOUR_AIRTABLE_CREDENTIAL_ID",
+                    "name": "Airtable Token"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ JSON.stringify({ success: true, message: 'Assessment saved successfully', recordId: $json.id }) }}",
+                "options": {
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "response-node",
+            "name": "Send Success Response",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                750,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Assessment Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Save to Airtable",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Save to Airtable": {
+            "main": [
+                [
+                    {
+                        "node": "Send Success Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    }
+}

@@ -177,6 +177,16 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         setIsSubmitting(true);
         try {
             const totalScore = calculateScore();
+
+            // Get UTM parameters and source tracking
+            const urlParams = new URLSearchParams(window.location.search);
+            const getReadinessLevel = (score) => {
+                if (score >= 28) return 'Highly Ready';
+                if (score >= 21) return 'Ready';
+                if (score >= 14) return 'Approaching';
+                return 'Exploring';
+            };
+
             const payload = {
                 name: formData.name,
                 age: parseInt(formData.age),
@@ -186,10 +196,20 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                 email: formData.email,
                 answers: formData.answers,
                 totalScore: totalScore,
-                maxScore: 32
+                maxScore: 32,
+                // Source tracking
+                source: urlParams.get('utm_source') || urlParams.get('ref') || document.referrer || 'Direct',
+                utm_medium: urlParams.get('utm_medium') || '',
+                utm_campaign: urlParams.get('utm_campaign') || '',
+                // Auto-set fields
+                status: 'Lead',
+                readinessLevel: getReadinessLevel(totalScore),
+                submittedAt: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                pageUrl: window.location.href
             };
 
-            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/assesment-data', {
+            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/elevate-assessment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
