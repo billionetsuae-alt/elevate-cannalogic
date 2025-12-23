@@ -28,7 +28,7 @@ const quizQuestions = [
     },
     {
         id: 2,
-        question: "What inner state do you want to live from daily?",
+        question: "What inner state do you want to be in?",
         options: [
             { text: "Deep inner peace and presence", points: 4, icon: Flower2 },
             { text: "Emotional balance and steady flow", points: 3, icon: Waves },
@@ -48,7 +48,7 @@ const quizQuestions = [
     },
     {
         id: 4,
-        question: "How do you approach personal growth today?",
+        question: "How do you usually approach personal growth?",
         options: [
             { text: "I actively and consistently work on myself", points: 4, icon: Target },
             { text: "I engage in growth when something resonates", points: 3, icon: Star },
@@ -58,7 +58,7 @@ const quizQuestions = [
     },
     {
         id: 5,
-        question: "How open are you to natural, plant-based tools used consciously?",
+        question: "How open are you to natural, plant-based tools?",
         options: [
             { text: "Very open and already informed", points: 4, icon: Leaf },
             { text: "Open with the right guidance and context", points: 3, icon: Handshake },
@@ -187,6 +187,27 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                 return 'Exploring';
             };
 
+            // Get actual answer texts instead of just scores
+            const getAnswerText = (questionId, score) => {
+                const question = quizQuestions.find(q => q.id === questionId);
+                if (question) {
+                    const option = question.options.find(o => o.points === score);
+                    return option ? option.text : '';
+                }
+                return '';
+            };
+
+            const answerTexts = {
+                q1: getAnswerText(1, formData.answers.q1),
+                q2: getAnswerText(2, formData.answers.q2),
+                q3: getAnswerText(3, formData.answers.q3),
+                q4: getAnswerText(4, formData.answers.q4),
+                q5: getAnswerText(5, formData.answers.q5),
+                q6: getAnswerText(6, formData.answers.q6),
+                q7: getAnswerText(7, formData.answers.q7),
+                q8: getAnswerText(8, formData.answers.q8)
+            };
+
             const payload = {
                 name: formData.name,
                 age: parseInt(formData.age),
@@ -195,6 +216,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                 phone: formData.phone,
                 email: formData.email,
                 answers: formData.answers,
+                answerTexts: answerTexts,
                 totalScore: totalScore,
                 maxScore: 32,
                 // Source tracking
