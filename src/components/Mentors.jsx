@@ -31,7 +31,7 @@ const Mentors = () => {
             name: "Akhil Tony",
             role: "Cannabis Activist",
             company: "Ecoherb",
-            image: null, // Placeholder - photo to be added
+            image: "/akhil-tony-pro.png",
             initials: "AT",
             color: "#66bb6a"
         }
