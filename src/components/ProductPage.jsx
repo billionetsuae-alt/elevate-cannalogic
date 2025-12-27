@@ -145,8 +145,8 @@ const ProductPage = ({ userData, onClose }) => {
                         <div className="pp-product-gallery">
                             <div className="pp-hero-image-container">
                                 <img
-                                    src="/elevate product image.png"
-                                    alt="Elevate Capsules"
+                                    src="/bundle-hero.png"
+                                    alt="Elevate Full Spectrum Bundle"
                                     className="pp-main-image single-hero"
                                 />
                             </div>
