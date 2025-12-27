@@ -185,8 +185,9 @@
 
 .pp-score-visual {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 170px;
+    /* Increased size for breathing room */
+    height: 170px;
     flex-shrink: 0;
 }
 
@@ -219,13 +220,15 @@
 }
 
 .pp-score-value {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    /* Reduced font size */
     font-weight: 700;
     line-height: 1;
 }
 
 .pp-score-max {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    /* Reduced font size */
     color: rgba(255, 255, 255, 0.4);
 }
 
