@@ -11,8 +11,8 @@ const ProblemSection = ({ onOpenAssessment }) => {
                         <img src="/cannabis-leaf-spiritual.png" alt="Sacred Cannabis Leaf" />
                     </div>
                     <div className="discovery-text">
-                        <p className="section-label">THE SCIENCE</p>
-                        <h2>Discover the science behind the magical healing.</h2>
+                        <p className="section-label">THE SCIENCE OF MAGIC HEALING</p>
+
                         <p className="discovery-description">
                             Modern digital life has pushed you away from your true self, your inner child and your inner spirit.
                             Stress, Anxiety, Overthinking, Emotional heaviness is an indication of the inner imbalance.
@@ -36,12 +36,16 @@ const ProblemSection = ({ onOpenAssessment }) => {
                             to realize they could have and should have gone after what they wanted in life.
                             I don't know about you.
                         </p>
-                        <div style={{ marginTop: '2rem' }}>
+                        {/* Desktop button - hidden on mobile */}
+                        <div className="venn-text-cta">
                             <button onClick={onOpenAssessment} className="btn btn-primary">Take the Consciousness Assessment</button>
                         </div>
                     </div>
                     <div className="venn-image">
                         <img src="/ikigai-dark.png" alt="Ikigai Diagram" />
+                    </div>
+                    <div className="venn-cta">
+                        <button onClick={onOpenAssessment} className="btn btn-primary">Take the Consciousness Assessment</button>
                     </div>
                 </div>
             </section>

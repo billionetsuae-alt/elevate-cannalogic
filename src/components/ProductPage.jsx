@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import {
-    Sparkles, Leaf, ShieldCheck, Award, Truck, Heart,
-    Check, Star, Clock, Users, Package, ChevronRight,
-    Rocket, ArrowRight, Play, Quote, Zap, Brain,
-    Gift, Timer, TrendingUp, Crown, BadgeCheck, Minus, Plus
+    Sparkles, Leaf, ShieldCheck, Award, Heart,
+    Check, Star, Users, Package,
+    Rocket, ArrowRight, Quote, Zap, Brain,
+    Gift, Crown, BadgeCheck
 } from 'lucide-react';
 
 const ProductPage = ({ userData, onClose }) => {
@@ -17,13 +17,8 @@ const ProductPage = ({ userData, onClose }) => {
     const firstName = name.split(' ')[0];
     const scorePercentage = Math.round((totalScore / maxScore) * 100);
 
-    // Quantity state
-    const [quantity, setQuantity] = useState(1);
-    const basePrice = 1999;
-    const originalPrice = 2999;
-
-    // Countdown timer state (3 minutes = 180 seconds)
-    const [timeLeft, setTimeLeft] = useState(180);
+    // Countdown timer state (1 hour = 3600 seconds)
+    const [timeLeft, setTimeLeft] = useState(3600);
     const [offerExpired, setOfferExpired] = useState(false);
 
     // Product gallery images
@@ -37,24 +32,21 @@ const ProductPage = ({ userData, onClose }) => {
 
     // Countdown timer effect
     useEffect(() => {
-        if (timeLeft <= 0) {
-            setOfferExpired(true);
-            return;
-        }
-
         const timer = setInterval(() => {
-            setTimeLeft(prev => prev - 1);
+            setTimeLeft(prev => {
+                if (prev <= 0) {
+                    setOfferExpired(true);
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [timeLeft]);
+    }, []);
 
-    // Format time as MM:SS
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
+
 
     // Scroll to top on mount
     useEffect(() => {
@@ -70,9 +62,7 @@ const ProductPage = ({ userData, onClose }) => {
 
     const readiness = getReadinessLevel();
 
-    const handleQuantityChange = (delta) => {
-        setQuantity(prev => Math.max(1, Math.min(10, prev + delta)));
-    };
+
 
     const handleBuyNow = () => {
         // Razorpay integration placeholder
@@ -151,79 +141,91 @@ const ProductPage = ({ userData, onClose }) => {
             <section className="pp-product-showcase">
                 <div className="pp-container">
                     <div className="pp-product-grid">
-                        <div className="pp-product-visual">
-                            <div className="pp-gallery">
-                                <div className="pp-gallery-main">
-                                    <div className="pp-product-glow"></div>
-                                    <img
-                                        src={productImages[selectedImage].src}
-                                        alt={productImages[selectedImage].alt}
-                                        className="pp-product-img"
-                                    />
-                                </div>
-                                <div className="pp-gallery-thumbnails">
-                                    {productImages.map((img, index) => (
-                                        <div
-                                            key={index}
-                                            className={`pp-thumbnail ${selectedImage === index ? 'active' : ''}`}
-                                            onMouseEnter={() => setSelectedImage(index)}
-                                        >
-                                            <img src={img.src} alt={img.alt} />
-                                        </div>
-                                    ))}
-                                </div>
+                        {/* Left: Single Hero Image */}
+                        <div className="pp-product-gallery">
+                            <div className="pp-hero-image-container">
+                                <img
+                                    src="/elevate product image.png"
+                                    alt="Elevate Capsules"
+                                    className="pp-main-image single-hero"
+                                />
                             </div>
                         </div>
 
+                        {/* Right: Bundle Details */}
                         <div className="pp-product-details">
-                            {/* Personalized Offer Bundle */}
-                            <div className="pp-offer-bundle">
-                                <div className="pp-offer-header">
-                                    <Crown size={24} />
-                                    <span>Exclusive Bundle Offer for {firstName}</span>
+                            <div className="pp-product-header">
+                                <div className="pp-header-top">
+                                    <span className="pp-badge secondary">Best Value</span>
+                                    <div className="pp-rating">
+                                        <Star size={16} fill="#ffc107" color="#ffc107" />
+                                        <span>4.9 (120+ Reviews)</span>
+                                    </div>
                                 </div>
+                                <h1 className="pp-title">Elevate Full Spectrum Bundle</h1>
+                            </div>
 
-                                <div className="pp-offer-items">
-                                    <div className="pp-offer-item">
-                                        <div className="pp-offer-item-info">
-                                            <Users size={20} />
-                                            <span>1-on-1 Personalized Guidance</span>
-                                        </div>
-                                        <span className="pp-offer-item-price">₹5,000</span>
+                            {/* Detailed Bundle Rows */}
+                            <div className="pp-bundle-list-detailed" id="offer-bundle">
+                                <div className="pp-bundle-row-item">
+                                    <div className="pp-bundle-thumb">
+                                        <img src="/dr-arathy-pro.png" alt="Guidance" />
                                     </div>
-                                    <div className="pp-offer-item">
-                                        <div className="pp-offer-item-info">
-                                            <Package size={20} />
-                                            <span>Elevate Capsules (30-day supply)</span>
+                                    <div className="pp-bundle-content">
+                                        <div className="pp-bundle-row-header">
+                                            <h4>1-on-1 Personalized Guidance</h4>
+                                            <span className="pp-row-price">₹5,000</span>
                                         </div>
-                                        <span className="pp-offer-item-price">₹6,000</span>
-                                    </div>
-                                    <div className="pp-offer-item">
-                                        <div className="pp-offer-item-info">
-                                            <Gift size={20} />
-                                            <span>Mystery Transformation Ebook</span>
-                                        </div>
-                                        <span className="pp-offer-item-price">₹1,500</span>
+                                        <p>Expert consultation to align your journey and dosage.</p>
                                     </div>
                                 </div>
 
-                                <div className="pp-offer-total">
-                                    <span className="pp-offer-total-label">Total Value:</span>
-                                    <span className="pp-offer-total-original">₹12,500</span>
+                                <div className="pp-bundle-row-item">
+                                    <div className="pp-bundle-thumb">
+                                        <img src="/elevate product image.png" alt="Capsules" />
+                                    </div>
+                                    <div className="pp-bundle-content">
+                                        <div className="pp-bundle-row-header">
+                                            <h4>Elevate Capsules (30-day supply)</h4>
+                                            <span className="pp-row-price">₹6,000</span>
+                                        </div>
+                                        <p>Full spectrum hemp extract for deep healing.</p>
+                                    </div>
                                 </div>
 
-                                <div className="pp-offer-special">
-                                    <div className="pp-offer-special-badge">
-                                        <Sparkles size={18} />
-                                        <span>Special Offer</span>
+                                <div className="pp-bundle-row-item">
+                                    <div className="pp-bundle-thumb">
+                                        <img src="/ebook-cover.png" alt="Ebook" />
                                     </div>
-                                    <div className="pp-offer-special-price">
-                                        <span className="pp-currency">₹</span>
-                                        <span className="pp-amount">3,899</span>
+                                    <div className="pp-bundle-content">
+                                        <div className="pp-bundle-row-header">
+                                            <h4>Mystery Transformation Ebook</h4>
+                                            <span className="pp-row-price">₹1,500</span>
+                                        </div>
+                                        <p>Unlock hidden potential with daily practices.</p>
                                     </div>
-                                    <p className="pp-offer-savings">You save ₹8,601 (69% OFF)</p>
                                 </div>
                             </div>
+
+                            {/* Total Value & Pricing */}
+                            <div className="pp-pricing-card">
+                                <div className="pp-value-row">
+                                    <span>Total Value</span>
+                                    <span className="pp-value-crossed">₹12,500</span>
+                                </div>
+                                <div className="pp-price-main-row">
+                                    <span className="pp-special-label">Special Offer</span>
+                                    <div className="pp-final-price">
+                                        <span className="pp-currency">₹</span>
+                                        3,899
+                                    </div>
+                                </div>
+                                <div className="pp-savings-badge">
+                                    You save ₹8,601 (69% OFF)
+                                </div>
+                            </div>
+
+
 
                             <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired}>
                                 <Rocket size={22} />
@@ -399,16 +401,15 @@ const ProductPage = ({ userData, onClose }) => {
                         <div className="pp-sticky-countdown">
                             <div className="pp-sticky-time-unit">
                                 <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
-                                <span className="pp-sticky-time-label">minutes</span>
                             </div>
+                            <span className="pp-timer-sep">:</span>
                             <div className="pp-sticky-time-unit">
                                 <span className="pp-sticky-time-value">{(timeLeft % 60).toString().padStart(2, '0')}</span>
-                                <span className="pp-sticky-time-label">seconds</span>
                             </div>
                         </div>
                     </div>
-                    <button className="pp-sticky-cta" onClick={handleBuyNow}>
-                        Claim Offer Now
+                    <button className="pp-sticky-cta" onClick={() => document.getElementById('offer-bundle').scrollIntoView({ behavior: 'smooth' })}>
+                        Claim Now
                     </button>
                 </div>
             )}

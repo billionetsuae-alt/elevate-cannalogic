@@ -86,6 +86,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    order: 2;
 }
 
 .venn-image img {
@@ -93,7 +94,27 @@
     height: auto;
 }
 
+/* CTA Button - Appears after image on mobile */
+.venn-cta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    order: 3;
+    margin-top: 2rem;
+}
+
+/* Mobile: text first, image second, button third */
+.venn-text {
+    order: 1;
+}
+
+/* Desktop button inside text - hidden on mobile */
+.venn-text-cta {
+    display: none;
+}
+
 @media (min-width: 768px) {
+
     /* Discovery Section Desktop */
     .discovery-section {
         padding: 6rem 0;
@@ -155,5 +176,26 @@
 
     .venn-description {
         font-size: 1.25rem;
+    }
+
+    /* On desktop, hide the separate CTA since button should be inline */
+    .venn-cta {
+        display: none;
+    }
+
+    /* Show the inline button on desktop */
+    .venn-text-cta {
+        display: block;
+        margin-top: 2rem;
+    }
+
+    /* Desktop layout for venn section */
+    .venn-text {
+        width: 50%;
+        text-align: left;
+    }
+
+    .venn-image {
+        width: 45%;
     }
 }

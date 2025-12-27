@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import Hero from './components/Hero'
 import VideoSection from './components/VideoSection'
 import ProblemSection from './components/ProblemSection'
@@ -53,7 +53,6 @@ function LandingPage({ onOpenAssessment }) {
 // ProductPageWrapper with hybrid localStorage + Airtable loading
 function ProductPageWrapper() {
     const navigate = useNavigate()
-    const location = useLocation()
     const { recordId } = useParams() // Get recordId from URL (could be tempId or Airtable ID)
 
     const [userData, setUserData] = useState(null)

@@ -137,38 +137,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         return Object.values(formData.answers).reduce((sum, val) => sum + val, 0);
     };
 
-    const getScoreInterpretation = () => {
-        const score = calculateScore();
-        if (score >= 28) {
-            return {
-                level: "Highly Ready",
-                message: "You show exceptional readiness for profound inner transformation. Your clarity, commitment, and openness position you perfectly for this journey.",
-                color: "#4caf50",
-                recommendation: "We recommend starting with our complete transformation protocol."
-            };
-        } else if (score >= 21) {
-            return {
-                level: "Ready",
-                message: "You have strong foundations for transformation. With the right guidance, you're well-positioned to begin this meaningful journey.",
-                color: "#8bc34a",
-                recommendation: "Our guided approach will help accelerate your transformation."
-            };
-        } else if (score >= 14) {
-            return {
-                level: "Approaching Readiness",
-                message: "You're developing the awareness needed for transformation. A guided approach can help you clarify your path forward.",
-                color: "#ffc107",
-                recommendation: "Start gently with our introductory support system."
-            };
-        } else {
-            return {
-                level: "Exploring",
-                message: "You're at the beginning of your exploration. This is a beautiful place to start building awareness and understanding.",
-                color: "#ff9800",
-                recommendation: "Begin with education and awareness building."
-            };
-        }
-    };
+
 
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
