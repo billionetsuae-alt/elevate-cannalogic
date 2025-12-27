@@ -44,7 +44,7 @@ function LandingPage({ onOpenAssessment }) {
                 <QualificationSection onOpenAssessment={onOpenAssessment} />
                 <FAQ />
             </main>
-            <Footer />
+            <Footer onOpenAssessment={onOpenAssessment} />
             <BottomStickyBar onOpenAssessment={onOpenAssessment} />
         </div>
     )
