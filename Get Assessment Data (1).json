@@ -1,0 +1,707 @@
+{
+  "name": "Get Assessment Data",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "elevate-assessment",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ffb72b13-1741-4519-952c-612898fc2d9e",
+      "name": "Assessment Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        640,
+        0
+      ],
+      "webhookId": "elevate-assessment-webhook"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "apphclTM2sIJ5JOZk",
+          "mode": "list",
+          "cachedResultName": "AI Funnel - ElevateCannalogic ",
+          "cachedResultUrl": "https://airtable.com/apphclTM2sIJ5JOZk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblfKJ2xOUkYtOeJp",
+          "mode": "list",
+          "cachedResultName": "assesmentData",
+          "cachedResultUrl": "https://airtable.com/apphclTM2sIJ5JOZk/tblfKJ2xOUkYtOeJp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.name }}",
+            "Email": "={{ $json.body.email }}",
+            "Sex": "={{ $json.body.sex }}",
+            "Weight": "={{ $json.body.weight }}",
+            "Phone": "={{ $json.body.phone }}",
+            "Age": "={{ $json.body.age }}",
+            "Q1_Identity": "={{ $json.body.answerTexts.q1 }}",
+            "Q2_InnerState": "={{ $json.body.answerTexts.q2 }}",
+            "Q3_WhyNow": "={{ $json.body.answerTexts.q3 }}",
+            "Q4_GrowthApproach": "={{ $json.body.answerTexts.q4 }}",
+            "Q5_PlantOpenness": "={{ $json.body.answerTexts.q5 }}",
+            "Q6_Consciousness": "={{ $json.body.answerTexts.q6 }}",
+            "Q7_Commitment": "={{ $json.body.answerTexts.q7 }}",
+            "Q8_Timeline": "={{ $json.body.answerTexts.q8 }}",
+            "Total_Score": "={{ $json.body.totalScore }}",
+            "Max_Score": "={{ $json.body.maxScore }}",
+            "Source": "={{ $json.body.source }}",
+            "UTM_Medium": "={{ $json.body.utm_medium }}",
+            "UTM_Campaign": "={{ $json.body.utm_campaign }}",
+            "Status": "={{ $json.body.status }}",
+            "Readiness_Level": "={{ $json.body.readinessLevel }}",
+            "Submitted_At": "={{ $json.body.submittedAt }}",
+            "User_Agent": "={{ $json.body.userAgent }}",
+            "Page_URL": "={{ $json.body.pageUrl }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Sex",
+              "displayName": "Sex",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Weight",
+              "displayName": "Weight",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q1_Identity",
+              "displayName": "Q1_Identity",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q2_InnerState",
+              "displayName": "Q2_InnerState",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q3_WhyNow",
+              "displayName": "Q3_WhyNow",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q4_GrowthApproach",
+              "displayName": "Q4_GrowthApproach",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q5_PlantOpenness",
+              "displayName": "Q5_PlantOpenness",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q6_Consciousness",
+              "displayName": "Q6_Consciousness",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q7_Commitment",
+              "displayName": "Q7_Commitment",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Q8_Timeline",
+              "displayName": "Q8_Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total_Score",
+              "displayName": "Total_Score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Max_Score",
+              "displayName": "Max_Score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Submitted_At",
+              "displayName": "Submitted_At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "UTM_Medium",
+              "displayName": "UTM_Medium",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "UTM_Campaign",
+              "displayName": "UTM_Campaign",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Lead",
+                  "value": "Lead"
+                },
+                {
+                  "name": "Contacted",
+                  "value": "Contacted"
+                },
+                {
+                  "name": "Converted",
+                  "value": "Converted"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Readiness_Level",
+              "displayName": "Readiness_Level",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "User_Agent",
+              "displayName": "User_Agent",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Page_URL",
+              "displayName": "Page_URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "293170cb-3b66-43b5-afb8-13024a4d3455",
+      "name": "Save to Airtable",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "D3zfCb5AbTtDxu10",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, message: 'Assessment saved successfully', recordId: $json.id }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "8ba62ee4-3b13-4a75-ac40-683790280fa0",
+      "name": "Send Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Assessment Flow",
+        "height": 240,
+        "width": 816
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -64
+      ],
+      "id": "61fbc82c-7143-48cb-b233-4bc3fcb2ae09",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "path": "get-assessment",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "GET, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              }
+            ]
+          }
+        }
+      },
+      "id": "c5858bd5-e803-493e-9ed5-06a36e314746",
+      "name": "Get Assessment Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        576,
+        368
+      ],
+      "webhookId": "get-assessment-webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-id-exists",
+              "leftValue": "={{ $json.query.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "061b9d27-101c-46af-967a-337188d7b513",
+      "name": "Check ID Provided",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        784,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "apphclTM2sIJ5JOZk",
+          "mode": "list",
+          "cachedResultName": "AI Funnel - ElevateCannalogic ",
+          "cachedResultUrl": "https://airtable.com/apphclTM2sIJ5JOZk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblfKJ2xOUkYtOeJp",
+          "mode": "list",
+          "cachedResultName": "assesmentData",
+          "cachedResultUrl": "https://airtable.com/apphclTM2sIJ5JOZk/tblfKJ2xOUkYtOeJp"
+        },
+        "id": "={{ $json.query.id }}",
+        "options": {}
+      },
+      "id": "4d308d55-3fd3-49fd-b404-c39ec23134d2",
+      "name": "Get from Airtable",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        976,
+        256
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "D3zfCb5AbTtDxu10",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "77dec1a2-00d2-43fe-ba4a-0f1e7ea179ad",
+      "name": "Send Data Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: 'Record not found or invalid ID' }) }}",
+        "options": {
+          "responseCode": 404,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b9b30dab-0fbb-4462-9e3c-6914a34339b9",
+      "name": "Send Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: 'Missing record ID parameter' }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "62210fda-e2ac-45c2-8d3a-5fd6d1a13941",
+      "name": "Missing ID Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        976,
+        512
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Assessment Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save to Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Airtable": {
+      "main": [
+        [
+          {
+            "node": "Send Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Assessment Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check ID Provided",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check ID Provided": {
+      "main": [
+        [
+          {
+            "node": "Get from Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Missing ID Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get from Airtable": {
+      "main": [
+        [
+          {
+            "node": "Send Data Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d433ca58-a1d8-4105-ad9c-d9104d332ade",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9f58de6173fc8cd9829e18435a23c767f0cc40edbb439467a307bf20f894675b"
+  },
+  "id": "vXd1HGpyNS5KExGv",
+  "tags": []
+}

@@ -1,3 +1,48 @@
+/* Discovery Section - Image Left, Text Right */
+.discovery-section {
+    background-color: #0a0a0a;
+    padding: 4rem 0;
+}
+
+.discovery-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.discovery-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.discovery-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.discovery-text {
+    width: 100%;
+    text-align: center;
+}
+
+.discovery-text h2 {
+    font-size: 1.75rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+}
+
+.discovery-description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+}
+
+/* Venn Section - Flipped: Image Left, Text Right */
 .venn-section {
     background-color: #121212;
     padding: 4rem 0;
@@ -18,9 +63,9 @@
 .section-label {
     font-size: 0.9rem;
     font-weight: 500;
-    color: white;
+    color: #4caf50;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     margin-bottom: 1rem;
     font-family: var(--font-body);
 }
@@ -49,6 +94,35 @@
 }
 
 @media (min-width: 768px) {
+    /* Discovery Section Desktop */
+    .discovery-section {
+        padding: 6rem 0;
+    }
+
+    .discovery-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .discovery-image {
+        width: 45%;
+    }
+
+    .discovery-text {
+        width: 50%;
+        text-align: left;
+    }
+
+    .discovery-text h2 {
+        font-size: 2.5rem;
+    }
+
+    .discovery-description {
+        font-size: 1.15rem;
+    }
+
+    /* Venn Section Desktop - Flipped Layout */
     .venn-section {
         padding: 6rem 0;
     }
@@ -59,12 +133,20 @@
         align-items: center;
     }
 
-    .venn-text {
+    /* Flipped: Image first (left), Text second (right) */
+    .venn-container.venn-flipped {
+        flex-direction: row;
+    }
+
+    .venn-container.venn-flipped .venn-image {
+        order: 1;
         width: 45%;
     }
 
-    .venn-image {
+    .venn-container.venn-flipped .venn-text {
+        order: 2;
         width: 50%;
+        text-align: left;
     }
 
     .venn-text h2 {

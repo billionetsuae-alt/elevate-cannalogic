@@ -175,96 +175,123 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
+
+        const totalScore = calculateScore();
+
+        // Get UTM parameters and source tracking
+        const urlParams = new URLSearchParams(window.location.search);
+        const getReadinessLevel = (score) => {
+            if (score >= 28) return 'Highly Ready';
+            if (score >= 21) return 'Ready';
+            if (score >= 14) return 'Approaching';
+            return 'Exploring';
+        };
+
+        // Get actual answer texts instead of just scores
+        const getAnswerText = (questionId, score) => {
+            const question = quizQuestions.find(q => q.id === questionId);
+            if (question) {
+                const option = question.options.find(o => o.points === score);
+                return option ? option.text : '';
+            }
+            return '';
+        };
+
+        const answerTexts = {
+            q1: getAnswerText(1, formData.answers.q1),
+            q2: getAnswerText(2, formData.answers.q2),
+            q3: getAnswerText(3, formData.answers.q3),
+            q4: getAnswerText(4, formData.answers.q4),
+            q5: getAnswerText(5, formData.answers.q5),
+            q6: getAnswerText(6, formData.answers.q6),
+            q7: getAnswerText(7, formData.answers.q7),
+            q8: getAnswerText(8, formData.answers.q8)
+        };
+
+        // Generate a temporary local ID for instant navigation
+        const tempId = 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+        // Prepare user data for localStorage and product page
+        const userData = {
+            name: formData.name,
+            age: formData.age,
+            sex: formData.sex,
+            weight: formData.weight,
+            phone: formData.phone,
+            email: formData.email,
+            totalScore: totalScore,
+            maxScore: 32,
+            readinessLevel: getReadinessLevel(totalScore),
+            tempId: tempId
+        };
+
+        // Store in localStorage immediately for instant load
+        localStorage.setItem(`elevate_assessment_${tempId}`, JSON.stringify(userData));
+        localStorage.setItem('elevate_user_data', JSON.stringify(userData)); // Also store as default
+
+        // Navigate IMMEDIATELY to product page with temp ID
+        if (onQuizComplete) {
+            onQuizComplete({
+                ...userData,
+                tempId: tempId
+            });
+        }
+
+        // Now send to Airtable in the background (user already sees product page)
+        const payload = {
+            name: formData.name,
+            age: parseInt(formData.age),
+            sex: formData.sex,
+            weight: parseInt(formData.weight),
+            phone: formData.phone,
+            email: formData.email,
+            answers: formData.answers,
+            answerTexts: answerTexts,
+            totalScore: totalScore,
+            maxScore: 32,
+            tempId: tempId, // Include tempId so we can link it later
+            // Source tracking
+            source: urlParams.get('utm_source') || urlParams.get('ref') || document.referrer || 'Direct',
+            utm_medium: urlParams.get('utm_medium') || '',
+            utm_campaign: urlParams.get('utm_campaign') || '',
+            // Auto-set fields
+            status: 'Lead',
+            readinessLevel: getReadinessLevel(totalScore),
+            submittedAt: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            pageUrl: window.location.href
+        };
+
+        // Background Airtable submission
         try {
-            const totalScore = calculateScore();
-
-            // Get UTM parameters and source tracking
-            const urlParams = new URLSearchParams(window.location.search);
-            const getReadinessLevel = (score) => {
-                if (score >= 28) return 'Highly Ready';
-                if (score >= 21) return 'Ready';
-                if (score >= 14) return 'Approaching';
-                return 'Exploring';
-            };
-
-            // Get actual answer texts instead of just scores
-            const getAnswerText = (questionId, score) => {
-                const question = quizQuestions.find(q => q.id === questionId);
-                if (question) {
-                    const option = question.options.find(o => o.points === score);
-                    return option ? option.text : '';
-                }
-                return '';
-            };
-
-            const answerTexts = {
-                q1: getAnswerText(1, formData.answers.q1),
-                q2: getAnswerText(2, formData.answers.q2),
-                q3: getAnswerText(3, formData.answers.q3),
-                q4: getAnswerText(4, formData.answers.q4),
-                q5: getAnswerText(5, formData.answers.q5),
-                q6: getAnswerText(6, formData.answers.q6),
-                q7: getAnswerText(7, formData.answers.q7),
-                q8: getAnswerText(8, formData.answers.q8)
-            };
-
-            const payload = {
-                name: formData.name,
-                age: parseInt(formData.age),
-                sex: formData.sex,
-                weight: parseInt(formData.weight),
-                phone: formData.phone,
-                email: formData.email,
-                answers: formData.answers,
-                answerTexts: answerTexts,
-                totalScore: totalScore,
-                maxScore: 32,
-                // Source tracking
-                source: urlParams.get('utm_source') || urlParams.get('ref') || document.referrer || 'Direct',
-                utm_medium: urlParams.get('utm_medium') || '',
-                utm_campaign: urlParams.get('utm_campaign') || '',
-                // Auto-set fields
-                status: 'Lead',
-                readinessLevel: getReadinessLevel(totalScore),
-                submittedAt: new Date().toISOString(),
-                userAgent: navigator.userAgent,
-                pageUrl: window.location.href
-            };
-
-            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/elevate-assessment', {
+            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/elevate-assessment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            // Go directly to product page instead of results screen
-            if (onQuizComplete) {
-                onQuizComplete({
-                    name: formData.name,
-                    age: formData.age,
-                    sex: formData.sex,
-                    weight: formData.weight,
-                    phone: formData.phone,
-                    email: formData.email,
-                    totalScore: totalScore,
-                    maxScore: 32
-                });
+            let recordId = null;
+            try {
+                const result = await response.json();
+                recordId = result.id || result.recordId || (result.fields && result.fields.id);
+            } catch (e) {
+                console.error('Error parsing webhook response:', e);
+            }
+
+            if (recordId) {
+                // Update localStorage with the Airtable recordId
+                userData.recordId = recordId;
+                localStorage.setItem(`elevate_assessment_${recordId}`, JSON.stringify(userData));
+                localStorage.setItem('elevate_user_data', JSON.stringify(userData));
+
+                // Dispatch custom event to notify App to update URL
+                window.dispatchEvent(new CustomEvent('airtableRecordReady', {
+                    detail: { recordId, tempId }
+                }));
             }
         } catch (error) {
-            console.error('Submission error:', error);
-            // Still go to product page even on error
-            if (onQuizComplete) {
-                onQuizComplete({
-                    name: formData.name,
-                    age: formData.age,
-                    sex: formData.sex,
-                    weight: formData.weight,
-                    phone: formData.phone,
-                    email: formData.email,
-                    totalScore: calculateScore(),
-                    maxScore: 32
-                });
-            }
+            console.error('Background Airtable submission error:', error);
+            // User already on product page, so just log the error
         } finally {
             setIsSubmitting(false);
         }

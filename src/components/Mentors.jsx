@@ -4,31 +4,35 @@ import './Mentors.css';
 const Mentors = () => {
     const mentors = [
         {
-            name: "Dr. Ravi Shankar",
-            role: "Chief Scientific Officer",
-            company: "Ayureda Institute",
-            initials: "RS",
+            name: "Dr. Sankalp Khullar",
+            role: "BAMS, Panchkarma Specialist",
+            company: "",
+            image: "/dr-sankalp-pro.png",
+            initials: "SK",
             color: "#4caf50"
         },
         {
-            name: "Meera Patel",
-            role: "Holistic Health Coach",
-            company: "Wellness Collective",
-            initials: "MP",
+            name: "Dr. Arathy Ravi",
+            role: "BAMS, Holistic Healing",
+            company: "",
+            image: "/dr-arathy-pro.png",
+            initials: "AR",
             color: "#8bc34a"
         },
         {
-            name: "Arjun Singh",
-            role: "Cannabis Researcher",
-            company: "Green Science Lab",
-            initials: "AS",
+            name: "Thampi Nagarjuna",
+            role: "Ancient Ayurveda Healer",
+            company: "Ecoherb",
+            image: "/thampi-nagarjuna-pro.png",
+            initials: "TN",
             color: "#26a69a"
         },
         {
-            name: "Priya Sharma",
-            role: "Ayurvedic Practitioner",
-            company: "Veda Health",
-            initials: "PS",
+            name: "Akhil Tony",
+            role: "Cannabis Activist",
+            company: "Ecoherb",
+            image: null, // Placeholder - photo to be added
+            initials: "AT",
             color: "#66bb6a"
         }
     ];
@@ -44,14 +48,18 @@ const Mentors = () => {
                 <div className="mentors-grid">
                     {mentors.map((mentor, index) => (
                         <div key={index} className="mentor-card">
-                            <div className="mentor-avatar" style={{ background: `linear-gradient(135deg, ${mentor.color}, ${mentor.color}dd)` }}>
-                                <span className="avatar-initials">{mentor.initials}</span>
+                            <div className="mentor-avatar" style={{ background: mentor.image ? 'transparent' : `linear-gradient(135deg, ${mentor.color}, ${mentor.color}dd)` }}>
+                                {mentor.image ? (
+                                    <img src={mentor.image} alt={mentor.name} className="mentor-photo" />
+                                ) : (
+                                    <span className="avatar-initials">{mentor.initials}</span>
+                                )}
                                 <div className="avatar-ring" style={{ borderColor: mentor.color }}></div>
                             </div>
                             <div className="mentor-info">
                                 <h3>{mentor.name}</h3>
                                 <p className="mentor-role">{mentor.role}</p>
-                                <p className="mentor-company">{mentor.company}</p>
+                                {mentor.company && <p className="mentor-company">{mentor.company}</p>}
                             </div>
                         </div>
                     ))}

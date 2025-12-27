@@ -1,0 +1,235 @@
+{
+    "name": "Get Assessment Data",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "get-assessment",
+                "responseMode": "responseNode",
+                "options": {
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            },
+                            {
+                                "name": "Access-Control-Allow-Methods",
+                                "value": "GET, OPTIONS"
+                            },
+                            {
+                                "name": "Access-Control-Allow-Headers",
+                                "value": "Content-Type"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "webhook-node",
+            "name": "Get Assessment Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                250,
+                300
+            ],
+            "webhookId": "get-assessment-webhook"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict"
+                    },
+                    "conditions": [
+                        {
+                            "id": "check-id-exists",
+                            "leftValue": "={{ $json.query.id }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "string",
+                                "operation": "exists",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "id": "check-id-node",
+            "name": "Check ID Provided",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "get",
+                "base": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "apphclTM2sIJ5JOZk"
+                },
+                "table": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "tblfKJ2xOUkYtOeJp"
+                },
+                "recordId": "={{ $json.query.id }}",
+                "options": {}
+            },
+            "id": "airtable-get-node",
+            "name": "Get from Airtable",
+            "type": "n8n-nodes-base.airtable",
+            "typeVersion": 2,
+            "position": [
+                650,
+                200
+            ],
+            "credentials": {
+                "airtableTokenApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Airtable Personal Access Token account"
+                }
+            },
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ JSON.stringify({ id: $json.id, name: $json.fields.Name, totalScore: $json.fields.Total_Score, maxScore: $json.fields.Max_Score || 32, readinessLevel: $json.fields.Readiness_Level, email: $json.fields.Email, phone: $json.fields.Phone, age: $json.fields.Age, sex: $json.fields.Sex, weight: $json.fields.Weight }) }}",
+                "options": {
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "response-node",
+            "name": "Send Data Response",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                900,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ JSON.stringify({ error: 'Record not found or invalid ID' }) }}",
+                "options": {
+                    "responseCode": 404,
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "error-response-node",
+            "name": "Send Error Response",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                900,
+                400
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ JSON.stringify({ error: 'Missing record ID parameter' }) }}",
+                "options": {
+                    "responseCode": 400,
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "missing-id-response",
+            "name": "Missing ID Response",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                650,
+                450
+            ]
+        }
+    ],
+    "connections": {
+        "Get Assessment Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Check ID Provided",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check ID Provided": {
+            "main": [
+                [
+                    {
+                        "node": "Get from Airtable",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Missing ID Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get from Airtable": {
+            "main": [
+                [
+                    {
+                        "node": "Send Data Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Send Error Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "staticData": null,
+    "tags": [],
+    "triggerCount": 0,
+    "meta": {
+        "instanceId": "your-instance-id"
+    }
+}

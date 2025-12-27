@@ -1011,6 +1011,352 @@
 }
 
 /* ===========================================
+   PRODUCT GALLERY (Amazon/Flipkart Style)
+   =========================================== */
+
+.pp-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pp-gallery-main {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.pp-gallery-main .pp-product-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.pp-gallery-main .pp-product-img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.pp-gallery-main:hover .pp-product-img {
+    transform: scale(1.02);
+}
+
+.pp-gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.pp-thumbnail {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pp-thumbnail:hover {
+    border-color: rgba(76, 175, 80, 0.4);
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.pp-thumbnail.active {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+}
+
+.pp-thumbnail img {
+    width: 100%;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* ===========================================
+   OFFER BUNDLE
+   =========================================== */
+
+.pp-offer-bundle {
+    background: linear-gradient(145deg, rgba(76, 175, 80, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.pp-offer-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffc107;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pp-offer-header svg {
+    color: #ffc107;
+}
+
+.pp-offer-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.pp-offer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pp-offer-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.pp-offer-item-info svg {
+    color: #4caf50;
+}
+
+.pp-offer-item-price {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+    font-size: 0.95rem;
+}
+
+.pp-offer-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.25rem;
+}
+
+.pp-offer-total-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+.pp-offer-total-original {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+    font-size: 1.25rem;
+}
+
+.pp-offer-special {
+    text-align: center;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+    border-radius: 16px;
+    border: 2px solid rgba(76, 175, 80, 0.4);
+    margin-bottom: 1rem;
+}
+
+.pp-offer-special-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(76, 175, 80, 0.2);
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    color: #8bc34a;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.pp-offer-special-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.pp-offer-special-price .pp-currency {
+    font-size: 1.5rem;
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.pp-offer-special-price .pp-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.pp-offer-savings {
+    color: #8bc34a;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.pp-offer-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 87, 34, 0.15);
+    border: 1px solid rgba(255, 87, 34, 0.3);
+    border-radius: 12px;
+    color: #ff7043;
+    font-weight: 500;
+}
+
+.pp-offer-timer svg {
+    animation: pulse 1s infinite;
+}
+
+.pp-timer-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ff5722;
+}
+
+.pp-offer-expired {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(244, 67, 54, 0.15);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 12px;
+    color: #f44336;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ===========================================
+   STICKY FOOTER TIMER
+   =========================================== */
+
+.pp-sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+    border-top: 2px solid #e53935;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.pp-sticky-timer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pp-sticky-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.pp-sticky-countdown {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pp-sticky-time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(229, 57, 53, 0.2);
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(229, 57, 53, 0.4);
+}
+
+.pp-sticky-time-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e53935;
+    font-family: 'Courier New', monospace;
+    line-height: 1;
+}
+
+.pp-sticky-time-label {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: lowercase;
+}
+
+.pp-sticky-cta {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.pp-sticky-cta:hover {
+    background: #f44336;
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4);
+}
+
+/* Add padding to footer so content isn't hidden behind sticky bar */
+.pp-footer {
+    padding-bottom: 100px;
+}
+
+/* ===========================================
    FOOTER
    =========================================== */
 
@@ -1323,5 +1669,580 @@
 
     .pp-faq-item p {
         font-size: 0.8rem;
+    }
+}
+
+/* ===========================================
+   PERSONALIZED RESULT / DOSAGE SECTION
+   =========================================== */
+
+.pp-personalized-result {
+    padding: 5rem 0;
+    background: #0a0a0a;
+}
+
+.pp-dosage-grid {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pp-dosage-card {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(30, 30, 30, 0.8) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.pp-dosage-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #4caf50, #8bc34a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.pp-dosage-card h3 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.pp-dosage-timing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0.75rem 0;
+}
+
+.pp-dosage-timing svg {
+    color: #4caf50;
+}
+
+/* ===========================================
+   WHAT YOU CAN EXPECT SECTION
+   =========================================== */
+
+.pp-expect {
+    padding: 5rem 0;
+    background: #111;
+}
+
+.pp-expect-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.pp-expect-card {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.pp-expect-card:hover {
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+}
+
+.pp-expect-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pp-expect-header svg {
+    color: #4caf50;
+    flex-shrink: 0;
+}
+
+.pp-expect-header h3 {
+    font-size: 1.35rem;
+    color: white;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.pp-expect-card p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.pp-expect-card p:last-of-type {
+    margin-bottom: 0;
+}
+
+.pp-expect-reference {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.pp-expect-reference a {
+    color: rgba(76, 175, 80, 0.8);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.pp-expect-reference a:hover {
+    color: #4caf50;
+    text-decoration: underline;
+}
+
+/* Responsive for new sections */
+@media (max-width: 768px) {
+    .pp-dosage-card {
+        padding: 1.75rem;
+    }
+
+    .pp-dosage-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .pp-expect-card {
+        padding: 1.5rem;
+    }
+
+    .pp-expect-header h3 {
+        font-size: 1.15rem;
+    }
+
+    .pp-expect-card p {
+        font-size: 0.95rem;
+    }
+}
+
+/* ===========================================
+   OFFER BUNDLE SECTION
+   =========================================== */
+
+.pp-offer-bundle {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(20, 20, 20, 0.95) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.pp-offer-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pp-offer-header svg {
+    color: #ffc107;
+}
+
+.pp-offer-header span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.pp-offer-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pp-offer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+.pp-offer-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.pp-offer-item-info svg {
+    color: #4caf50;
+    flex-shrink: 0;
+}
+
+.pp-offer-item-price {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: line-through;
+    font-size: 0.95rem;
+}
+
+.pp-offer-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.pp-offer-total-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.pp-offer-total-original {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+    font-size: 1.25rem;
+}
+
+.pp-offer-special {
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(139, 195, 74, 0.1) 100%);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.pp-offer-special-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #4caf50, #8bc34a);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.pp-offer-special-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.pp-offer-special-price .pp-currency {
+    font-size: 1.5rem;
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.pp-offer-special-price .pp-amount {
+    font-size: 3rem;
+    color: white;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.pp-offer-savings {
+    color: #8bc34a;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.pp-offer-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(255, 87, 34, 0.15);
+    border: 1px solid rgba(255, 87, 34, 0.3);
+    border-radius: 8px;
+    color: #ff5722;
+}
+
+.pp-offer-timer svg {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.pp-timer-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+.pp-offer-expired {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(244, 67, 54, 0.15);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 8px;
+    color: #f44336;
+}
+
+/* ===========================================
+   STICKY FOOTER TIMER
+   =========================================== */
+
+.pp-sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border-top: 1px solid rgba(76, 175, 80, 0.3);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.pp-sticky-timer {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.pp-sticky-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.pp-sticky-countdown {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pp-sticky-time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pp-sticky-time-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #f44336;
+    font-family: monospace;
+    line-height: 1;
+}
+
+.pp-sticky-time-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+}
+
+.pp-sticky-cta {
+    background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.pp-sticky-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* Add padding to footer for sticky bar */
+.pp-footer {
+    padding-bottom: 100px;
+}
+
+/* Responsive for offer bundle and sticky footer */
+@media (max-width: 768px) {
+    .pp-offer-bundle {
+        padding: 1.5rem;
+    }
+
+    .pp-offer-header span {
+        font-size: 0.95rem;
+    }
+
+    .pp-offer-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pp-offer-special-price .pp-amount {
+        font-size: 2.5rem;
+    }
+
+    .pp-sticky-footer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .pp-sticky-timer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .pp-sticky-countdown {
+        gap: 1.5rem;
+    }
+
+    .pp-sticky-cta {
+        width: 100%;
+        padding: 0.875rem;
+    }
+
+    .pp-footer {
+        padding-bottom: 160px;
+    }
+}
+
+/* ===========================================
+   PRODUCT IMAGE GALLERY (Amazon/Flipkart Style)
+   =========================================== */
+
+.pp-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.pp-gallery-main {
+    position: relative;
+    background: linear-gradient(145deg, rgba(76, 175, 80, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    overflow: hidden;
+}
+
+.pp-gallery-main .pp-product-img {
+    max-width: 100%;
+    max-height: 320px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.pp-gallery-main:hover .pp-product-img {
+    transform: scale(1.05);
+}
+
+.pp-gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.pp-thumbnail {
+    position: relative;
+    background: rgba(20, 20, 20, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pp-thumbnail img {
+    width: 100%;
+    height: 60px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.pp-thumbnail-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pp-thumbnail:hover {
+    border-color: rgba(76, 175, 80, 0.5);
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.pp-thumbnail:hover img {
+    transform: scale(1.1);
+}
+
+.pp-thumbnail.active {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.15);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+}
+
+.pp-thumbnail.active .pp-thumbnail-label {
+    color: #4caf50;
+}
+
+/* Responsive for gallery */
+@media (max-width: 768px) {
+    .pp-gallery-main {
+        min-height: 280px;
+        padding: 1.5rem;
+    }
+
+    .pp-gallery-main .pp-product-img {
+        max-height: 250px;
+    }
+
+    .pp-gallery-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+
+    .pp-thumbnail img {
+        height: 50px;
+    }
+
+    .pp-thumbnail-label {
+        font-size: 0.6rem;
     }
 }

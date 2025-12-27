@@ -22,15 +22,49 @@ const ProductPage = ({ userData, onClose }) => {
     const basePrice = 1999;
     const originalPrice = 2999;
 
+    // Countdown timer state (3 minutes = 180 seconds)
+    const [timeLeft, setTimeLeft] = useState(180);
+    const [offerExpired, setOfferExpired] = useState(false);
+
+    // Product gallery images
+    const productImages = [
+        { src: '/elevate product image.png', alt: 'Elevate Capsules - Main' },
+        { src: '/capsule-2.png', alt: 'Elevate Capsules - Close Up' },
+        { src: '/ebook-cover.png', alt: 'Mystery Transformation Ebook' },
+        { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
+    ];
+    const [selectedImage, setSelectedImage] = useState(0);
+
+    // Countdown timer effect
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            setOfferExpired(true);
+            return;
+        }
+
+        const timer = setInterval(() => {
+            setTimeLeft(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [timeLeft]);
+
+    // Format time as MM:SS
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
     // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     const getReadinessLevel = () => {
-        if (totalScore >= 28) return { level: "Highly Ready", color: "#4caf50", gradient: "linear-gradient(135deg, #4caf50, #8bc34a)" };
-        if (totalScore >= 21) return { level: "Ready", color: "#8bc34a", gradient: "linear-gradient(135deg, #8bc34a, #cddc39)" };
-        if (totalScore >= 14) return { level: "Approaching Readiness", color: "#ffc107", gradient: "linear-gradient(135deg, #ffc107, #ff9800)" };
+        if (scorePercentage >= 88) return { level: "Highly Ready", color: "#4caf50", gradient: "linear-gradient(135deg, #4caf50, #8bc34a)" };
+        if (scorePercentage >= 66) return { level: "Ready", color: "#8bc34a", gradient: "linear-gradient(135deg, #8bc34a, #cddc39)" };
+        if (scorePercentage >= 44) return { level: "Approaching Readiness", color: "#ffc107", gradient: "linear-gradient(135deg, #ffc107, #ff9800)" };
         return { level: "Exploring", color: "#ff9800", gradient: "linear-gradient(135deg, #ff9800, #f44336)" };
     };
 
@@ -89,14 +123,14 @@ const ProductPage = ({ userData, onClose }) => {
                                         cy="60"
                                         r="52"
                                         style={{
-                                            strokeDasharray: `${(totalScore / maxScore) * 327} 327`,
+                                            strokeDasharray: `${(scorePercentage / 100) * 327} 327`,
                                             stroke: readiness.color
                                         }}
                                     />
                                 </svg>
                                 <div className="pp-score-inner">
-                                    <span className="pp-score-value">{totalScore}</span>
-                                    <span className="pp-score-max">/{maxScore}</span>
+                                    <span className="pp-score-value">{scorePercentage}</span>
+                                    <span className="pp-score-max">/100</span>
                                 </div>
                             </div>
                             <div className="pp-score-details">
@@ -118,96 +152,84 @@ const ProductPage = ({ userData, onClose }) => {
                 <div className="pp-container">
                     <div className="pp-product-grid">
                         <div className="pp-product-visual">
-                            <div className="pp-product-image-wrapper">
-                                <div className="pp-product-glow"></div>
-                                <img
-                                    src="/elevate product image.png"
-                                    alt="Elevate Capsules"
-                                    className="pp-product-img"
-                                />
+                            <div className="pp-gallery">
+                                <div className="pp-gallery-main">
+                                    <div className="pp-product-glow"></div>
+                                    <img
+                                        src={productImages[selectedImage].src}
+                                        alt={productImages[selectedImage].alt}
+                                        className="pp-product-img"
+                                    />
+                                </div>
+                                <div className="pp-gallery-thumbnails">
+                                    {productImages.map((img, index) => (
+                                        <div
+                                            key={index}
+                                            className={`pp-thumbnail ${selectedImage === index ? 'active' : ''}`}
+                                            onMouseEnter={() => setSelectedImage(index)}
+                                        >
+                                            <img src={img.src} alt={img.alt} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
                         <div className="pp-product-details">
-                            <div className="pp-product-header">
-                                <span className="pp-product-category">Premium Transformation Support</span>
-                                <h2 className="pp-product-title">Elevate Capsules</h2>
-                                <p className="pp-product-tagline">
-                                    Your Gateway to Inner Peace, Clarity & Conscious Transformation
-                                </p>
-                            </div>
+                            {/* Personalized Offer Bundle */}
+                            <div className="pp-offer-bundle">
+                                <div className="pp-offer-header">
+                                    <Crown size={24} />
+                                    <span>Exclusive Bundle Offer for {firstName}</span>
+                                </div>
 
-                            <div className="pp-product-highlights">
-                                <div className="pp-highlight">
-                                    <Brain size={20} />
-                                    <span>Enhanced Mental Clarity</span>
-                                </div>
-                                <div className="pp-highlight">
-                                    <Heart size={20} />
-                                    <span>Emotional Balance</span>
-                                </div>
-                                <div className="pp-highlight">
-                                    <Zap size={20} />
-                                    <span>Heightened Awareness</span>
-                                </div>
-                            </div>
-
-                            <div className="pp-pricing-block">
-                                <div className="pp-price-row">
-                                    <div className="pp-price-main">
-                                        <span className="pp-price-original">₹{(originalPrice * quantity).toLocaleString()}</span>
-                                        <span className="pp-price-current">₹{(basePrice * quantity).toLocaleString()}</span>
+                                <div className="pp-offer-items">
+                                    <div className="pp-offer-item">
+                                        <div className="pp-offer-item-info">
+                                            <Users size={20} />
+                                            <span>1-on-1 Personalized Guidance</span>
+                                        </div>
+                                        <span className="pp-offer-item-price">₹5,000</span>
                                     </div>
-                                    <div className="pp-price-savings">
-                                        <Gift size={16} />
-                                        <span>Save ₹{((originalPrice - basePrice) * quantity).toLocaleString()}</span>
+                                    <div className="pp-offer-item">
+                                        <div className="pp-offer-item-info">
+                                            <Package size={20} />
+                                            <span>Elevate Capsules (30-day supply)</span>
+                                        </div>
+                                        <span className="pp-offer-item-price">₹6,000</span>
+                                    </div>
+                                    <div className="pp-offer-item">
+                                        <div className="pp-offer-item-info">
+                                            <Gift size={20} />
+                                            <span>Mystery Transformation Ebook</span>
+                                        </div>
+                                        <span className="pp-offer-item-price">₹1,500</span>
                                     </div>
                                 </div>
 
-                                {/* Quantity Selector */}
-                                <div className="pp-quantity-row">
-                                    <span className="pp-quantity-label">Quantity:</span>
-                                    <div className="pp-quantity-selector">
-                                        <button
-                                            className="pp-qty-btn"
-                                            onClick={() => handleQuantityChange(-1)}
-                                            disabled={quantity <= 1}
-                                        >
-                                            <Minus size={18} />
-                                        </button>
-                                        <span className="pp-qty-value">{quantity}</span>
-                                        <button
-                                            className="pp-qty-btn"
-                                            onClick={() => handleQuantityChange(1)}
-                                            disabled={quantity >= 10}
-                                        >
-                                            <Plus size={18} />
-                                        </button>
+                                <div className="pp-offer-total">
+                                    <span className="pp-offer-total-label">Total Value:</span>
+                                    <span className="pp-offer-total-original">₹12,500</span>
+                                </div>
+
+                                <div className="pp-offer-special">
+                                    <div className="pp-offer-special-badge">
+                                        <Sparkles size={18} />
+                                        <span>Special Offer</span>
                                     </div>
-                                    <span className="pp-qty-note">{quantity} month{quantity > 1 ? 's' : ''} supply</span>
+                                    <div className="pp-offer-special-price">
+                                        <span className="pp-currency">₹</span>
+                                        <span className="pp-amount">3,899</span>
+                                    </div>
+                                    <p className="pp-offer-savings">You save ₹8,601 (69% OFF)</p>
                                 </div>
                             </div>
 
-                            <button className="pp-cta-button" onClick={handleBuyNow}>
+                            <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired}>
                                 <Rocket size={22} />
-                                <span>Begin My Transformation</span>
-                                <ArrowRight size={20} />
+                                <span>{offerExpired ? 'Offer Expired' : 'Claim My Exclusive Bundle'}</span>
+                                {!offerExpired && <ArrowRight size={20} />}
                             </button>
-
-                            <div className="pp-trust-row">
-                                <div className="pp-trust-item">
-                                    <ShieldCheck size={18} />
-                                    <span>30-Day Money Back</span>
-                                </div>
-                                <div className="pp-trust-item">
-                                    <Truck size={18} />
-                                    <span>Free Shipping</span>
-                                </div>
-                                <div className="pp-trust-item">
-                                    <Package size={18} />
-                                    <span>Discreet Packaging</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -368,6 +390,28 @@ const ProductPage = ({ userData, onClose }) => {
                     </p>
                 </div>
             </footer>
+
+            {/* Sticky Footer Timer */}
+            {!offerExpired && (
+                <div className="pp-sticky-footer">
+                    <div className="pp-sticky-timer">
+                        <span className="pp-sticky-label">Offer Will Expire In</span>
+                        <div className="pp-sticky-countdown">
+                            <div className="pp-sticky-time-unit">
+                                <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
+                                <span className="pp-sticky-time-label">minutes</span>
+                            </div>
+                            <div className="pp-sticky-time-unit">
+                                <span className="pp-sticky-time-value">{(timeLeft % 60).toString().padStart(2, '0')}</span>
+                                <span className="pp-sticky-time-label">seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button className="pp-sticky-cta" onClick={handleBuyNow}>
+                        Claim Offer Now
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

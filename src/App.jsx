@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom'
 import Hero from './components/Hero'
 import VideoSection from './components/VideoSection'
 import ProblemSection from './components/ProblemSection'
@@ -50,50 +50,149 @@ function LandingPage({ onOpenAssessment }) {
     )
 }
 
-// Product Page Wrapper with navigation
+// ProductPageWrapper with hybrid localStorage + Airtable loading
 function ProductPageWrapper() {
     const navigate = useNavigate()
     const location = useLocation()
+    const { recordId } = useParams() // Get recordId from URL (could be tempId or Airtable ID)
 
-    // Get user data from URL params or localStorage
     const [userData, setUserData] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        // Try to get data from URL search params first
-        const searchParams = new URLSearchParams(location.search)
-        const urlData = searchParams.get('data')
+        const loadData = async () => {
+            setLoading(true)
 
-        if (urlData) {
-            try {
-                const parsed = JSON.parse(decodeURIComponent(urlData))
-                setUserData(parsed)
-                // Also save to localStorage for persistence
-                localStorage.setItem('elevate_user_data', JSON.stringify(parsed))
-            } catch (e) {
-                console.error('Error parsing URL data:', e)
-            }
-        } else {
-            // Fallback to localStorage
-            const stored = localStorage.getItem('elevate_user_data')
-            if (stored) {
-                try {
-                    setUserData(JSON.parse(stored))
-                } catch (e) {
-                    console.error('Error parsing stored data:', e)
+            // STEP 1: Try localStorage first (instant load)
+            // Check for data stored under this specific ID
+            if (recordId) {
+                const storedById = localStorage.getItem(`elevate_assessment_${recordId}`)
+                if (storedById) {
+                    try {
+                        setUserData(JSON.parse(storedById))
+                        setLoading(false)
+                        return // Found in localStorage, done!
+                    } catch (e) {
+                        console.error('Error parsing stored data:', e)
+                    }
                 }
             }
+
+            // Also try the default storage key
+            const defaultStored = localStorage.getItem('elevate_user_data')
+            if (defaultStored) {
+                try {
+                    const parsed = JSON.parse(defaultStored)
+                    // If this matches the current tempId or recordId, use it
+                    if (parsed.tempId === recordId || parsed.recordId === recordId || !recordId) {
+                        setUserData(parsed)
+                        setLoading(false)
+
+                        // If we have recordId but URL uses tempId, that's fine - URL will update when Airtable responds
+                        if (parsed.recordId && recordId && recordId.startsWith('local_')) {
+                            // URL is using tempId but we already have recordId - update URL
+                            navigate(`/product/${parsed.recordId}`, { replace: true })
+                        }
+                        return
+                    }
+                } catch (e) {
+                    console.error('Error parsing default stored data:', e)
+                }
+            }
+
+            // STEP 2: If not in localStorage AND recordId looks like Airtable ID (starts with 'rec'), fetch from Airtable
+            if (recordId && recordId.startsWith('rec')) {
+                try {
+                    const response = await fetch(`https://n8n-642200223.kloudbeansite.com/webhook/get-assessment?id=${recordId}`)
+                    if (response.ok) {
+                        const data = await response.json()
+                        console.log("ProductPage: Fetched data from n8n:", data)
+
+                        // Handle if n8n returns an array (common)
+                        let rawData = data
+                        if (Array.isArray(data) && data.length > 0) {
+                            console.log("ProductPage: Response is array, using first item")
+                            rawData = data[0]
+                        }
+                        // Handle if data is wrapped in 'fields' (Airtable format)
+                        rawData = rawData.fields || rawData
+
+                        console.log("ProductPage: Raw data for normalization:", rawData)
+
+                        // Normalize Airtable field names to camelCase for frontend
+                        const normalizedData = {
+                            name: rawData.Name || rawData.name || 'Friend',
+                            email: rawData.Email || rawData.email || '',
+                            phone: rawData.Phone || rawData.phone || '',
+                            age: rawData.Age || rawData.age || '',
+                            sex: rawData.Sex || rawData.sex || '',
+                            weight: rawData.Weight || rawData.weight || '',
+                            totalScore: rawData.Total_Score || rawData.totalScore || 24,
+                            maxScore: rawData.Max_Score || rawData.maxScore || 32,
+                            readinessLevel: rawData.Readiness_Level || rawData.readinessLevel || 'Ready',
+                            recordId: data.id || recordId
+                        }
+
+                        // Store in localStorage for future fast loads
+                        localStorage.setItem(`elevate_assessment_${recordId}`, JSON.stringify(normalizedData))
+                        localStorage.setItem('elevate_user_data', JSON.stringify(normalizedData))
+
+                        setUserData(normalizedData)
+                    } else {
+                        throw new Error('Airtable fetch failed')
+                    }
+                } catch (err) {
+                    console.error('Error fetching from Airtable:', err)
+                    // Show default if all else fails
+                }
+            }
+
+            setLoading(false)
         }
-    }, [location.search])
+
+        loadData()
+    }, [recordId, navigate])
+
+    // Listen for Airtable record ready event (to update URL after background submission)
+    useEffect(() => {
+        const handleRecordReady = (event) => {
+            const { recordId: newRecordId, tempId } = event.detail
+
+            // If current URL uses tempId and we now have recordId, update URL
+            if (newRecordId && window.location.pathname.includes(tempId)) {
+                navigate(`/product/${newRecordId}`, { replace: true })
+            }
+        }
+
+        window.addEventListener('airtableRecordReady', handleRecordReady)
+        return () => window.removeEventListener('airtableRecordReady', handleRecordReady)
+    }, [navigate])
 
     const handleClose = () => {
         navigate('/')
     }
 
-    // Default user data if none available
+    // Default user data
     const defaultUserData = {
         name: 'Friend',
         totalScore: 24,
         maxScore: 32
+    }
+
+    if (loading) {
+        return (
+            <div style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#111',
+                color: '#4caf50',
+                fontSize: '1.2rem'
+            }}>
+                Loading your personalized plan...
+            </div>
+        )
     }
 
     return (
@@ -112,17 +211,20 @@ function AppRouter() {
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
 
-    // Called when quiz is completed - navigate to product page with data
+    // Called when quiz is completed - navigate immediately with tempId
     const handleQuizComplete = (data) => {
-        // Save to localStorage for persistence
-        localStorage.setItem('elevate_user_data', JSON.stringify(data))
-
-        // Close modal and navigate to product page
+        // Data is already saved to localStorage by AssessmentModal
         setIsModalOpen(false)
 
-        // Create URL-safe data string for shareable links
-        const encodedData = encodeURIComponent(JSON.stringify(data))
-        navigate(`/product?data=${encodedData}`)
+        // Navigate immediately with tempId (URL will update to recordId after Airtable responds)
+        if (data.tempId) {
+            navigate(`/product/${data.tempId}`)
+        } else if (data.recordId) {
+            navigate(`/product/${data.recordId}`)
+        } else {
+            // Fallback to simple /product route (will load from localStorage)
+            navigate('/product')
+        }
     }
 
     return (
@@ -130,6 +232,7 @@ function AppRouter() {
             <Routes>
                 <Route path="/" element={<LandingPage onOpenAssessment={openModal} />} />
                 <Route path="/product" element={<ProductPageWrapper />} />
+                <Route path="/product/:recordId" element={<ProductPageWrapper />} />
             </Routes>
 
             <AssessmentModal
