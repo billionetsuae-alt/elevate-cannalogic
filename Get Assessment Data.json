@@ -549,7 +549,7 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "=={{ JSON.stringify($json) }}",
+        "responseBody": "={{ JSON.stringify($json) }}",
         "options": {
           "responseHeaders": {
             "entries": [
@@ -697,7 +697,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "d433ca58-a1d8-4105-ad9c-d9104d332ade",
+  "versionId": "63ae1dba-b732-4f76-90aa-e4aeb24d3959",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "9f58de6173fc8cd9829e18435a23c767f0cc40edbb439467a307bf20f894675b"
