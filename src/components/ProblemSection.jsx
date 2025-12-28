@@ -7,11 +7,15 @@ const ProblemSection = ({ onOpenAssessment }) => {
             {/* New Discovery Section - Cannabis Leaf on Left, Text on Right */}
             <section className="discovery-section">
                 <div className="container discovery-container">
+                    {/* Mobile Heading - Visible on Mobile Only */}
+                    <p className="section-label mobile-label">The Magical Healing</p>
+
                     <div className="discovery-image">
                         <img src="/cannabis-leaf-spiritual.png" alt="Sacred Cannabis Leaf" />
                     </div>
                     <div className="discovery-text">
-                        <p className="section-label">THE SCIENCE OF MAGIC HEALING</p>
+                        {/* Desktop Heading - Visible on Desktop Only */}
+                        <p className="section-label desktop-label">The Magical Healing</p>
 
                         <p className="discovery-description">
                             Modern digital life has pushed you away from your true self, your inner child and your inner spirit.
@@ -25,13 +29,18 @@ const ProblemSection = ({ onOpenAssessment }) => {
             </section>
 
             {/* Venn Diagram Section - Original: Text on Left, Image on Right */}
+            {/* Venn Diagram Section - Flipped: Image Left, Text Right */}
             <section className="venn-section">
-                <div className="container venn-container">
+                <div className="container venn-container venn-flipped">
+                    {/* Mobile Label Only */}
+                    <p className="section-label mobile-label">IKIGAI – The purpose of life.</p>
+
                     <div className="venn-text">
-                        <p className="section-label">IKIGAI – The purpose of life.</p>
-                        <h2>Most people are not happy with where they are in life.</h2>
+                        {/* Desktop Label Only */}
+                        <p className="section-label desktop-label">IKIGAI – The purpose of life.</p>
+
                         <p className="venn-description">
-                            Most people complain about everything but do nothing to change anything.
+                            <strong>Most people are not happy with where they are in life.</strong> Most people complain about everything but do nothing to change anything.
                             Most people never realise their true potential. Most people wait until it's too late,
                             to realize they could have and should have gone after what they wanted in life.
                             I don't know about you.

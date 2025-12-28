@@ -1,134 +1,167 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    Brain,
+    TrendingUp,
+    Activity,
+    Users,
+    Coins,
+    Zap, // or CloudLightning
+    Sparkles
+} from 'lucide-react';
 import './ScienceSection.css';
 
-const levels = [
-    {
-        id: 'level1',
-        title: 'The System',
-        subtitle: 'Endocannabinoid System (ECS)',
-        content: ['Natural regulatory network inside you', 'Designed to work with this plant']
-    },
-    {
-        id: 'level2',
-        title: 'Function 1',
-        subtitle: 'Balance Mood',
-        content: ['Stabilizes emotional highs and lows', 'Reduces inner noise']
-    },
-    {
-        id: 'level3',
-        title: 'Function 2',
-        subtitle: 'Regulate Stress',
-        content: ['Lowers cortisol naturally', 'Prevents burnout and fatigue']
-    },
-    {
-        id: 'level4',
-        title: 'Function 3',
-        subtitle: 'Support Sleep',
-        content: ['Restores natural circadian rhythm', 'Deep, restorative rest']
-    },
-    {
-        id: 'level5',
-        title: 'The Result',
-        subtitle: 'Inner Harmony',
-        content: ['Intuition rises', 'Clarity expands', 'Consciousness aligns']
-    },
-    {
-        id: 'level6',
-        title: 'The Verdict',
-        subtitle: 'Biology, Not Mythology',
-        content: ['Scientifically validated', 'Historically proven']
-    }
-];
-
 const ScienceSection = () => {
-    const [activeLevel, setActiveLevel] = useState('level1');
-    const sectionRefs = useRef({});
-    const contentRef = useRef(null);
+    const [activeLevel, setActiveLevel] = useState(0);
+    const contentRefs = useRef([]);
+
+    const levels = [
+        {
+            id: 'level1',
+            title: 'Inner Clarity',
+            subtitle: 'Beginners Seeking Inner Clarity (No Spiritual Experience Needed)',
+            icon: Sparkles,
+            items: [
+                'If you want calm, balance, and emotional stability without rituals or belief systems, this is for you.'
+            ]
+        },
+        {
+            id: 'level2',
+            title: 'Unlocking Potential',
+            subtitle: 'High Achievers Who Feel Stuck Despite Effort',
+            icon: TrendingUp,
+            items: [
+                'You push, work, and try — but progress feels blocked, slow, or inconsistent without a clear reason.'
+            ]
+        },
+        {
+            id: 'level3',
+            title: 'Somatic Relief',
+            subtitle: 'People Facing Stress-Driven Health Symptoms',
+            icon: Activity,
+            items: [
+                'Your body feels tense, tired, or overwhelmed because the mind rarely gets a moment of real calm.'
+            ]
+        },
+        {
+            id: 'level4',
+            title: 'Relationship Harmony',
+            subtitle: 'Those Struggling With Repeating Relationship',
+            icon: Users,
+            items: [
+                'You notice the same emotional triggers, conflicts, or misunderstandings repeating across relationships.'
+            ]
+        },
+        {
+            id: 'level5',
+            title: 'Financial Peace',
+            subtitle: 'Individuals With Money Stress or Decision Anxiety',
+            icon: Coins,
+            items: [
+                'You work hard but still feel financial pressure, inconsistency, or confusion around important money choices.'
+            ]
+        },
+        {
+            id: 'level6',
+            title: 'Emotional Lightness',
+            subtitle: 'People Who Feel Mentally Heavy',
+            icon: Zap,
+            items: [
+                'Even when life looks “fine” externally, your inner world feels cluttered, stressed, or emotionally drained.'
+            ]
+        }
+    ];
 
     useEffect(() => {
-        const observerOptions = {
-            root: null,
-            rootMargin: '-30% 0px -50% 0px',
-            threshold: 0
-        };
-
-        const observerCallback = (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setActiveLevel(entry.target.id);
-                }
-            });
-        };
-
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-        levels.forEach((level) => {
-            const element = sectionRefs.current[level.id];
-            if (element) {
-                observer.observe(element);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = contentRefs.current.indexOf(entry.target);
+                        if (index !== -1) {
+                            setActiveLevel(index);
+                        }
+                    }
+                });
+            },
+            {
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
             }
+        );
+
+        contentRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
         });
 
         return () => observer.disconnect();
     }, []);
 
-    const scrollToLevel = (levelId) => {
-        const element = sectionRefs.current[levelId];
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+    const scrollToLevel = (index) => {
+        contentRefs.current[index]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+        setActiveLevel(index);
     };
 
     return (
         <section className="curriculum-section">
-            <div className="container curriculum-layout">
-                {/* Mobile Header - visible only on small screens */}
+            <div className="container">
+                {/* Mobile Header */}
                 <div className="mobile-section-header">
-                    <h2>The Science</h2>
-                    <p>Your Body Was Designed to Work with This Plant.</p>
+                    <h2>Is This For You?</h2>
+                    <p>Designed for those seeking real transformation.</p>
                 </div>
 
-                {/* Desktop Sidebar */}
-                <div className="curriculum-sidebar">
-                    <div className="sticky-wrapper">
-                        <h2>The Science</h2>
-                        <p style={{ color: 'gray', marginBottom: '1.5rem' }}>Your Body Was Designed to Work with This Plant.</p>
-                        <ul className="level-nav">
-                            {levels.map(level => (
-                                <li
-                                    key={level.id}
-                                    className={activeLevel === level.id ? 'active' : ''}
-                                    onClick={() => scrollToLevel(level.id)}
-                                >
-                                    <span className="level-num">{level.title}</span>
-                                    <span className="level-sub">{level.subtitle}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="curriculum-content" ref={contentRef}>
-                    {levels.map(level => (
-                        <div
-                            key={level.id}
-                            id={level.id}
-                            className={`level-block ${activeLevel === level.id ? 'active' : ''}`}
-                            ref={(el) => sectionRefs.current[level.id] = el}
-                        >
-                            <div className="level-header">
-                                <h3>{level.title}</h3>
-                                <p className="level-subtitle">{level.subtitle}</p>
-                            </div>
-                            <div className="level-details">
-                                <ul>
-                                    {level.content.map((point, idx) => (
-                                        <li key={idx}>{point}</li>
-                                    ))}
-                                </ul>
-                            </div>
+                <div className="curriculum-layout">
+                    {/* Sticky Sidebar */}
+                    <div className="curriculum-sidebar">
+                        <div className="sticky-wrapper">
+                            <h2>Is This For You?</h2>
+                            <p style={{ color: '#9ca3af', marginBottom: '2rem' }}>
+                                Designed for those seeking real transformation.
+                            </p>
+                            <ul className="level-nav">
+                                {levels.map((level, index) => (
+                                    <li
+                                        key={index}
+                                        className={activeLevel === index ? 'active' : ''}
+                                        onClick={() => scrollToLevel(index)}
+                                    >
+                                        <span className="level-num">{level.title}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Content Area */}
+                    <div className="curriculum-content">
+                        {levels.map((level, index) => {
+                            const Icon = level.icon;
+                            return (
+                                <div
+                                    key={index}
+                                    ref={el => contentRefs.current[index] = el}
+                                    className={`level-block ${activeLevel === index ? 'active' : ''}`}
+                                >
+                                    <div className="level-header">
+                                        <div className="level-icon-wrapper">
+                                            <Icon size={28} className="level-icon" />
+                                        </div>
+                                        <div className="level-subtitle">{level.subtitle}</div>
+                                    </div>
+                                    <div className="level-details">
+                                        <ul>
+                                            {level.items.map((item, i) => (
+                                                <li key={i}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </section>

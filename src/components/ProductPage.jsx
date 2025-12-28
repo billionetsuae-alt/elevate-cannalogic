@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
+import './StickyTimer.css';
 import {
     Sparkles, Leaf, ShieldCheck, Award, Heart,
     Check, Star, Users, Package,
@@ -401,10 +402,12 @@ const ProductPage = ({ userData, onClose }) => {
                         <div className="pp-sticky-countdown">
                             <div className="pp-sticky-time-unit">
                                 <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
+                                <span className="pp-sticky-time-label">mins</span>
                             </div>
                             <span className="pp-timer-sep">:</span>
                             <div className="pp-sticky-time-unit">
                                 <span className="pp-sticky-time-value">{(timeLeft % 60).toString().padStart(2, '0')}</span>
+                                <span className="pp-sticky-time-label">secs</span>
                             </div>
                         </div>
                     </div>

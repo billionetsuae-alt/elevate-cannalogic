@@ -116,6 +116,24 @@
     letter-spacing: 0.05em;
 }
 
+.level-icon-wrapper {
+    margin-bottom: 0.75rem;
+    display: inline-flex;
+    padding: 0.75rem;
+    background: rgba(184, 239, 67, 0.1);
+    border-radius: 50%;
+    /* Circular or Rounded? Reference was icons. Circular is nice. */
+    border: 1px solid rgba(184, 239, 67, 0.2);
+    color: #b8ef43;
+    transition: all 0.3s ease;
+}
+
+.level-block.active .level-icon-wrapper {
+    background: #b8ef43;
+    color: #000;
+    box-shadow: 0 0 15px rgba(184, 239, 67, 0.4);
+}
+
 .level-subtitle {
     font-size: 1.25rem;
     color: white;
