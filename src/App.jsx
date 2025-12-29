@@ -16,6 +16,7 @@ import Footer from './components/Footer'
 import BottomStickyBar from './components/BottomStickyBar'
 import AssessmentModal from './components/AssessmentModal'
 import ProductPage from './components/ProductPage'
+import ThankYouPage from './components/ThankYouPage'
 import ScrollProgress from './components/ScrollProgress'
 
 // Landing Page Component
@@ -194,10 +195,52 @@ function ProductPageWrapper() {
         )
     }
 
+    const handlePaymentSuccess = (paymentData) => {
+        // Store payment data and navigate to thank you page
+        localStorage.setItem('elevate_payment_data', JSON.stringify(paymentData))
+        navigate('/thank-you')
+    }
+
     return (
         <ProductPage
             userData={userData || defaultUserData}
             onClose={handleClose}
+            onPaymentSuccess={handlePaymentSuccess}
+        />
+    )
+}
+
+// ThankYouPage Wrapper
+function ThankYouPageWrapper() {
+    const navigate = useNavigate()
+
+    const [userData, setUserData] = useState(null)
+    const [paymentData, setPaymentData] = useState(null)
+
+    useEffect(() => {
+        // Load data from localStorage
+        const storedUserData = localStorage.getItem('elevate_user_data')
+        const storedPaymentData = localStorage.getItem('elevate_payment_data')
+
+        if (storedUserData) {
+            setUserData(JSON.parse(storedUserData))
+        }
+        if (storedPaymentData) {
+            setPaymentData(JSON.parse(storedPaymentData))
+        }
+    }, [])
+
+    const handleGoHome = () => {
+        // Clear payment data
+        localStorage.removeItem('elevate_payment_data')
+        navigate('/')
+    }
+
+    return (
+        <ThankYouPage
+            userData={userData}
+            paymentData={paymentData}
+            onGoHome={handleGoHome}
         />
     )
 }
@@ -232,6 +275,7 @@ function AppRouter() {
                 <Route path="/" element={<LandingPage onOpenAssessment={openModal} />} />
                 <Route path="/product" element={<ProductPageWrapper />} />
                 <Route path="/product/:recordId" element={<ProductPageWrapper />} />
+                <Route path="/thank-you" element={<ThankYouPageWrapper />} />
             </Routes>
 
             <AssessmentModal

@@ -8,7 +8,7 @@ import {
     Gift, Crown, BadgeCheck
 } from 'lucide-react';
 
-const ProductPage = ({ userData, onClose }) => {
+const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const {
         name = 'Friend',
         totalScore = 0,
@@ -66,8 +66,62 @@ const ProductPage = ({ userData, onClose }) => {
 
 
     const handleBuyNow = () => {
-        // Razorpay integration placeholder
-        window.open('https://calendly.com/cannalogic/consultation', '_blank');
+        const options = {
+            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+            amount: 389900, // ₹3,899 in paise
+            currency: 'INR',
+            name: 'CannaLogic',
+            description: 'Elevate Full Spectrum Bundle',
+            image: '/Cannalogic-White.svg',
+            prefill: {
+                name: name || '',
+                email: userData?.email || '',
+                contact: userData?.phone || ''
+            },
+            theme: {
+                color: '#4caf50'
+            },
+            handler: async function (response) {
+                // Payment successful
+                console.log('Payment Success:', response);
+
+                // Send to webhook
+                try {
+                    await fetch('https://your-n8n-webhook-url.com/razorpay-success', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            payment_id: response.razorpay_payment_id,
+                            order_id: response.razorpay_order_id,
+                            signature: response.razorpay_signature,
+                            customer: {
+                                name: name,
+                                email: userData?.email,
+                                phone: userData?.phone,
+                                score: totalScore
+                            },
+                            amount: 3899,
+                            product: 'Elevate Full Spectrum Bundle'
+                        })
+                    });
+                } catch (error) {
+                    console.error('Webhook error:', error);
+                }
+
+                // Redirect to thank you page
+                if (onPaymentSuccess) {
+                    onPaymentSuccess(response);
+                }
+            },
+            modal: {
+                ondismiss: function () {
+                    console.log('Payment cancelled');
+                }
+            }
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
     };
 
     return (
