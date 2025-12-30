@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './StickyTimer.css';
+import CheckoutModal from './CheckoutModal';
 import {
     Sparkles, Leaf, ShieldCheck, Award, Heart,
     Check, Star, Users, Package,
@@ -21,6 +22,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     // Countdown timer state (1 hour = 3600 seconds)
     const [timeLeft, setTimeLeft] = useState(3600);
     const [offerExpired, setOfferExpired] = useState(false);
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+    const [checkoutData, setCheckoutData] = useState(null);
 
     // Product gallery images
     const productImages = [
@@ -65,7 +68,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
+    // Open checkout modal first
     const handleBuyNow = () => {
+        setIsCheckoutOpen(true);
+    };
+
+    // Process payment after checkout form is filled
+    const processPayment = (checkoutFormData) => {
+        setCheckoutData(checkoutFormData);
+        setIsCheckoutOpen(false);
+
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: 389900, // ₹3,899 in paise
@@ -74,9 +86,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             description: 'Elevate Full Spectrum Bundle',
             image: '/Cannalogic-White.svg',
             prefill: {
-                name: name || '',
+                name: checkoutFormData.fullName || name || '',
                 email: userData?.email || '',
-                contact: userData?.phone || ''
+                contact: checkoutFormData.phone || userData?.phone || ''
+            },
+            notes: {
+                address: checkoutFormData.fullAddress,
+                pincode: checkoutFormData.pincode,
+                city: checkoutFormData.city,
+                state: checkoutFormData.state
             },
             theme: {
                 color: '#4caf50'
@@ -85,9 +103,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 // Payment successful
                 console.log('Payment Success:', response);
 
-                // Send to webhook
+                // Send to webhook with address
                 try {
-                    await fetch('https://your-n8n-webhook-url.com/razorpay-success', {
+                    await fetch('https://n8n-642200223.kloudbeansite.com/webhook/razorpay-success', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -95,11 +113,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             order_id: response.razorpay_order_id,
                             signature: response.razorpay_signature,
                             customer: {
-                                name: name,
+                                name: checkoutFormData.fullName,
                                 email: userData?.email,
-                                phone: userData?.phone,
-                                score: totalScore
+                                phone: checkoutFormData.phone,
+                                score: totalScore,
+                                address: checkoutFormData.fullAddress,
+                                pincode: checkoutFormData.pincode,
+                                city: checkoutFormData.city,
+                                state: checkoutFormData.state
                             },
+                            recordId: userData?.recordId,
                             amount: 3899,
                             product: 'Elevate Full Spectrum Bundle'
                         })
@@ -465,11 +488,19 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             </div>
                         </div>
                     </div>
-                    <button className="pp-sticky-cta" onClick={() => document.getElementById('offer-bundle').scrollIntoView({ behavior: 'smooth' })}>
+                    <button className="pp-sticky-cta" onClick={handleBuyNow}>
                         Claim Now
                     </button>
                 </div>
             )}
+
+            {/* Checkout Modal */}
+            <CheckoutModal
+                isOpen={isCheckoutOpen}
+                onClose={() => setIsCheckoutOpen(false)}
+                userData={userData}
+                onProceedToPayment={processPayment}
+            />
         </div>
     );
 };
