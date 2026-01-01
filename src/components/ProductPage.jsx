@@ -6,8 +6,192 @@ import {
     Sparkles, Leaf, ShieldCheck, Award, Heart,
     Check, Star, Users, Package,
     Rocket, ArrowRight, Quote, Zap, Brain,
-    Gift, Crown, BadgeCheck
+    Gift, Crown, BadgeCheck, Lightbulb, Sprout
 } from 'lucide-react';
+
+const RESULT_DATA = [
+    {
+        range: [7, 14],
+        phase: "Survival Phase",
+        title: "Returning to Safety",
+        color: "#f44336",
+        gradient: "linear-gradient(135deg, #f44336, #e91e63)",
+        meaning: [
+            "Your system is under strain — mentally, emotionally, or physically.",
+            "Life may feel heavy, overwhelming, or exhausting right now.",
+            "This is not weakness. This is your body asking for rest, grounding, and protection.",
+            "You may notice: Constant mental fatigue, emotional heaviness, or difficulty relaxing."
+        ],
+        support: {
+            heading: "A steady hand holding you when everything feels too much.",
+            points: [
+                "Nervous system regulation",
+                "Emotional grounding",
+                "Reduction in mental overload",
+                "A sense of inner safety and calm"
+            ]
+        },
+        usage: {
+            guide: [
+                "Best taken during the evening or when you feel overwhelmed",
+                "Create a calm environment — dim lights, silence, rest",
+                "Avoid stimulation after use (screens, stress, noise)",
+                "Let your body slow down naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Gentle Stabilization",
+                bestFor: "First-time users, High sensitivity, Daily emotional support",
+                experience: "Subtle calming effect, Reduced mental noise, Gentle sense of grounding",
+                when: "Evening, before rest, or during emotional overwhelm"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Grounding",
+                bestFor: "High stress, Persistent anxiety, Overstimulated nervous system",
+                experience: "Deeper calming response, Stronger sense of safety, Enhanced mind–body connection",
+                when: "During intense days, emotional recovery, or intentional rest"
+            }
+        ],
+        reminder: "You are not broken. You are responding to pressure the best way you know how. This phase is not about fixing yourself — it’s about giving your system permission to breathe again."
+    },
+    {
+        range: [15, 21],
+        phase: "Stabilizing Phase",
+        title: "Reconnecting with Yourself",
+        color: "#ff9800",
+        gradient: "linear-gradient(135deg, #ff9800, #ffc107)",
+        meaning: [
+            "You’re no longer in survival mode — but you’re not fully at ease yet.",
+            "Your system is learning how to stabilize after periods of stress.",
+            "Your mind works hard, but your inner balance needs care.",
+            "You may experience: Mental busyness, emotional ups and downs, or difficulty switching off."
+        ],
+        support: {
+            heading: "A stabilizing force that helps your system find its natural centre.",
+            points: [
+                "Soothe the nervous system",
+                "Reduce mental noise",
+                "Support emotional stability",
+                "Enhance present-moment awareness",
+                "Better sleep rhythms"
+            ]
+        },
+        usage: {
+            guide: [
+                "Take in the evening or during downtime",
+                "Start low and slow",
+                "Pair with rest, short walks, or calm music",
+                "Avoid overstimulation after use"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Balanced Support",
+                bestFor: "Daily emotional regulation, Mild stress, Maintaining stability",
+                experience: "Smooth calming effect, Improved emotional control, Clearer mindset",
+                when: "Morning or early evening for daily balance"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Stabilization",
+                bestFor: "Ongoing stress patterns, Emotional sensitivity, Mental heaviness",
+                experience: "Deeper emotional grounding, Reduced internal noise, Greater stability",
+                when: "During emotionally demanding days or self-care sessions"
+            }
+        ],
+        reminder: "Stability is not stagnation. It is the foundation from which clarity, growth, and confidence emerge. Balance isn’t something you force. It returns naturally when the body feels supported."
+    },
+    {
+        range: [22, 28],
+        phase: "Growth Phase",
+        title: "Expanding Awareness",
+        color: "#8bc34a",
+        gradient: "linear-gradient(135deg, #8bc34a, #cddc39)",
+        meaning: [
+            "Your mind is clearer, your emotions are steadier, and you’re feeling more connected.",
+            "At this stage, you’re not just coping — you’re evolving.",
+            "You may experience: Increased self-awareness, desire for clarity/creativity, and a sense that 'there’s more' within you.",
+            "This phase is about expansion without overwhelm."
+        ],
+        support: {
+            heading: "A gentle amplifier for awareness — not pushing, just revealing.",
+            points: [
+                "Mental clarity and focus",
+                "Emotional openness without instability",
+                "Enhanced self-awareness",
+                "A smoother connection between mind and body"
+            ]
+        },
+        usage: {
+            guide: [
+                "Use during moments of reflection, creativity, or focused work",
+                "Ideal before journaling, meditation, or intentional rest",
+                "Create a calm, intentional setting",
+                "Let awareness unfold naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Conscious Balance",
+                bestFor: "Daily clarity, Presence, maintaining inner alignment",
+                experience: "Clearer thinking, Calm focus, Gentle uplift in awareness",
+                when: "Morning or early afternoon during focused activities"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Expansion",
+                bestFor: "Inner exploration, Creative/spiritual practices, Deep insight",
+                experience: "Heightened awareness, Stronger mind–body connection, Expanded presence",
+                when: "During intentional sessions or exploring deeper states"
+            }
+        ],
+        reminder: "Growth isn’t about becoming someone new. It’s about remembering who you already are — with clarity, balance, and presence."
+    },
+    {
+        range: [29, 35],
+        phase: "Elevated Phase",
+        title: "Living in Alignment",
+        color: "#4caf50",
+        gradient: "linear-gradient(135deg, #4caf50, #009688)",
+        meaning: [
+            "You are already in a healthy internal state.",
+            "You are operating from a place of clarity, presence, and inner alignment.",
+            "Your thoughts, emotions, and actions feel connected rather than conflicted.",
+            "This phase is not about fixing or improving — it’s about sustaining alignment while living fully."
+        ],
+        support: {
+            heading: "A quiet enhancer — helping you stay aligned while moving through life.",
+            points: [
+                "Sustained clarity and mental presence",
+                "Creative flow and intuitive insight",
+                "Calm energy without dullness",
+                "Deep mind–body harmony"
+            ]
+        },
+        usage: {
+            guide: [
+                "Use with intention, not habit",
+                "Ideal during reflection, creative work, or mindful routines",
+                "Best paired with silence, journaling, or meditation",
+                "Allow the experience to unfold naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Sustained Alignment",
+                bestFor: "Maintaining clarity and balance, Conscious living",
+                experience: "Clean mental clarity, Calm presence, Subtle uplift",
+                when: "Morning or mid-day to maintain alignment"
+            },
+            {
+                title: "Option 2: Double Dose — Deep Integration",
+                bestFor: "Deep inner work, Creative/spiritual exploration",
+                experience: "Heightened perception, Expanded awareness, Deep cohesion",
+                when: "During intentional self-inquiry or rituals"
+            }
+        ],
+        reminder: "Elevation isn’t escape. It’s living with awareness, clarity, and responsibility. You’re not trying to rise above life — you’re learning to meet it fully awake."
+    }
+];
 
 const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const {
@@ -24,6 +208,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const [offerExpired, setOfferExpired] = useState(false);
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
     const [checkoutData, setCheckoutData] = useState(null);
+
+    // Determine Result Phase based on Total Score
+    const getResultPhase = () => {
+        // Find phase where score falls within range
+        const phase = RESULT_DATA.find(p => totalScore >= p.range[0] && totalScore <= p.range[1]);
+        // Default to Phase 2 if undefined (safe fallback)
+        return phase || RESULT_DATA[1];
+    };
+
+    const currentPhase = getResultPhase();
 
     // Product gallery images
     const productImages = [
@@ -50,23 +244,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         return () => clearInterval(timer);
     }, []);
 
-
-
     // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    const getReadinessLevel = () => {
-        if (scorePercentage >= 88) return { level: "Highly Ready", color: "#4caf50", gradient: "linear-gradient(135deg, #4caf50, #8bc34a)" };
-        if (scorePercentage >= 66) return { level: "Ready", color: "#8bc34a", gradient: "linear-gradient(135deg, #8bc34a, #cddc39)" };
-        if (scorePercentage >= 44) return { level: "Approaching Readiness", color: "#ffc107", gradient: "linear-gradient(135deg, #ffc107, #ff9800)" };
-        return { level: "Exploring", color: "#ff9800", gradient: "linear-gradient(135deg, #ff9800, #f44336)" };
-    };
-
-    const readiness = getReadinessLevel();
-
-
 
     // Open checkout modal first
     const handleBuyNow = () => {
@@ -170,15 +351,14 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 <div className="pp-container">
                     <div className="pp-hero-content">
                         <div className="pp-badge-row">
-                            <div className="pp-badge animated">
+                            <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
                                 <Sparkles size={16} />
-                                <span>Personalized for {firstName}</span>
+                                <span>{currentPhase.phase}</span>
                             </div>
                         </div>
 
                         <h1 className="pp-hero-title">
-                            Your Transformation Journey
-                            <span className="highlight"> Starts Here</span>
+                            {currentPhase.title}
                         </h1>
 
                         <div className="pp-score-card">
@@ -192,7 +372,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                         r="52"
                                         style={{
                                             strokeDasharray: `${(scorePercentage / 100) * 327} 327`,
-                                            stroke: readiness.color
+                                            stroke: currentPhase.color
                                         }}
                                     />
                                 </svg>
@@ -202,13 +382,33 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
                             </div>
                             <div className="pp-score-details">
-                                <span className="pp-score-label">Your Readiness Score</span>
-                                <h3 className="pp-score-level" style={{ color: readiness.color }}>
-                                    {readiness.level}
+                                <span className="pp-score-label">Your Assessment Score</span>
+                                <h3 className="pp-score-level" style={{ color: currentPhase.color }}>
+                                    {currentPhase.phase}
                                 </h3>
                                 <p className="pp-score-desc">
-                                    Based on your responses, you're ready to begin your transformation journey.
+                                    We've analyzed your responses. Here is your personalized support plan.
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Analysis Section (What This Means) */}
+            <section className="pp-analysis">
+                <div className="pp-container">
+                    <div className="pp-analysis-content">
+                        <span className="pp-section-label" style={{ color: currentPhase.color }}>Your Current State</span>
+                        <h2 className="pp-analysis-title">What This Means For You</h2>
+                        <div className="pp-meaning-grid">
+                            <div className="pp-meaning-text">
+                                {currentPhase.meaning.map((line, i) => (
+                                    <p key={i} className={i === 0 ? "highlight-meaning" : ""}>
+                                        {i === 0 && <span className="meaning-bullet">🌱 </span>}
+                                        {line}
+                                    </p>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -315,31 +515,84 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
-            {/* Benefits Section */}
-            <section className="pp-benefits">
+
+            {/* Dynamic Support Section */}
+            <section className="pp-dynamic-support">
                 <div className="pp-container">
                     <div className="pp-section-header">
-                        <span className="pp-section-label">Why This Works</span>
-                        <h2 className="pp-section-title">
-                            Designed for Your Transformation, {firstName}
-                        </h2>
+                        <span className="pp-section-label" style={{ color: currentPhase.color }}>Tailored Support</span>
+                        <h2 className="pp-section-title">How the Full-Spectrum Extract Supports You</h2>
+                        <p className="pp-support-subtitle">{currentPhase.support.heading}</p>
                     </div>
 
-                    <div className="pp-benefits-grid">
-                        {[
-                            { icon: Brain, title: "Mental Clarity", desc: "Experience crystal-clear thinking and enhanced focus for your daily journey." },
-                            { icon: Heart, title: "Emotional Balance", desc: "Find your center and maintain stable, positive emotional states." },
-                            { icon: Zap, title: "Conscious Awareness", desc: "Deepen your connection to presence and heightened awareness." },
-                            { icon: Leaf, title: "Natural Formula", desc: "100% plant-based ingredients, backed by ancient Ayurvedic wisdom." }
-                        ].map((benefit, i) => (
-                            <div className="pp-benefit-card" key={i}>
-                                <div className="pp-benefit-icon">
-                                    <benefit.icon size={28} />
+                    <div className="pp-support-grid">
+                        {currentPhase.support.points.map((point, i) => (
+                            <div className="pp-support-card" key={i} style={{ borderTopColor: currentPhase.color }}>
+                                <div className="pp-support-icon" style={{ color: currentPhase.color, background: currentPhase.color + '15' }}>
+                                    <Leaf size={24} />
                                 </div>
-                                <h3>{benefit.title}</h3>
-                                <p>{benefit.desc}</p>
+                                <p>{point}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Usage & Dosing Section */}
+            <section className="pp-usage-section">
+                <div className="pp-container">
+                    {/* Guided Usage */}
+                    <div className="pp-usage-guide">
+                        <h3 className="pp-inner-title">
+                            <Sparkles size={20} style={{ color: currentPhase.color }} />
+                            Guided Usage Ritual
+                        </h3>
+                        <ul className="pp-usage-list">
+                            {currentPhase.usage.guide.map((step, i) => (
+                                <li key={i}>
+                                    <span className="usage-dot" style={{ background: currentPhase.color }}></span>
+                                    {step}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Dosing Options */}
+                    <div className="pp-dosing-options">
+                        <div className="pp-section-header">
+                            <span className="pp-section-label">Your Path</span>
+                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
+                        </div>
+                        <div className="pp-dosing-grid">
+                            {currentPhase.dosing.map((option, i) => (
+                                <div className="pp-dosing-card" key={i}>
+                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
+                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
+                                    </div>
+                                    <div className="pp-dosing-body">
+                                        <div className="dosing-block">
+                                            <strong>Best For:</strong>
+                                            <p>{option.bestFor}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>Experience:</strong>
+                                            <p>{option.experience}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>When to use:</strong>
+                                            <p>{option.when}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Gentle Reminder */}
+                    <div className="pp-reminder-box" style={{ borderColor: currentPhase.color + '40', background: currentPhase.color + '05' }}>
+                        <Heart size={24} className="reminder-icon" style={{ color: currentPhase.color }} />
+                        <h3>Gentle Reminder</h3>
+                        <p>{currentPhase.reminder}</p>
                     </div>
                 </div>
             </section>
@@ -430,6 +683,48 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
+            {/* Mindful Use Section (Final Message) */}
+            <section className="pp-mindful">
+                <div className="pp-container">
+                    <div className="pp-mindful-content">
+                        <div className="pp-mindful-header">
+                            <Sparkles className="pp-mindful-icon" size={32} />
+                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
+                            <p className="pp-mindful-subtitle">
+                                You become your higher self. This works best when paired with intention—gently, naturally, in your own time.
+                            </p>
+                            <div className="pp-mindful-tip">
+                                <Lightbulb size={20} />
+                                <span>Always start with the single dose and increase only if your body feels comfortable.</span>
+                            </div>
+                        </div>
+
+                        <div className="pp-mindful-grid">
+                            <div className="pp-mindful-card">
+                                <h3><Sprout size={20} /> How To Use Mindfully</h3>
+                                <ul>
+                                    <li>Start low, go slow</li>
+                                    <li>Use in a calm environment</li>
+                                    <li>Avoid mixing with alcohol or stimulants</li>
+                                    <li>Stay hydrated</li>
+                                    <li>Listen to your body — it always knows</li>
+                                    <li>Observe your body</li>
+                                    <li>Use consistently, not excessively</li>
+                                </ul>
+                            </div>
+
+                            <div className="pp-mindful-card intent">
+                                <h3><Leaf size={20} /> A Note On Intention</h3>
+                                <p>
+                                    This is not about escaping reality. It’s about meeting yourself with clarity.
+                                    When used with awareness, the plant supports what already exists within you — calm, balance, and presence.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* FAQ */}
             <section className="pp-faq">
                 <div className="pp-container">
@@ -472,27 +767,29 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             </footer>
 
             {/* Sticky Footer Timer */}
-            {!offerExpired && (
-                <div className="pp-sticky-footer">
-                    <div className="pp-sticky-timer">
-                        <span className="pp-sticky-label">Offer Will Expire In</span>
-                        <div className="pp-sticky-countdown">
-                            <div className="pp-sticky-time-unit">
-                                <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
-                                <span className="pp-sticky-time-label">mins</span>
-                            </div>
-                            <span className="pp-timer-sep">:</span>
-                            <div className="pp-sticky-time-unit">
-                                <span className="pp-sticky-time-value">{(timeLeft % 60).toString().padStart(2, '0')}</span>
-                                <span className="pp-sticky-time-label">secs</span>
+            {
+                !offerExpired && (
+                    <div className="pp-sticky-footer">
+                        <div className="pp-sticky-timer">
+                            <span className="pp-sticky-label">Offer Will Expire In</span>
+                            <div className="pp-sticky-countdown">
+                                <div className="pp-sticky-time-unit">
+                                    <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
+                                    <span className="pp-sticky-time-label">mins</span>
+                                </div>
+                                <span className="pp-timer-sep">:</span>
+                                <div className="pp-sticky-time-unit">
+                                    <span className="pp-sticky-time-value">{(timeLeft % 60).toString().padStart(2, '0')}</span>
+                                    <span className="pp-sticky-time-label">secs</span>
+                                </div>
                             </div>
                         </div>
+                        <button className="pp-sticky-cta" onClick={handleBuyNow}>
+                            Claim Now
+                        </button>
                     </div>
-                    <button className="pp-sticky-cta" onClick={handleBuyNow}>
-                        Claim Now
-                    </button>
-                </div>
-            )}
+                )
+            }
 
             {/* Checkout Modal */}
             <CheckoutModal
@@ -501,7 +798,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 userData={userData}
                 onProceedToPayment={processPayment}
             />
-        </div>
+        </div >
     );
 };
 

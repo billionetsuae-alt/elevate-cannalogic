@@ -30,8 +30,15 @@
     max-width: 480px;
     max-height: 90vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
     position: relative;
     animation: slideUp 0.3s ease-out;
+}
+
+/* Ensure padding doesn't cause overflow */
+.checkout-modal * {
+    box-sizing: border-box;
 }
 
 @keyframes slideUp {
@@ -109,6 +116,9 @@
 
 .checkout-field input,
 .checkout-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    /* Critical for padding to be included in width */
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -261,9 +271,5 @@
 
     .checkout-form {
         padding: 1.25rem;
-    }
-
-    .checkout-row {
-        grid-template-columns: 1fr;
     }
 }

@@ -14,94 +14,91 @@ import {
     Package, ShieldCheck, Award, Truck
 } from 'lucide-react';
 
-// Quiz questions data with point values and icons
+// Quiz questions data with updated 1-5 scoring (Low to High Vibration)
 const quizQuestions = [
     {
         id: 1,
-        question: "What do you want to become?",
+        question: "How do you usually feel when you wake up in the morning?",
         options: [
-            { text: "A consciously living and purpose-led individual", points: 4, icon: Sparkles },
-            { text: "A clear-minded and thoughtful individual", points: 3, icon: Brain },
-            { text: "A more stable, balanced version of who I am now", points: 2, icon: Scale },
-            { text: "I haven't yet connected with a future identity", points: 1, icon: HelpCircle }
+            { text: "Heavy, tired, unmotivated", points: 1, icon: Cloud },
+            { text: "Slightly stressed or rushed", points: 2, icon: Zap },
+            { text: "Neutral, just starting the day", points: 3, icon: CircleDashed },
+            { text: "Calm and stable", points: 4, icon: Waves },
+            { text: "Peaceful, clear, and positive", points: 5, icon: Flower2 }
         ]
     },
     {
         id: 2,
-        question: "What inner state do you want to be in?",
+        question: "How do you generally respond to stress or problems?",
         options: [
-            { text: "Deep inner peace and presence", points: 4, icon: Flower2 },
-            { text: "Emotional balance and steady flow", points: 3, icon: Waves },
-            { text: "General mental calm and clarity", points: 2, icon: Cloud },
-            { text: "I haven't thought much about this", points: 1, icon: MessageCircleQuestion }
+            { text: "I feel overwhelmed or shut down", points: 1, icon: Ban },
+            { text: "I get anxious or irritated", points: 2, icon: Flame },
+            { text: "I manage but feel affected", points: 3, icon: Scale },
+            { text: "I stay mostly calm and practical", points: 4, icon: ShieldCheck },
+            { text: "I stay centered and observe", points: 5, icon: Eye }
         ]
     },
     {
         id: 3,
-        question: "Why is this transformation important to you now?",
+        question: "How would you describe your emotional state most days?",
         options: [
-            { text: "I feel a strong inner calling for change", points: 4, icon: Flame },
-            { text: "I feel ready for meaningful personal growth", points: 3, icon: Sprout },
-            { text: "I think change could be helpful", points: 2, icon: Lightbulb },
-            { text: "I'm just casually exploring ideas", points: 1, icon: Eye }
+            { text: "Drained or hopeless", points: 1, icon: Hourglass },
+            { text: "Unsettled or frustrated", points: 2, icon: CircleHelp },
+            { text: "Neutral / mixed", points: 3, icon: Scale },
+            { text: "Balanced and stable", points: 4, icon: Compass },
+            { text: "Light, positive, or joyful", points: 5, icon: Sparkles }
         ]
     },
     {
         id: 4,
-        question: "How do you usually approach personal growth?",
+        question: "How connected do you feel to yourself?",
         options: [
-            { text: "I actively and consistently work on myself", points: 4, icon: Target },
-            { text: "I engage in growth when something resonates", points: 3, icon: Star },
-            { text: "I think about growth but act inconsistently", points: 2, icon: FileText },
-            { text: "I haven't really focused on it yet", points: 1, icon: Moon }
+            { text: "Completely disconnected", points: 1, icon: Cloud },
+            { text: "Occasionally aware of myself", points: 2, icon: Search },
+            { text: "Somewhat connected", points: 3, icon: Handshake },
+            { text: "Mostly aware and present", points: 4, icon: User },
+            { text: "Deeply connected and self-aware", points: 5, icon: Heart }
         ]
     },
     {
         id: 5,
-        question: "How open are you to natural, plant-based tools?",
+        question: "How do you handle challenges or setbacks?",
         options: [
-            { text: "Very open and already informed", points: 4, icon: Leaf },
-            { text: "Open with the right guidance and context", points: 3, icon: Handshake },
-            { text: "Neutral or mildly curious", points: 2, icon: Search },
-            { text: "Not open to this approach", points: 1, icon: Ban }
+            { text: "I feel stuck or helpless", points: 1, icon: Ban },
+            { text: "I struggle and overthink", points: 2, icon: Dumbbell },
+            { text: "I manage with effort", points: 3, icon: Check },
+            { text: "I learn and adapt", points: 4, icon: Brain },
+            { text: "I see challenges as growth", points: 5, icon: Sprout }
         ]
     },
     {
         id: 6,
-        question: "How do you view consciousness and awareness in transformation?",
+        question: "How would you describe your overall energy level?",
         options: [
-            { text: "They are the foundation of real change", points: 4, icon: Zap },
-            { text: "They play an important role", points: 3, icon: Compass },
-            { text: "I see some value but don't focus on them much", points: 2, icon: Search },
-            { text: "I don't really see their relevance yet", points: 1, icon: CircleHelp }
+            { text: "Very low or drained", points: 1, icon: Moon },
+            { text: "Low but functioning", points: 2, icon: Cloud },
+            { text: "Moderate", points: 3, icon: Scale },
+            { text: "Energized most days", points: 4, icon: Zap },
+            { text: "Consistently high and balanced", points: 5, icon: Rocket }
         ]
     },
     {
         id: 7,
-        question: "How committed are you to becoming this version of yourself?",
+        question: "Which statement feels most true right now?",
         options: [
-            { text: "Fully committed and ready to act", points: 4, icon: Dumbbell },
-            { text: "Committed but still clarifying the path", points: 3, icon: Map },
-            { text: "Interested but not fully committed", points: 2, icon: CircleDashed },
-            { text: "Not ready to commit right now", points: 1, icon: Pause }
-        ]
-    },
-    {
-        id: 8,
-        question: "When do you want to begin this journey?",
-        options: [
-            { text: "Now — I feel ready", points: 4, icon: Rocket },
-            { text: "Soon — within the coming weeks", points: 3, icon: Calendar },
-            { text: "Later — in a few months", points: 2, icon: CalendarDays },
-            { text: "No clear timeline yet", points: 1, icon: Hourglass }
+            { text: "Life feels heavy", points: 1, icon: Package },
+            { text: "I’m trying to find stability", points: 2, icon: Scale },
+            { text: "I’m figuring things out", points: 3, icon: Map },
+            { text: "I’m growing and evolving", points: 4, icon: Sprout },
+            { text: "I feel aligned and purposeful", points: 5, icon: Star }
         ]
     }
 ];
 
-const TOTAL_STEPS = 12; // intro + personal + 8 questions + contact + results
+const TOTAL_STEPS = 10; // intro(0) + personal(1) + 7 questions(2-8) + contact(9) = 10 steps
 
 const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
-    const [step, setStep] = useState(0); // 0=intro, 1=personal, 2-9=questions, 10=contact, 11=results
+    const [step, setStep] = useState(0); // 0=intro, 1=personal, 2-8=questions, 9=contact
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -123,12 +120,12 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             ...prev,
             answers: { ...prev.answers, [`q${questionId}`]: points }
         }));
-        // Auto-advance after selection with a small delay for visual feedback
+        // Auto-advance
         setTimeout(() => {
-            if (step < 9) {
+            if (step < 8) { // Last question is displayed at step 8
                 setStep(prev => prev + 1);
             } else {
-                setStep(10); // Go to contact step
+                setStep(9); // Go to contact step
             }
         }, 400);
     };
@@ -136,8 +133,6 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
     const calculateScore = () => {
         return Object.values(formData.answers).reduce((sum, val) => sum + val, 0);
     };
-
-
 
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
@@ -147,16 +142,18 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
 
         const totalScore = calculateScore();
 
-        // Get UTM parameters and source tracking
+        // Get UTM parameters
         const urlParams = new URLSearchParams(window.location.search);
+
+        // Updated Scoring Thresholds
         const getReadinessLevel = (score) => {
-            if (score >= 28) return 'Highly Ready';
-            if (score >= 21) return 'Ready';
-            if (score >= 14) return 'Approaching';
-            return 'Exploring';
+            if (score >= 29) return 'Elevated State';
+            if (score >= 22) return 'Growth Phase';
+            if (score >= 15) return 'Stabilization Phase';
+            return 'Survival Mode';
         };
 
-        // Get actual answer texts instead of just scores
+        // Get actual answer texts
         const getAnswerText = (questionId, score) => {
             const question = quizQuestions.find(q => q.id === questionId);
             if (question) {
@@ -173,14 +170,13 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             q4: getAnswerText(4, formData.answers.q4),
             q5: getAnswerText(5, formData.answers.q5),
             q6: getAnswerText(6, formData.answers.q6),
-            q7: getAnswerText(7, formData.answers.q7),
-            q8: getAnswerText(8, formData.answers.q8)
+            q7: getAnswerText(7, formData.answers.q7)
         };
 
-        // Generate a temporary local ID for instant navigation
+        // Generate temp ID
         const tempId = 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
-        // Prepare user data for localStorage and product page
+        // Prepare user data
         const userData = {
             name: formData.name,
             age: formData.age,
@@ -189,16 +185,15 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             phone: formData.phone,
             email: formData.email,
             totalScore: totalScore,
-            maxScore: 32,
+            maxScore: 35, // Updated max score
             readinessLevel: getReadinessLevel(totalScore),
             tempId: tempId
         };
 
-        // Store in localStorage immediately for instant load
+        // Store in localStorage
         localStorage.setItem(`elevate_assessment_${tempId}`, JSON.stringify(userData));
-        localStorage.setItem('elevate_user_data', JSON.stringify(userData)); // Also store as default
+        localStorage.setItem('elevate_user_data', JSON.stringify(userData));
 
-        // Navigate IMMEDIATELY to product page with temp ID
         if (onQuizComplete) {
             onQuizComplete({
                 ...userData,
@@ -206,7 +201,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             });
         }
 
-        // Now send to Airtable in the background (user already sees product page)
+        // Background Submission
         const payload = {
             name: formData.name,
             age: parseInt(formData.age),
@@ -217,13 +212,11 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             answers: formData.answers,
             answerTexts: answerTexts,
             totalScore: totalScore,
-            maxScore: 32,
-            tempId: tempId, // Include tempId so we can link it later
-            // Source tracking
+            maxScore: 35,
+            tempId: tempId,
             source: urlParams.get('utm_source') || urlParams.get('ref') || document.referrer || 'Direct',
             utm_medium: urlParams.get('utm_medium') || '',
             utm_campaign: urlParams.get('utm_campaign') || '',
-            // Auto-set fields
             status: 'Lead',
             readinessLevel: getReadinessLevel(totalScore),
             submittedAt: new Date().toISOString(),
@@ -231,7 +224,6 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             pageUrl: window.location.href
         };
 
-        // Background Airtable submission
         try {
             const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/elevate-assessment', {
                 method: 'POST',
@@ -248,19 +240,15 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             }
 
             if (recordId) {
-                // Update localStorage with the Airtable recordId
                 userData.recordId = recordId;
                 localStorage.setItem(`elevate_assessment_${recordId}`, JSON.stringify(userData));
                 localStorage.setItem('elevate_user_data', JSON.stringify(userData));
-
-                // Dispatch custom event to notify App to update URL
                 window.dispatchEvent(new CustomEvent('airtableRecordReady', {
                     detail: { recordId, tempId }
                 }));
             }
         } catch (error) {
-            console.error('Background Airtable submission error:', error);
-            // User already on product page, so just log the error
+            console.error('Submission error:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -302,8 +290,8 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             <div className="assessment-container" onClick={e => e.stopPropagation()}>
                 <button className="assessment-close" onClick={resetAndClose}>×</button>
 
-                {/* Progress Bar - shown during quiz flow */}
-                {step > 0 && step < 11 && (
+                {/* Progress Bar */}
+                {step > 0 && step < 10 && (
                     <div className="assessment-progress">
                         <div className="progress-track">
                             <div
@@ -313,7 +301,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                         </div>
                         <span className="progress-text">
                             {step <= 1 ? 'Getting Started' :
-                                step <= 9 ? `Question ${step - 1} of 8` :
+                                step <= 8 ? `Question ${step - 1} of 7` :
                                     'Almost Done'}
                         </span>
                     </div>
@@ -326,27 +314,27 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                             <div className="intro-icon">
                                 <Leaf size={48} strokeWidth={1.5} />
                             </div>
-                            <h2>Discover Your Readiness</h2>
+                            <h2>Frequency Check</h2>
                             <p className="intro-subtitle">
-                                A short self-assessment designed to understand your readiness for inner transformation.
+                                A 7-question consciousness check to understand your current vibrational frequency and readiness.
                             </p>
                             <div className="intro-details">
                                 <div className="detail-item">
                                     <Clock size={18} />
-                                    <span>Takes 2–3 minutes</span>
+                                    <span>Takes 2 minutes</span>
                                 </div>
                                 <div className="detail-item">
                                     <Sprout size={18} />
-                                    <span>Plant-based support journey</span>
+                                    <span>Vibrational Match</span>
                                 </div>
                                 <div className="detail-item">
                                     <Check size={18} />
-                                    <span>No right or wrong answers</span>
+                                    <span>Low to High Vibration</span>
                                 </div>
                             </div>
-                            <p className="intro-note">Answer honestly. This helps us see if this journey is right for you.</p>
+                            <p className="intro-note">Answer honestly based on how you truly feel right now.</p>
                             <button className="btn-start" onClick={nextStep}>
-                                Begin Assessment
+                                Start Check
                                 <ArrowRight size={20} />
                             </button>
                         </div>
@@ -356,7 +344,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                     {step === 1 && (
                         <div className="step-content personal-step">
                             <h2>Let's Get To Know You</h2>
-                            <p className="step-hint">This helps us personalize your journey</p>
+                            <p className="step-hint">This helps us personalize your report</p>
 
                             <div className="form-grid">
                                 <div className="form-field">
@@ -426,8 +414,8 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                         </div>
                     )}
 
-                    {/* STEPS 2-9: QUIZ QUESTIONS */}
-                    {step >= 2 && step <= 9 && currentQuestion && (
+                    {/* STEPS 2-8: QUIZ QUESTIONS */}
+                    {step >= 2 && step <= 8 && currentQuestion && (
                         <div className="step-content question-step">
                             <div className="question-number">Q{currentQuestion.id}</div>
                             <h2>{currentQuestion.question}</h2>
@@ -446,11 +434,6 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                                 <IconComponent size={22} strokeWidth={1.5} />
                                             </span>
                                             <span className="option-text">{option.text}</span>
-                                            {formData.answers[`q${currentQuestion.id}`] === option.points && (
-                                                <span className="option-check">
-                                                    <Check size={14} strokeWidth={3} />
-                                                </span>
-                                            )}
                                         </button>
                                     );
                                 })}
@@ -462,14 +445,14 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                         </div>
                     )}
 
-                    {/* STEP 10: CONTACT INFO */}
-                    {step === 10 && (
+                    {/* STEP 9: CONTACT INFO */}
+                    {step === 9 && (
                         <div className="step-content contact-step">
                             <div className="contact-icon">
                                 <Mail size={40} strokeWidth={1.5} />
                             </div>
-                            <h2>Get Your FREE Action Plan</h2>
-                            <p className="step-hint">Enter your details to receive a personalized transformation roadmap</p>
+                            <h2>Get Your Analysis</h2>
+                            <p className="step-hint">Enter your details to receive your personalized consciousness report</p>
 
                             <div className="form-grid">
                                 <div className="form-field">
@@ -507,7 +490,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     {isSubmitting ? (
                                         <>
                                             <span className="spinner"></span>
-                                            Analyzing...
+                                            Analyzing Frequency...
                                         </>
                                     ) : 'See My Results'}
                                 </button>

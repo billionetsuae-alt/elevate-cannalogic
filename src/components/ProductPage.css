@@ -1597,6 +1597,261 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* ===========================================
+   DYNAMIC RESULTS PAGE STYLES (NEW)
+   =========================================== */
+
+/* Analysis Section */
+.pp-analysis {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.pp-analysis-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pp-analysis-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.pp-meaning-grid {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2.5rem;
+}
+
+.pp-meaning-text p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.pp-meaning-text .highlight-meaning {
+    font-size: 1.25rem;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.meaning-bullet {
+    font-size: 1.2rem;
+}
+
+/* Support Section */
+.pp-dynamic-support {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+}
+
+.pp-support-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 700px;
+    margin: 1rem auto 0;
+    line-height: 1.5;
+}
+
+.pp-support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.pp-support-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-top-width: 3px;
+    /* Color set dynamically */
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: transform 0.3s;
+}
+
+.pp-support-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pp-support-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pp-support-card p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+    padding-top: 0.25rem;
+}
+
+/* Usage Section */
+.pp-usage-section {
+    padding-bottom: 5rem;
+}
+
+.pp-usage-guide {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 800px;
+    margin: 0 auto 5rem;
+    text-align: center;
+}
+
+.pp-inner-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.pp-usage-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.pp-usage-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.usage-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Dosing Options */
+.pp-dosing-options {
+    margin-bottom: 5rem;
+}
+
+.pp-dosing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.pp-dosing-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.pp-dosing-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pp-dosing-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pp-dosing-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.pp-dosing-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dosing-block strong {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.dosing-block p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+}
+
+/* Reminder */
+.pp-reminder-box {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3rem;
+    border: 1px solid;
+    border-radius: 24px;
+    position: relative;
+}
+
+.reminder-icon {
+    margin-bottom: 1rem;
+}
+
+.pp-reminder-box h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.pp-reminder-box p {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    font-style: italic;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    .pp-support-grid,
+    .pp-dosing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-usage-guide {
+        padding: 2rem 1.5rem;
+    }
+
+    .pp-meaning-grid {
+        padding: 1.5rem;
+    }
+}
+
 .pp-footer-content {
     display: flex;
     justify-content: space-between;
@@ -2476,5 +2731,142 @@
 
     .pp-thumbnail-label {
         font-size: 0.6rem;
+    }
+}
+
+/* ===========================================
+   MINDFUL USE SECTION
+   =========================================== */
+.pp-mindful {
+    padding: 6rem 0;
+    position: relative;
+    background: radial-gradient(circle at center, rgba(30, 30, 30, 1) 0%, rgba(10, 10, 10, 1) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pp-mindful-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pp-mindful-header {
+    margin-bottom: 3.5rem;
+}
+
+.pp-mindful-icon {
+    color: #ffd700;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+}
+
+.pp-mindful-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pp-mindful-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    font-size: 0.95rem;
+}
+
+.pp-mindful-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    text-align: left;
+}
+
+.pp-mindful-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.pp-mindful-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.pp-mindful-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.pp-mindful-card h3 svg {
+    color: #4caf50;
+}
+
+.pp-mindful-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pp-mindful-card li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.pp-mindful-card li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.pp-mindful-card.intent h3 svg {
+    color: #ffd700;
+    /* Gold for intention */
+}
+
+.pp-mindful-card.intent p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .pp-mindful {
+        padding: 4rem 0;
+    }
+
+    .pp-mindful-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-mindful-tip {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-radius: 12px;
     }
 }

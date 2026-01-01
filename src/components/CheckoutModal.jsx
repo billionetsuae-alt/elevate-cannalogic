@@ -9,6 +9,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
         pincode: '',
         city: '',
         state: '',
+        country: 'India',
         address: ''
     });
     const [pincodeLoading, setPincodeLoading] = useState(false);
@@ -78,6 +79,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
             formData.pincode.length === 6 &&
             formData.city &&
             formData.state &&
+            formData.country &&
             formData.address;
     };
 
@@ -88,7 +90,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
         setIsSubmitting(true);
 
         // Prepare full address string
-        const fullAddress = `${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}`;
+        const fullAddress = `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country} - ${formData.pincode}`;
 
         // Save address to Airtable via webhook
         try {
@@ -166,6 +168,22 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                         />
                     </div>
 
+                    {/* Full Address */}
+                    <div className="checkout-field">
+                        <label>
+                            <Home size={16} />
+                            Complete Address
+                        </label>
+                        <textarea
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            placeholder="House/Flat No., Building, Street, Landmark"
+                            rows={3}
+                            required
+                        />
+                    </div>
+
                     {/* Pincode */}
                     <div className="checkout-field">
                         <label>
@@ -187,7 +205,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                         {pincodeError && <span className="field-error">{pincodeError}</span>}
                     </div>
 
-                    {/* City & State (auto-filled) */}
+                    {/* City & State (auto-filled, editable) */}
                     <div className="checkout-row">
                         <div className="checkout-field">
                             <label>City</label>
@@ -195,9 +213,10 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                                 type="text"
                                 name="city"
                                 value={formData.city}
-                                readOnly
-                                placeholder="Auto-filled"
+                                onChange={handleChange}
+                                placeholder="City"
                                 className={formData.city ? 'autofilled' : ''}
+                                required
                             />
                         </div>
                         <div className="checkout-field">
@@ -206,28 +225,28 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                                 type="text"
                                 name="state"
                                 value={formData.state}
-                                readOnly
-                                placeholder="Auto-filled"
+                                onChange={handleChange}
+                                placeholder="State"
                                 className={formData.state ? 'autofilled' : ''}
+                                required
                             />
                         </div>
                     </div>
 
-                    {/* Full Address */}
+                    {/* Country */}
                     <div className="checkout-field">
-                        <label>
-                            <Home size={16} />
-                            Complete Address
-                        </label>
-                        <textarea
-                            name="address"
-                            value={formData.address}
+                        <label>Country</label>
+                        <input
+                            type="text"
+                            name="country"
+                            value={formData.country}
                             onChange={handleChange}
-                            placeholder="House/Flat No., Building, Street, Landmark"
-                            rows={3}
+                            placeholder="Country"
                             required
                         />
                     </div>
+
+
 
                     {/* Order Summary */}
                     <div className="checkout-summary">
