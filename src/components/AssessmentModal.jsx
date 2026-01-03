@@ -11,7 +11,7 @@ import {
     Rocket, Calendar, CalendarDays, Hourglass,
     Clock, Heart, Check, ArrowRight,
     ChevronLeft, Mail, Phone, User,
-    Package, ShieldCheck, Award, Truck
+    Package, ShieldCheck, Award, Truck, Gift
 } from 'lucide-react';
 
 // Quiz questions data with updated 1-5 scoring (Low to High Vibration)
@@ -308,33 +308,42 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                 )}
 
                 <div className="assessment-content">
-                    {/* STEP 0: INTRO */}
+                    {/* STEP 0: INTRO - UPDATED */}
                     {step === 0 && (
                         <div className="step-content intro-step">
-                            <div className="intro-icon">
-                                <Leaf size={48} strokeWidth={1.5} />
+                            <div className="intro-icon" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                                <img
+                                    src="/real-glowing-leaf.png"
+                                    alt="Cannabis Access"
+                                    style={{
+                                        width: '120px',
+                                        height: '120px',
+                                        objectFit: 'contain',
+                                        mixBlendMode: 'screen', // This makes the black background transparent
+                                        filter: 'brightness(1.2) contrast(1.1)'
+                                    }}
+                                />
                             </div>
-                            <h2>Frequency Check</h2>
+                            <h2>Get Cannabis Access</h2>
                             <p className="intro-subtitle">
-                                A 7-question consciousness check to understand your current vibrational frequency and readiness.
+                                Check your eligibility for medical cannabis access in India. Safe, Legal, and Ministry of AYUSH Approved.
                             </p>
                             <div className="intro-details">
                                 <div className="detail-item">
                                     <Clock size={18} />
-                                    <span>Takes 2 minutes</span>
+                                    <span>Takes 30 Seconds</span>
                                 </div>
                                 <div className="detail-item">
-                                    <Sprout size={18} />
-                                    <span>Vibrational Match</span>
+                                    <ShieldCheck size={18} />
+                                    <span>100% Private</span>
                                 </div>
                                 <div className="detail-item">
                                     <Check size={18} />
-                                    <span>Low to High Vibration</span>
+                                    <span>Instant Approval</span>
                                 </div>
                             </div>
-                            <p className="intro-note">Answer honestly based on how you truly feel right now.</p>
                             <button className="btn-start" onClick={nextStep}>
-                                Start Check
+                                Check Eligibility
                                 <ArrowRight size={20} />
                             </button>
                         </div>
@@ -344,7 +353,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                     {step === 1 && (
                         <div className="step-content personal-step">
                             <h2>Let's Get To Know You</h2>
-                            <p className="step-hint">This helps us personalize your report</p>
+                            <p className="step-hint">We need this to generate your prescription.</p>
 
                             <div className="form-grid">
                                 <div className="form-field">
@@ -405,7 +414,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                 </button>
                                 <button
                                     className="btn-primary"
-                                    onClick={nextStep}
+                                    onClick={() => setStep(9)} // SKIP QUIZ -> GO TO CONTACT
                                     disabled={!isPersonalInfoValid()}
                                 >
                                     Continue
@@ -414,49 +423,34 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                         </div>
                     )}
 
-                    {/* STEPS 2-8: QUIZ QUESTIONS */}
-                    {step >= 2 && step <= 8 && currentQuestion && (
-                        <div className="step-content question-step">
-                            <div className="question-number">Q{currentQuestion.id}</div>
-                            <h2>{currentQuestion.question}</h2>
-
-                            <div className="options-list">
-                                {currentQuestion.options.map((option, index) => {
-                                    const IconComponent = option.icon;
-                                    return (
-                                        <button
-                                            key={index}
-                                            type="button"
-                                            className={`option-card ${formData.answers[`q${currentQuestion.id}`] === option.points ? 'selected' : ''}`}
-                                            onClick={() => handleAnswerSelect(currentQuestion.id, option.points)}
-                                        >
-                                            <span className="option-icon">
-                                                <IconComponent size={22} strokeWidth={1.5} />
-                                            </span>
-                                            <span className="option-text">{option.text}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            <button className="btn-back-small" onClick={prevStep}>
-                                <ChevronLeft size={16} /> Back
-                            </button>
-                        </div>
-                    )}
-
-                    {/* STEP 9: CONTACT INFO */}
+                    {/* STEP 9: CONTACT INFO - UPDATED WITH EBOOK HOOK */}
                     {step === 9 && (
-                        <div className="step-content contact-step">
-                            <div className="contact-icon">
-                                <Mail size={40} strokeWidth={1.5} />
+                        <div className="step-content contact-step" style={{ textAlign: 'center' }}>
+
+                            <div className="ebook-hook" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <img
+                                    src="/ebook-cover.png"
+                                    alt="Free Ebook Gift"
+                                    style={{
+                                        width: '120px',
+                                        height: 'auto',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 10px 30px rgba(76, 175, 80, 0.3)',
+                                        marginBottom: '1rem'
+                                    }}
+                                />
+                                <h3 style={{ fontSize: '1.3rem', color: '#ffc107', marginBottom: '0.5rem' }}>
+                                    <Gift size={20} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-bottom' }} />
+                                    Free Bonus Gift Unlocked!
+                                </h3>
+                                <p style={{ fontSize: '0.9rem', color: '#fff', opacity: 0.9 }}>
+                                    Enter your details to reveal your eligibility result and get our <strong>"Mystery Transformation Ebook"</strong> (Worth ₹1,500) for FREE.
+                                </p>
                             </div>
-                            <h2>Get Your Analysis</h2>
-                            <p className="step-hint">Enter your details to receive your personalized consciousness report</p>
 
                             <div className="form-grid">
                                 <div className="form-field">
-                                    <label><Phone size={14} /> Phone Number</label>
+                                    <label style={{ textAlign: 'left', display: 'block' }}><Phone size={14} /> Phone Number</label>
                                     <input
                                         type="tel"
                                         name="phone"
@@ -467,7 +461,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     />
                                 </div>
                                 <div className="form-field">
-                                    <label><Mail size={14} /> Email Address</label>
+                                    <label style={{ textAlign: 'left', display: 'block' }}><Mail size={14} /> Email Address</label>
                                     <input
                                         type="email"
                                         name="email"
@@ -479,7 +473,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                             </div>
 
                             <div className="step-actions">
-                                <button className="btn-secondary" onClick={prevStep}>
+                                <button className="btn-secondary" onClick={() => setStep(1)}> {/* BACK TO PERSONAL */}
                                     <ChevronLeft size={18} /> Back
                                 </button>
                                 <button
@@ -490,9 +484,9 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     {isSubmitting ? (
                                         <>
                                             <span className="spinner"></span>
-                                            Analyzing Frequency...
+                                            Verifying...
                                         </>
-                                    ) : 'See My Results'}
+                                    ) : 'Claim Access & Free Ebook'}
                                 </button>
                             </div>
                         </div>

@@ -4,62 +4,204 @@ import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
 import {
     Sparkles, Leaf, ShieldCheck, Award, Heart,
-    Check, Star, Users, Package, Eye, Feather,
+    Check, Star, Users, Package,
     Rocket, ArrowRight, Quote, Zap, Brain,
     Gift, Crown, BadgeCheck, Lightbulb, Sprout, ChevronDown
 } from 'lucide-react';
 
-const UNIFIED_PHASE = {
-    phase: "Full Spectrum Alignment",
-    title: "The Path to Higher Alignment",
-    color: "#4caf50", // Growth Green - Universal Healing
-    gradient: "linear-gradient(135deg, #4caf50, #009688)",
-    meaning: [
-        "Quiet the Mental Noise",
-        "Restore Emotional Stability",
-        "Deepen Your Self-Awareness",
-        "Reconnect with Your Inner Flow"
-    ],
-    support: {
-        heading: "A complete holistic shift—calming the noise, stabilizing the emotions, and expanding awareness.",
-        points: [
-            "Nervous System Regulation",
-            "Emotional Grounding & Calm",
-            "Enhanced Mental Clarity",
-            "Deep Mind-Body Harmony"
-        ]
-    },
-    usage: {
-        guide: [
-            "Start with intention, not just habit",
-            "Best taken in the evening or during overwhelm",
-            "Create a calm space — dim lights, silence",
-            "Listen to your body — it always knows"
-        ]
-    },
-    dosing: [
-        {
-            title: "Daily Balance (1 Capsule)",
-            bestFor: "Consistent clarity, emotional stability, and daily presence.",
-            experience: "A subtle lifting of fog, a gentle sense of calm, and sustained focus.",
-            when: "Morning for clarity, or Evening for winding down."
+const RESULT_DATA = [
+    {
+        range: [7, 14],
+        phase: "Survival Phase",
+        title: "Returning to Safety",
+        color: "#f44336",
+        gradient: "linear-gradient(135deg, #f44336, #e91e63)",
+        meaning: [
+            "Constant mental fatigue or overthinking",
+            "Emotional heaviness or numbness",
+            "Difficulty relaxing or sleeping",
+            "Feeling disconnected from yourself"
+        ],
+        support: {
+            heading: "A steady hand holding you when everything feels too much.",
+            points: [
+                "Nervous system regulation",
+                "Emotional grounding",
+                "Reduction in mental overload",
+                "A sense of inner safety and calm"
+            ]
         },
-        {
-            title: "Deep Restoration (2 Capsules)",
-            bestFor: "High-stress days, deep inner work, or somatic release.",
-            experience: "Profound grounding, quietened mind, and deep physical relaxation.",
-            when: "During intense overwhelm or intentional meditation/rest."
-        }
-    ],
-    reminder: "Healing is not linear. It is a spiral of returning to yourself. Elevate is your anchor in the storm, helping you find your center whenever you drift."
-};
+        usage: {
+            guide: [
+                "Best taken during the evening or when you feel overwhelmed",
+                "Create a calm environment — dim lights, silence, rest",
+                "Avoid stimulation after use (screens, stress, noise)",
+                "Let your body slow down naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Gentle Stabilization",
+                bestFor: "First-time users, High sensitivity, Daily emotional support",
+                experience: "Subtle calming effect, Reduced mental noise, Gentle sense of grounding",
+                when: "Evening, before rest, or during emotional overwhelm"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Grounding",
+                bestFor: "High stress or emotional overload, Persistent anxiety",
+                experience: "Deeper calming response, Stronger sense of safety",
+                when: "During intense days, emotional recovery periods"
+            }
+        ],
+        reminder: "You are not broken. You are responding to pressure the best way you know how. This phase is not about fixing yourself — it’s about giving your system permission to breathe again."
+    },
+    {
+        range: [15, 21],
+        phase: "Stabilization Phase",
+        title: "Reconnecting with Yourself",
+        color: "#ff9800",
+        gradient: "linear-gradient(135deg, #ff9800, #ff5722)",
+        meaning: [
+            "Mental busyness",
+            "Emotional ups and downs",
+            "Occasional overwhelm or overthinking",
+            "Difficulty switching off"
+        ],
+        support: {
+            heading: "A stabilizing force that helps your system find its natural centre.",
+            points: [
+                "Soothe the nervous system",
+                "Reduce mental noise",
+                "Support emotional stability",
+                "Enhance present-moment awareness",
+                "Better sleep rhythms"
+            ]
+        },
+        usage: {
+            guide: [
+                "Take in the evening or during downtime",
+                "Start low and slow",
+                "Pair with rest, short walks, or calm music",
+                "Avoid overstimulation after use"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Balanced Support",
+                bestFor: "Daily emotional regulation, Mild stress, Maintaining stability",
+                experience: "Smooth calming effect, Improved emotional control, Clearer mindset",
+                when: "Morning or early evening for daily balance"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Stabilization",
+                bestFor: "Ongoing stress patterns, Emotional sensitivity, Heavy mental load",
+                experience: "Deeper emotional grounding, Reduced internal noise, Stability",
+                when: "During emotionally demanding days or intentional self-care"
+            }
+        ],
+        reminder: "Stability is not stagnation. It is the foundation from which clarity, growth, and confidence emerge. Balance isn’t something you force. It returns naturally when the body feels supported."
+    },
+    {
+        range: [22, 28],
+        phase: "Growth Phase",
+        title: "Expanding Awareness",
+        color: "#4caf50",
+        gradient: "linear-gradient(135deg, #4caf50, #009688)",
+        meaning: [
+            "Increased self-awareness",
+            "Curiosity about growth and meaning",
+            "Desire for clarity, creativity, or deeper understanding",
+            "A sense that “there’s more” within you"
+        ],
+        support: {
+            heading: "A gentle amplifier for awareness — not pushing, just revealing.",
+            points: [
+                "Mental clarity and focus",
+                "Emotional openness without instability",
+                "Enhanced self-awareness",
+                "A smoother connection between mind and body"
+            ]
+        },
+        usage: {
+            guide: [
+                "Use during moments of reflection, creativity, or focused work",
+                "Ideal before journaling, meditation, or intentional rest",
+                "Create a calm, intentional setting",
+                "Let awareness unfold naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Conscious Balance",
+                bestFor: "Daily clarity and presence, Light emotional support",
+                experience: "Clearer thinking, Calm focus, Gentle uplift in awareness",
+                when: "Morning or early afternoon during focused activities"
+            },
+            {
+                title: "Option 2: Double Dose — Deeper Expansion",
+                bestFor: "Inner exploration, Creative or spiritual practices",
+                experience: "Heightened awareness, Stronger mind–body connection",
+                when: "During intentional sessions or exploring deeper states"
+            }
+        ],
+        reminder: "Growth isn’t about becoming someone new. It’s about remembering who you already are — with clarity, balance, and presence."
+    },
+    {
+        range: [29, 35],
+        phase: "Elevated State",
+        title: "Living in Alignment",
+        color: "#06b6d4",
+        gradient: "linear-gradient(135deg, #06b6d4, #0891b2)",
+        meaning: [
+            "Creativity",
+            "Emotional clarity",
+            "Deeper self-awareness",
+            "A sense of purpose and flow"
+        ],
+        support: {
+            heading: "A quiet enhancer — helping you stay aligned while moving through life.",
+            points: [
+                "Sustained clarity and mental presence",
+                "Creative flow and intuitive insight",
+                "Calm energy without dullness",
+                "Deep mind–body harmony"
+            ]
+        },
+        usage: {
+            guide: [
+                "Use with intention, not habit",
+                "Ideal during reflection, creative work, or mindful routines",
+                "Best paired with silence, journaling, or meditation",
+                "Allow the experience to unfold naturally"
+            ]
+        },
+        dosing: [
+            {
+                title: "Option 1: Single Dose — Sustained Alignment",
+                bestFor: "Maintaining clarity and balance, Conscious living",
+                experience: "Clean mental clarity, Calm presence, Subtle uplift",
+                when: "Morning or mid-day to maintain alignment"
+            },
+            {
+                title: "Option 2: Double Dose — Deep Integration",
+                bestFor: "Deep inner work, Creative/spiritual exploration",
+                experience: "Heightened perception, Expanded awareness, Deep cohesion",
+                when: "During intentional self-inquiry or rituals"
+            }
+        ],
+        reminder: "Elevation isn’t escape. It’s living with awareness, clarity, and responsibility. You’re not trying to rise above life — you’re learning to meet it fully awake."
+    }
+];
 
 const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const {
-        name = 'Friend'
+        name = 'Friend',
+        totalScore = 0,
+        maxScore = 32
     } = userData || {};
 
     const firstName = name.split(' ')[0];
+    const scorePercentage = Math.round((totalScore / maxScore) * 100);
 
     // Countdown timer state (1 hour = 3600 seconds)
     const [timeLeft, setTimeLeft] = useState(3600);
@@ -68,8 +210,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const [checkoutData, setCheckoutData] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
 
-    // Standardized Common Phase (No dynamic scoring)
-    const currentPhase = UNIFIED_PHASE;
+    // Determine Result Phase based on Total Score
+    const getResultPhase = () => {
+        // Find phase where score falls within range
+        const phase = RESULT_DATA.find(p => totalScore >= p.range[0] && totalScore <= p.range[1]);
+        // Default to Phase 2 if undefined (safe fallback)
+        return phase || RESULT_DATA[1];
+    };
+
+    const currentPhase = getResultPhase();
 
     // Product gallery images
     const productImages = [
@@ -149,6 +298,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 name: checkoutFormData.fullName,
                                 email: userData?.email,
                                 phone: checkoutFormData.phone,
+                                score: totalScore,
                                 address: checkoutFormData.fullAddress,
                                 pincode: checkoutFormData.pincode,
                                 city: checkoutFormData.city,
@@ -201,27 +351,74 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         <div className="pp-badge-row">
                             <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
                                 <Sparkles size={16} />
-                                <span>{firstName}'s Full Spectrum Alignment</span>
+                                <span>{currentPhase.phase}</span>
                             </div>
                         </div>
 
                         <div className="pp-hero-welcome" style={{ color: currentPhase.color, marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.9rem' }}>
                             Prepared for {firstName}
                         </div>
-
-
                         <h1 className="pp-hero-title">
                             {currentPhase.title}
                         </h1>
 
-                        <p className="pp-hero-subtitle" style={{ marginTop: '1.5rem', fontSize: '1.2rem', color: 'rgba(255,255,255,0.8)', maxWidth: '600px', marginInline: 'auto' }}>
-                            Your personalized path to finding balance, clarity, and inner peace begins here.
-                        </p>
+                        <div className="pp-score-card">
+                            <div className="pp-score-visual">
+                                <svg className="pp-score-ring" viewBox="0 0 120 120">
+                                    <circle className="ring-bg" cx="60" cy="60" r="52" />
+                                    <circle
+                                        className="ring-progress"
+                                        cx="60"
+                                        cy="60"
+                                        r="52"
+                                        style={{
+                                            strokeDasharray: `${(scorePercentage / 100) * 327} 327`,
+                                            stroke: currentPhase.color
+                                        }}
+                                    />
+                                </svg>
+                                <div className="pp-score-inner">
+                                    <span className="pp-score-value">{scorePercentage}</span>
+                                    <span className="pp-score-max">/100</span>
+                                </div>
+                            </div>
+                            <div className="pp-score-details">
+                                <span className="pp-score-label">Your Assessment Score</span>
+                                <h3 className="pp-score-level" style={{ color: currentPhase.color }}>
+                                    {currentPhase.phase}
+                                </h3>
+                                <p className="pp-score-desc">
+                                    We've analyzed your responses. Here is your personalized support plan.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-
+            {/* Analysis Section (What This Means) */}
+            <section className="pp-analysis">
+                <div className="pp-container">
+                    <div className="pp-analysis-content">
+                        <span className="pp-section-label" style={{ color: currentPhase.color }}>Your Current State</span>
+                        <h2 className="pp-analysis-title">What This Means For {firstName}</h2>
+                        <h3 className="pp-experience-label">You may experience:</h3>
+                        <div className="pp-meaning-grid-2col">
+                            {currentPhase.meaning.map((point, i) => (
+                                <div key={i} className="pp-meaning-card" style={{
+                                    borderColor: currentPhase.color + '30',
+                                    background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, ' + currentPhase.color + '05 100%)'
+                                }}>
+                                    <div className="pp-card-icon" style={{ backgroundColor: currentPhase.color + '20', color: currentPhase.color }}>
+                                        <Check size={14} strokeWidth={3} />
+                                    </div>
+                                    <span className="pp-card-text">{point}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Product Showcase */}
             <section className="pp-product-showcase">
@@ -229,16 +426,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     <div className="pp-product-grid">
                         {/* Left: Single Hero Image */}
                         <div className="pp-product-gallery">
-                            <div className="pp-product-header" style={{ marginBottom: '2rem', textAlign: 'left' }}>
-                                <div className="pp-header-top" style={{ justifyContent: 'flex-start' }}>
-                                    <span className="pp-badge secondary">Best Value</span>
-                                    <div className="pp-rating">
-                                        <Star size={16} fill="#ffc107" color="#ffc107" />
-                                        <span>4.9 (120+ Reviews)</span>
-                                    </div>
-                                </div>
-                                <h1 className="pp-title">Elevate Full Spectrum Bundle</h1>
-                            </div>
                             <div className="pp-hero-image-container">
                                 <img
                                     src="/bundle-hero.png"
@@ -248,10 +435,20 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             </div>
                         </div>
 
-
-
-                        {/* Detailed Bundle Rows */}
+                        {/* Right: Bundle Details */}
                         <div className="pp-product-details">
+                            <div className="pp-product-header">
+                                <div className="pp-header-top">
+                                    <span className="pp-badge secondary">Best Value</span>
+                                    <div className="pp-rating">
+                                        <Star size={16} fill="#ffc107" color="#ffc107" />
+                                        <span>4.9 (120+ Reviews)</span>
+                                    </div>
+                                </div>
+                                <h1 className="pp-title">Elevate Full Spectrum Bundle</h1>
+                            </div>
+
+                            {/* Detailed Bundle Rows */}
                             <div className="pp-bundle-list-detailed" id="offer-bundle">
                                 <div className="pp-bundle-row-item">
                                     <div className="pp-bundle-thumb">
@@ -323,77 +520,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
-            {/* Analysis Section (Restored & Moved) */}
-            <section className="pp-analysis">
-                <div className="pp-container">
-                    <div className="pp-analysis-content">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Experience</span>
-                        <h2 className="pp-analysis-title">What Alignment Means For {firstName}</h2>
-                        <h3 className="pp-experience-label">You may experience:</h3>
-                        <div className="pp-meaning-grid-2col">
-                            {currentPhase.meaning.map((point, i) => (
-                                <div key={i} className="pp-meaning-card" style={{
-                                    borderColor: currentPhase.color + '30',
-                                    background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, ' + currentPhase.color + '05 100%)'
-                                }}>
-                                    <div className="pp-card-icon" style={{ backgroundColor: currentPhase.color + '20', color: currentPhase.color }}>
-                                        <Check size={14} strokeWidth={3} />
-                                    </div>
-                                    <span className="pp-card-text">{point}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Effects Section (New) */}
-            <section className="pp-effects-section">
-                <div className="pp-container">
-                    <div className="pp-section-header">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Transformation</span>
-                        <h2 className="pp-section-title">What You Will Feel</h2>
-                    </div>
-                    <div className="pp-effects-grid">
-                        {/* Card 1: Sensory */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Eye size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Heightened Sensory Awareness</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Colors appear vibrant, sounds more nuanced.</li>
-                                    <li>Helps anchor you in the 'now' for honest mindfulness.</li>
-                                    <li>Fosters clarity for deep introspective growth.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* Card 2: Physical */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Feather size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Physical Relaxation & Balance</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Melts tension, shifting body from effort to ease.</li>
-                                    <li>Recalibrates the nervous system to restore balance.</li>
-                                    <li>Heightens connection to physical sensations.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* Dynamic Support Section */}
             <section className="pp-dynamic-support">
                 <div className="pp-container">
@@ -419,10 +545,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         })}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Usage & Dosing Section */}
-            < section className="pp-usage-section" >
+            <section className="pp-usage-section">
                 <div className="pp-container">
                     {/* Guided Usage */}
                     <div className="pp-usage-guide">
@@ -478,10 +604,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         <p>{currentPhase.reminder}</p>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* What's Inside */}
-            < section className="pp-ingredients" >
+            <section className="pp-ingredients">
                 <div className="pp-container">
                     <div className="pp-section-header light">
                         <span className="pp-section-label">Premium Quality</span>
@@ -520,10 +646,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Testimonials */}
-            < section className="pp-testimonials" >
+            <section className="pp-testimonials">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
@@ -560,10 +686,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Mindful Use Section (Final Message) */}
-            < section className="pp-mindful" >
+            <section className="pp-mindful">
                 <div className="pp-container">
                     <div className="pp-mindful-content">
                         <div className="pp-mindful-header">
@@ -602,10 +728,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* FAQ */}
-            < section className="pp-faq" >
+            <section className="pp-faq">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Common Questions</span>
@@ -643,10 +769,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Footer */}
-            < footer className="pp-footer" >
+            <footer className="pp-footer">
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
@@ -660,7 +786,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         Please consult your healthcare provider before use.
                     </p>
                 </div>
-            </footer >
+            </footer>
 
             {/* Sticky Footer Timer */}
             {

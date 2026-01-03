@@ -2974,12 +2974,14 @@
         font-size: 0.85rem;
     }
 }
+
 /* Force 2 Columns for Support Grid on Mobile */
 @media (max-width: 768px) {
     .pp-support-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.75rem !important;
     }
+
     .pp-support-card {
         padding: 1rem !important;
         flex-direction: column !important;
@@ -2987,6 +2989,7 @@
         text-align: center !important;
         gap: 0.5rem !important;
     }
+
     .pp-support-card p {
         font-size: 0.85rem !important;
         line-height: 1.3 !important;
@@ -2995,8 +2998,15 @@
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .pp-faq-answer {
@@ -3021,8 +3031,8 @@
     border-radius: 20px;
     overflow: hidden;
     background: #050505;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .pp-chart-bg {
@@ -3047,24 +3057,117 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.7);
-    padding: 2px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 2;
+    top: 2rem;
+    right: 2rem;
 }
 
-.chart-row span:last-child {
-    font-weight: 700;
-    color: #fff;
+/* ===========================================
+   EFFECTS SECTION (Sensory & Body)
+   =========================================== */
+.pp-effects-section {
+    padding: 6rem 0 4rem;
+    position: relative;
+    z-index: 2;
 }
 
-.pp-chart-title {
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 1.5rem;
-    font-weight: 600;
+.pp-effects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.pp-effect-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pp-effect-video {
     position: absolute;
-    top: 1rem;
+    top: 0;
+    left: 0;
     width: 100%;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.pp-effect-card:hover .pp-effect-video {
+    opacity: 0.4;
+}
+
+.pp-effect-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(76, 175, 80, 0.4);
+}
+
+
+
+.pp-effect-content {
+    position: relative;
+    z-index: 1;
+}
+
+.pp-effect-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(76, 175, 80, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4caf50;
+    margin-bottom: 2rem;
+}
+
+.pp-effect-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.pp-effect-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pp-effect-list li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.pp-effect-list li::before {
+    content: "•";
+    color: #4caf50;
+    position: absolute;
+    left: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    top: -2px;
+}
+
+@media (max-width: 768px) {
+    .pp-effects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-effect-card {
+        padding: 2rem;
+    }
 }
