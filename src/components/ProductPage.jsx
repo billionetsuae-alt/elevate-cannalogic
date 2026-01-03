@@ -520,7 +520,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
-
             {/* Dynamic Support Section */}
             <section className="pp-dynamic-support">
                 <div className="pp-container">

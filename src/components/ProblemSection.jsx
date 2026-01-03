@@ -28,6 +28,27 @@ const ProblemSection = ({ onOpenAssessment }) => {
                 </div>
             </section>
 
+            {/* Vibrational Energy Section */}
+            <section className="energy-section">
+                <div className="container energy-container">
+                    {/* Mobile Label Only */}
+                    <p className="section-label mobile-label">Levels of Consciousness</p>
+
+                    <div className="energy-image">
+                        <img src="/vibrational-energy-chart.png" alt="Vibrational Energy Chart" />
+                    </div>
+
+                    <div className="energy-text">
+                        {/* Desktop Label Only */}
+                        <p className="section-label desktop-label">Levels of Consciousness</p>
+
+                        <p className="energy-description">
+                            <strong>Consciousness isn't static—it's a spectrum.</strong> When we are caught in survival modes like fear or stress, our frequency drops. Elevate is formulated to help shift your baseline state upwards, moving you from contraction into expansion, clarity, and flow.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {/* Venn Diagram Section - Original: Text on Left, Image on Right */}
             {/* Venn Diagram Section - Flipped: Image Left, Text Right */}
             <section className="venn-section">

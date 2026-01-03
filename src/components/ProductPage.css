@@ -3011,3 +3011,60 @@
     max-width: 800px !important;
     margin: 0 auto !important;
 }
+
+/* Energy Chart */
+.pp-energy-chart-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 3rem auto;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #050505;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.pp-chart-bg {
+    width: 100%;
+    display: block;
+    opacity: 0.8;
+}
+
+.pp-chart-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 160px;
+    text-align: center;
+}
+
+.chart-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.chart-row span:last-child {
+    font-weight: 700;
+    color: #fff;
+}
+
+.pp-chart-title {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
