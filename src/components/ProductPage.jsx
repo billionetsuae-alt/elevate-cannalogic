@@ -125,7 +125,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     useEffect(() => {
         const glowTimer = setInterval(() => {
             setActiveBenefitIndex(prev => (prev + 1) % benefitWords.length);
-        }, 1050); // Change every 1.5 seconds for slower, more readable effect
+        }, 1500); // Change every 1.5 seconds for slower, more readable effect
 
         return () => clearInterval(glowTimer);
     }, [benefitWords.length]);
