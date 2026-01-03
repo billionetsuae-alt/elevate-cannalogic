@@ -3234,7 +3234,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
-    padding: 2rem;
+    padding: 0 2rem 1.5rem 2rem;
+    /* Adjusted for seamless loop */
     width: 100%;
 }
 
@@ -3307,8 +3308,14 @@
 @media (max-width: 768px) {
     .pp-benefits-grid-content {
         grid-template-columns: 1fr;
+        gap: 0;
+        padding: 0 1rem 1.5rem 1rem;
         text-align: center;
-        gap: 1rem;
+    }
+
+    .pp-benefit-col.col-slow,
+    .pp-benefit-col.col-fast {
+        display: none;
     }
 
     .pp-benefit-col {

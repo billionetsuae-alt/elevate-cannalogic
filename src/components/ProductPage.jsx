@@ -420,6 +420,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             <span>Processing Speed</span>
                                             <span>Mental Resilience</span>
                                             <span>Clear Intentions</span>
+                                            <span>Heightened Perception</span>
+                                            <span>Thought Organization</span>
+                                            <span>Quick Wit</span>
+                                            <span>Problem Solving</span>
+                                            <span>Learning Capacity</span>
+                                            <span>Mindful Awareness</span>
                                         </div>
                                         <div className="pp-benefit-col col-medium">
                                             <span>Inner Peace</span>
@@ -432,6 +438,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             <span>Calm Confidence</span>
                                             <span>Emotional Depth</span>
                                             <span>Gentle Softening</span>
+                                            <span>Heart Opening</span>
+                                            <span>Less Reactivity</span>
+                                            <span>Patience</span>
+                                            <span>Self-Compassion</span>
+                                            <span>Joyful Presence</span>
+                                            <span>Serenity</span>
                                         </div>
                                         <div className="pp-benefit-col col-fast">
                                             <span>Physical Ease</span>
@@ -444,6 +456,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             <span>Deep Rest</span>
                                             <span>Immune Support</span>
                                             <span>Cellular Repair</span>
+                                            <span>Better Digestion</span>
+                                            <span>Energy Flow</span>
+                                            <span>Physical Stamina</span>
+                                            <span>Tension Release</span>
+                                            <span>Grounding</span>
+                                            <span>Somatic Healing</span>
                                         </div>
                                     </div>
                                 ))}
