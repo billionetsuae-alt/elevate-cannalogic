@@ -394,6 +394,68 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
+            {/* Benefits Exhibition Scrolling Section */}
+            <section className="pp-benefits-exhibition">
+                <div className="pp-container">
+                    <div className="pp-benefits-card-parent">
+                        <div className="pp-benefits-header">
+                            <span className="pp-section-label" style={{ color: currentPhase.color }}>Holistic Impact</span>
+                            <h2 className="pp-benefits-title">The Benefits Exhibition</h2>
+                            <p className="pp-benefits-subtitle">Touch every aspect of your life with Full Spectrum Alignment.</p>
+                        </div>
+
+                        <div className="pp-benefits-scroll-window">
+                            <div className="pp-benefits-scroll-track">
+                                {/* Duplicated Content for Seamless Loop */}
+                                {[...Array(2)].map((_, loopIndex) => (
+                                    <div key={loopIndex} className="pp-benefits-grid-content">
+                                        <div className="pp-benefit-col col-slow">
+                                            <span>Mental Clarity</span>
+                                            <span>Cognitive Function</span>
+                                            <span>Focus & Flow</span>
+                                            <span>Reduced Brain Fog</span>
+                                            <span>Sharp Memory</span>
+                                            <span>Strategic Thinking</span>
+                                            <span>Intellectual Insight</span>
+                                            <span>Processing Speed</span>
+                                            <span>Mental Resilience</span>
+                                            <span>Clear Intentions</span>
+                                        </div>
+                                        <div className="pp-benefit-col col-medium">
+                                            <span>Inner Peace</span>
+                                            <span>Emotional Balance</span>
+                                            <span>Reduced Anxiety</span>
+                                            <span>Stress Relief</span>
+                                            <span>Deep Sleep</span>
+                                            <span>Nervous System Regulation</span>
+                                            <span>Mood Elevation</span>
+                                            <span>Calm Confidence</span>
+                                            <span>Emotional Depth</span>
+                                            <span>Gentle Softening</span>
+                                        </div>
+                                        <div className="pp-benefit-col col-fast">
+                                            <span>Physical Ease</span>
+                                            <span>Muscle Relaxation</span>
+                                            <span>Pain Management</span>
+                                            <span>Lower Inflammation</span>
+                                            <span>Body Awareness</span>
+                                            <span>Vitality</span>
+                                            <span>Homeostasis</span>
+                                            <span>Deep Rest</span>
+                                            <span>Immune Support</span>
+                                            <span>Cellular Repair</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Gradient Overlay for Fade Effect */}
+                            <div className="pp-benefits-overlay-top"></div>
+                            <div className="pp-benefits-overlay-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Dynamic Support Section */}
             <section className="pp-dynamic-support">
                 <div className="pp-container">
