@@ -326,7 +326,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                             </div>
                             <h2>Get Cannabis Access</h2>
                             <p className="intro-subtitle">
-                                Check your eligibility for medical cannabis access in India. Safe, Legal, and Ministry of AYUSH Approved.
+                                Create your access for medical cannabis in India. Safe, Legal, and Ministry of AYUSH Approved.
                             </p>
                             <div className="intro-details">
                                 <div className="detail-item">
@@ -343,7 +343,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                 </div>
                             </div>
                             <button className="btn-start" onClick={nextStep}>
-                                Check Eligibility
+                                Create Now
                                 <ArrowRight size={20} />
                             </button>
                         </div>

@@ -67,6 +67,26 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
     const [checkoutData, setCheckoutData] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
+    const [activeBenefitIndex, setActiveBenefitIndex] = useState(0);
+
+    // Benefit words for auto-glow animation
+    const benefitWords = [
+        // Column 1 - Mental
+        'Mental Clarity', 'Cognitive Function', 'Focus & Flow', 'Reduced Brain Fog',
+        'Sharp Memory', 'Strategic Thinking', 'Intellectual Insight', 'Processing Speed',
+        'Mental Resilience', 'Clear Intentions', 'Heightened Perception', 'Thought Organization',
+        'Quick Wit', 'Problem Solving', 'Learning Capacity', 'Mindful Awareness',
+        // Column 2 - Emotional
+        'Inner Peace', 'Emotional Balance', 'Reduced Anxiety', 'Stress Relief',
+        'Deep Sleep', 'Nervous System Regulation', 'Mood Elevation', 'Calm Confidence',
+        'Emotional Depth', 'Gentle Softening', 'Heart Opening', 'Less Reactivity',
+        'Patience', 'Self-Compassion', 'Joyful Presence', 'Serenity',
+        // Column 3 - Physical
+        'Physical Ease', 'Muscle Relaxation', 'Pain Management', 'Lower Inflammation',
+        'Body Awareness', 'Vitality', 'Homeostasis', 'Deep Rest',
+        'Immune Support', 'Cellular Repair', 'Better Digestion', 'Energy Flow',
+        'Physical Stamina', 'Tension Release', 'Grounding', 'Somatic Healing'
+    ];
 
     // Standardized Common Phase (No dynamic scoring)
     const currentPhase = UNIFIED_PHASE;
@@ -100,6 +120,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    // Auto-cycle through benefit words for glow effect
+    useEffect(() => {
+        const glowTimer = setInterval(() => {
+            setActiveBenefitIndex(prev => (prev + 1) % benefitWords.length);
+        }, 1050); // Change every 1.5 seconds for slower, more readable effect
+
+        return () => clearInterval(glowTimer);
+    }, [benefitWords.length]);
 
     // Open checkout modal first
     const handleBuyNow = () => {
@@ -286,7 +315,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
                                             <h4>Mystery Transformation Ebook</h4>
-                                            <span className="pp-row-price">₹1,500</span>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
+                                                <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                            </div>
                                         </div>
                                         <p>Unlock hidden potential with daily practices.</p>
                                     </div>
@@ -410,58 +442,34 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 {[...Array(2)].map((_, loopIndex) => (
                                     <div key={loopIndex} className="pp-benefits-grid-content">
                                         <div className="pp-benefit-col col-slow">
-                                            <span>Mental Clarity</span>
-                                            <span>Cognitive Function</span>
-                                            <span>Focus & Flow</span>
-                                            <span>Reduced Brain Fog</span>
-                                            <span>Sharp Memory</span>
-                                            <span>Strategic Thinking</span>
-                                            <span>Intellectual Insight</span>
-                                            <span>Processing Speed</span>
-                                            <span>Mental Resilience</span>
-                                            <span>Clear Intentions</span>
-                                            <span>Heightened Perception</span>
-                                            <span>Thought Organization</span>
-                                            <span>Quick Wit</span>
-                                            <span>Problem Solving</span>
-                                            <span>Learning Capacity</span>
-                                            <span>Mindful Awareness</span>
+                                            {benefitWords.slice(0, 16).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className={activeBenefitIndex === idx ? 'glow-active' : ''}
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
                                         </div>
                                         <div className="pp-benefit-col col-medium">
-                                            <span>Inner Peace</span>
-                                            <span>Emotional Balance</span>
-                                            <span>Reduced Anxiety</span>
-                                            <span>Stress Relief</span>
-                                            <span>Deep Sleep</span>
-                                            <span>Nervous System Regulation</span>
-                                            <span>Mood Elevation</span>
-                                            <span>Calm Confidence</span>
-                                            <span>Emotional Depth</span>
-                                            <span>Gentle Softening</span>
-                                            <span>Heart Opening</span>
-                                            <span>Less Reactivity</span>
-                                            <span>Patience</span>
-                                            <span>Self-Compassion</span>
-                                            <span>Joyful Presence</span>
-                                            <span>Serenity</span>
+                                            {benefitWords.slice(16, 32).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className={activeBenefitIndex === (idx + 16) ? 'glow-active' : ''}
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
                                         </div>
                                         <div className="pp-benefit-col col-fast">
-                                            <span>Physical Ease</span>
-                                            <span>Muscle Relaxation</span>
-                                            <span>Pain Management</span>
-                                            <span>Lower Inflammation</span>
-                                            <span>Body Awareness</span>
-                                            <span>Vitality</span>
-                                            <span>Homeostasis</span>
-                                            <span>Deep Rest</span>
-                                            <span>Immune Support</span>
-                                            <span>Cellular Repair</span>
-                                            <span>Better Digestion</span>
-                                            <span>Energy Flow</span>
-                                            <span>Physical Stamina</span>
-                                            <span>Tension Release</span>
-                                            <span>Grounding</span>
-                                            <span>Somatic Healing</span>
+                                            {benefitWords.slice(32, 48).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className={activeBenefitIndex === (idx + 32) ? 'glow-active' : ''}
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
                                         </div>
                                     </div>
                                 ))}

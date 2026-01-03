@@ -1118,7 +1118,8 @@
     height: auto;
     max-height: 450px;
     object-fit: contain;
-    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    border-radius: 30px;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
 }
 
 /* Bundle List */
@@ -3269,6 +3270,13 @@
 .pp-benefit-col span:hover {
     color: #4caf50;
     text-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+}
+
+/* Auto-glow animation class */
+.pp-benefit-col span.glow-active {
+    color: #4caf50 !important;
+    text-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 /* Scroll Animation */
