@@ -9,6 +9,12 @@ import {
     Gift, Crown, BadgeCheck, Lightbulb, Sprout, ChevronDown
 } from 'lucide-react';
 
+const PACK_OPTIONS = [
+    { id: 1, label: '1 Pack', price: 3899, save: null, best: false, totalValue: 12500 },
+    { id: 2, label: '2 Packs', price: 7018, save: 'Save 10%', best: 'Most Chosen', totalValue: 25000 },
+    { id: 3, label: '3 Packs', price: 9358, save: 'Save 20%', best: 'Best Value', totalValue: 37500 }
+];
+
 const UNIFIED_PHASE = {
     phase: "Full Spectrum Alignment",
     title: "The Path to Higher Alignment",
@@ -99,6 +105,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
     ];
     const [selectedImage, setSelectedImage] = useState(0);
+    const [selectedPack, setSelectedPack] = useState(2); // Default to Most Chosen (2 Packs)
 
     // Countdown timer effect
     useEffect(() => {
@@ -142,10 +149,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-            amount: 389900, // ₹3,899 in paise
+            amount: PACK_OPTIONS.find(p => p.id === selectedPack).price * 100, // Amount in paise
             currency: 'INR',
             name: 'CannaLogic',
-            description: 'Elevate Full Spectrum Bundle',
+            description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}`,
             image: '/Cannalogic-White.svg',
             prefill: {
                 name: checkoutFormData.fullName || name || '',
@@ -156,7 +163,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 address: checkoutFormData.fullAddress,
                 pincode: checkoutFormData.pincode,
                 city: checkoutFormData.city,
-                state: checkoutFormData.state
+                state: checkoutFormData.state,
+                selected_pack: PACK_OPTIONS.find(p => p.id === selectedPack).label
             },
             theme: {
                 color: '#4caf50'
@@ -184,8 +192,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 state: checkoutFormData.state
                             },
                             recordId: userData?.recordId,
-                            amount: 3899,
-                            product: 'Elevate Full Spectrum Bundle'
+                            amount: PACK_OPTIONS.find(p => p.id === selectedPack).price,
+                            product: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}`,
+                            pack_details: PACK_OPTIONS.find(p => p.id === selectedPack)
                         })
                     });
                 } catch (error) {
@@ -256,7 +265,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <section className="pp-product-showcase">
                 <div className="pp-container">
                     <div className="pp-product-grid">
-                        {/* Left: Single Hero Image */}
+                        {/* Left: Hero Image + Bundle Items */}
                         <div className="pp-product-gallery">
                             <div className="pp-product-header" style={{ marginBottom: '2rem', textAlign: 'left' }}>
                                 <div className="pp-header-top" style={{ justifyContent: 'flex-start' }}>
@@ -275,12 +284,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     className="pp-main-image single-hero"
                                 />
                             </div>
-                        </div>
 
-
-
-                        {/* Detailed Bundle Rows */}
-                        <div className="pp-product-details">
+                            {/* Bundle Items - Now in Left Column */}
                             <div className="pp-bundle-list-detailed" id="offer-bundle">
                                 <div className="pp-bundle-row-item">
                                     <div className="pp-bundle-thumb">
@@ -324,22 +329,56 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Right: Pack Selection + Pricing + CTA */}
+                        <div className="pp-product-details">
+                            {/* Pack Selection Section */}
+                            <div className="pp-pack-selection-container">
+                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1rem', color: '#8bc34a' }}>Choose Your Elevation Path</div>
+                                <div className="pp-pack-grid">
+                                    {PACK_OPTIONS.map(pack => (
+                                        <div
+                                            key={pack.id}
+                                            className={`pp-pack-card ${selectedPack === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
+                                            onClick={() => setSelectedPack(pack.id)}
+                                        >
+                                            {pack.best && (
+                                                <div className="pp-pack-ribbon">
+                                                    <span>{pack.best}</span>
+                                                </div>
+                                            )}
+                                            <h4 className="pp-pack-title">{pack.label}</h4>
+                                            <div className="pp-pack-price">
+                                                <span className="pp-currency">₹</span>
+                                                {pack.price.toLocaleString()}
+                                            </div>
+                                            {pack.save && (
+                                                <div className="pp-pack-save">{pack.save}</div>
+                                            )}
+                                            <button className="pp-pack-select-btn">
+                                                {selectedPack === pack.id ? 'Selected' : `Select ${pack.label}`}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
                             {/* Total Value & Pricing */}
                             <div className="pp-pricing-card">
                                 <div className="pp-value-row">
                                     <span>Total Value</span>
-                                    <span className="pp-value-crossed">₹12,500</span>
+                                    <span className="pp-value-crossed">₹{PACK_OPTIONS.find(p => p.id === selectedPack).totalValue.toLocaleString()}</span>
                                 </div>
                                 <div className="pp-price-main-row">
                                     <span className="pp-special-label">Special Offer</span>
                                     <div className="pp-final-price">
                                         <span className="pp-currency">₹</span>
-                                        3,899
+                                        {PACK_OPTIONS.find(p => p.id === selectedPack).price.toLocaleString()}
                                     </div>
                                 </div>
                                 <div className="pp-savings-badge">
-                                    You save ₹8,601 (69% OFF)
+                                    You save ₹{(PACK_OPTIONS.find(p => p.id === selectedPack).totalValue - PACK_OPTIONS.find(p => p.id === selectedPack).price).toLocaleString()} ({Math.round(((PACK_OPTIONS.find(p => p.id === selectedPack).totalValue - PACK_OPTIONS.find(p => p.id === selectedPack).price) / PACK_OPTIONS.find(p => p.id === selectedPack).totalValue) * 100)}% OFF)
                                 </div>
                             </div>
 
@@ -507,10 +546,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         })}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Usage & Dosing Section */}
-            < section className="pp-usage-section" >
+            <section className="pp-usage-section">
                 <div className="pp-container">
                     {/* Guided Usage */}
                     <div className="pp-usage-guide">
@@ -566,10 +605,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         <p>{currentPhase.reminder}</p>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* What's Inside */}
-            < section className="pp-ingredients" >
+            <section className="pp-ingredients">
                 <div className="pp-container">
                     <div className="pp-section-header light">
                         <span className="pp-section-label">Premium Quality</span>
@@ -608,10 +647,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Testimonials */}
-            < section className="pp-testimonials" >
+            <section className="pp-testimonials">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
@@ -648,10 +687,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Mindful Use Section (Final Message) */}
-            < section className="pp-mindful" >
+            <section className="pp-mindful">
                 <div className="pp-container">
                     <div className="pp-mindful-content">
                         <div className="pp-mindful-header">
@@ -690,10 +729,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* FAQ */}
-            < section className="pp-faq" >
+            <section className="pp-faq">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Common Questions</span>
@@ -731,10 +770,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Footer */}
-            < footer className="pp-footer" >
+            <footer className="pp-footer">
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
@@ -748,7 +787,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         Please consult your healthcare provider before use.
                     </p>
                 </div>
-            </footer >
+            </footer>
 
             {/* Sticky Footer Timer */}
             {
@@ -782,7 +821,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 userData={userData}
                 onProceedToPayment={processPayment}
             />
-        </div >
+        </div>
     );
 };
 
