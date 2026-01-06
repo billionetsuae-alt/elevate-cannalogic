@@ -21,7 +21,7 @@ const VideoSection = () => {
                 <div className="fullwidth-video-container animate-on-scroll">
                     <video
                         src="https://res.cloudinary.com/dve0pokcj/video/upload/v1767691948/IntroVideoElevate_twuep3.mp4"
-                        poster="/video-thumbnail.png"
+                        poster="/video-thumbnail.jpeg"
                         loop
                         playsInline
                         controls
