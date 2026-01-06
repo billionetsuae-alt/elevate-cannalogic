@@ -10,9 +10,9 @@ import {
 } from 'lucide-react';
 
 const PACK_OPTIONS = [
-    { id: 1, label: '1 Pack', price: 3899, save: null, best: false, totalValue: 12500 },
-    { id: 2, label: '2 Packs', price: 7018, save: 'Save 10%', best: 'Most Chosen', totalValue: 25000 },
-    { id: 3, label: '3 Packs', price: 9358, save: 'Save 20%', best: 'Best Value', totalValue: 37500 }
+    { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
+    { id: 2, label: '2 Packs', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
+    { id: 3, label: '3 Packs', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
 ];
 
 const UNIFIED_PHASE = {
@@ -239,22 +239,14 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         <div className="pp-badge-row">
                             <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
                                 <Sparkles size={16} />
-                                <span>{firstName}'s Full Spectrum Alignment</span>
+                                <span>Prepared for {firstName}</span>
                             </div>
                         </div>
 
-                        <div className="pp-hero-welcome" style={{ color: currentPhase.color, marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.9rem' }}>
-                            Prepared for {firstName}
-                        </div>
 
 
-                        <h1 className="pp-hero-title">
-                            {currentPhase.title}
-                        </h1>
 
-                        <p className="pp-hero-subtitle" style={{ marginTop: '1.5rem', fontSize: '1.2rem', color: 'rgba(255,255,255,0.8)', maxWidth: '600px', marginInline: 'auto' }}>
-                            Your personalized path to finding balance, clarity, and inner peace begins here.
-                        </p>
+                        {/* Title and Subtitle removed as per request to declutter */}
                     </div>
                 </div>
             </section>
@@ -285,24 +277,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 />
                             </div>
 
-                            {/* Bundle Items - Now in Left Column */}
-                            <div className="pp-bundle-list-detailed" id="offer-bundle">
-                                <div className="pp-bundle-row-item">
-                                    <div className="pp-bundle-thumb">
-                                        <img src="/dr-arathy-pro.png" alt="Guidance" />
-                                    </div>
-                                    <div className="pp-bundle-content">
-                                        <div className="pp-bundle-row-header">
-                                            <h4>1-on-1 Personalized Guidance</h4>
-                                            <span className="pp-row-price">₹5,000</span>
-                                        </div>
-                                        <p>Expert consultation to align your journey and dosage.</p>
-                                    </div>
-                                </div>
+                        </div>
 
+                        {/* Right: Pack Selection + Pricing + CTA */}
+                        <div className="pp-product-details">
+                            {/* Bundle Items - MOVED to Right Column */}
+                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem' }}>
+                                {/* 1-on-1 Guidance Removed as per request */}
                                 <div className="pp-bundle-row-item">
                                     <div className="pp-bundle-thumb">
-                                        <img src="/elevate product image.png" alt="Capsules" />
+                                        <img src="/elevate product image.png" alt="Elevate Capsules" />
                                     </div>
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
@@ -329,19 +313,19 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Right: Pack Selection + Pricing + CTA */}
-                        <div className="pp-product-details">
                             {/* Pack Selection Section */}
-                            <div className="pp-pack-selection-container">
-                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1rem', color: '#8bc34a' }}>Choose Your Elevation Path</div>
-                                <div className="pp-pack-grid">
+                            <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#8bc34a', width: '100%' }}>Choose Your Elevation Path</div>
+                                <div className="pp-pack-grid" style={{ justifyContent: 'center' }}>
                                     {PACK_OPTIONS.map(pack => (
                                         <div
                                             key={pack.id}
                                             className={`pp-pack-card ${selectedPack === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
-                                            onClick={() => setSelectedPack(pack.id)}
+                                            onClick={() => {
+                                                setSelectedPack(pack.id);
+                                                handleBuyNow();
+                                            }}
                                         >
                                             {pack.best && (
                                                 <div className="pp-pack-ribbon">
@@ -349,6 +333,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                                 </div>
                                             )}
                                             <h4 className="pp-pack-title">{pack.label}</h4>
+                                            {/* Sub-label for 1 Pack (and others if needed) */}
+                                            {pack.subLabel && (
+                                                <div className="pp-pack-sublabel">{pack.subLabel}</div>
+                                            )}
                                             <div className="pp-pack-price">
                                                 <span className="pp-currency">₹</span>
                                                 {pack.price.toLocaleString()}
@@ -356,8 +344,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             {pack.save && (
                                                 <div className="pp-pack-save">{pack.save}</div>
                                             )}
-                                            <button className="pp-pack-select-btn">
-                                                {selectedPack === pack.id ? 'Selected' : `Select ${pack.label}`}
+                                            <button
+                                                className="pp-pack-select-btn"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedPack(pack.id);
+                                                    handleBuyNow(); // Direct checkout
+                                                }}
+                                            >
+                                                {`Select ${pack.label}`}
                                             </button>
                                         </div>
                                     ))}
@@ -365,7 +360,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             </div>
 
                             {/* Total Value & Pricing */}
-                            <div className="pp-pricing-card">
+                            {/* Total Value & Pricing - REMOVED -> Direct Checkout */}
+                            {/* <div className="pp-pricing-card">
                                 <div className="pp-value-row">
                                     <span>Total Value</span>
                                     <span className="pp-value-crossed">₹{PACK_OPTIONS.find(p => p.id === selectedPack).totalValue.toLocaleString()}</span>
@@ -380,11 +376,11 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 <div className="pp-savings-badge">
                                     You save ₹{(PACK_OPTIONS.find(p => p.id === selectedPack).totalValue - PACK_OPTIONS.find(p => p.id === selectedPack).price).toLocaleString()} ({Math.round(((PACK_OPTIONS.find(p => p.id === selectedPack).totalValue - PACK_OPTIONS.find(p => p.id === selectedPack).price) / PACK_OPTIONS.find(p => p.id === selectedPack).totalValue) * 100)}% OFF)
                                 </div>
-                            </div>
+                            </div> */}
 
 
 
-                            <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired}>
+                            <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired} style={{ marginTop: '1.5rem' }}>
                                 <Rocket size={22} />
                                 <span>{offerExpired ? 'Offer Expired' : 'Claim My Exclusive Bundle'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
@@ -392,10 +388,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Analysis Section (Restored & Moved) */}
-            <section className="pp-analysis">
+            < section className="pp-analysis" >
                 <div className="pp-container">
                     <div className="pp-analysis-content">
                         <span className="pp-section-label" style={{ color: currentPhase.color }}>The Experience</span>
@@ -416,10 +412,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Effects Section (New) */}
-            <section className="pp-effects-section">
+            < section className="pp-effects-section" >
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label" style={{ color: currentPhase.color }}>The Transformation</span>
@@ -463,10 +459,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Benefits Exhibition Scrolling Section */}
-            <section className="pp-benefits-exhibition">
+            < section className="pp-benefits-exhibition" >
                 <div className="pp-container">
                     <div className="pp-benefits-card-parent">
                         <div className="pp-benefits-header">
@@ -519,10 +515,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Dynamic Support Section */}
-            <section className="pp-dynamic-support">
+            < section className="pp-dynamic-support" >
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label" style={{ color: currentPhase.color }}>Tailored Support</span>
@@ -546,10 +542,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         })}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Usage & Dosing Section */}
-            <section className="pp-usage-section">
+            < section className="pp-usage-section" >
                 <div className="pp-container">
                     {/* Guided Usage */}
                     <div className="pp-usage-guide">
@@ -605,10 +601,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         <p>{currentPhase.reminder}</p>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* What's Inside */}
-            <section className="pp-ingredients">
+            < section className="pp-ingredients" >
                 <div className="pp-container">
                     <div className="pp-section-header light">
                         <span className="pp-section-label">Premium Quality</span>
@@ -647,10 +643,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Testimonials */}
-            <section className="pp-testimonials">
+            < section className="pp-testimonials" >
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
@@ -687,10 +683,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Mindful Use Section (Final Message) */}
-            <section className="pp-mindful">
+            < section className="pp-mindful" >
                 <div className="pp-container">
                     <div className="pp-mindful-content">
                         <div className="pp-mindful-header">
@@ -729,10 +725,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* FAQ */}
-            <section className="pp-faq">
+            < section className="pp-faq" >
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Common Questions</span>
@@ -770,10 +766,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Footer */}
-            <footer className="pp-footer">
+            < footer className="pp-footer" >
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
@@ -787,7 +783,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         Please consult your healthcare provider before use.
                     </p>
                 </div>
-            </footer>
+            </footer >
 
             {/* Sticky Footer Timer */}
             {
@@ -821,7 +817,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 userData={userData}
                 onProceedToPayment={processPayment}
             />
-        </div>
+        </div >
     );
 };
 

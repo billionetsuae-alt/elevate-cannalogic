@@ -103,7 +103,8 @@
    =========================================== */
 
 .pp-hero {
-    padding: 4rem 0 3rem;
+    padding: 3.5rem 0 2rem;
+    /* Increased for Desktop Gap */
 }
 
 .pp-hero-content {
@@ -117,7 +118,8 @@
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
+    /* Reduced from 2rem */
 }
 
 .pp-badge {
@@ -259,14 +261,16 @@
    =========================================== */
 
 .pp-product-showcase {
-    padding: 4rem 0;
+    padding: 2rem 0 4rem;
+    /* Increased for Desktop Gap */
 }
 
 .pp-product-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: center;
+    align-items: start;
+    /* Changed from center to align top */
 }
 
 .pp-product-visual {
@@ -1133,6 +1137,7 @@
 
 .pp-pack-grid {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     overflow: visible;
     /* Allow borders and shadows to show fully */
@@ -1145,6 +1150,8 @@
 .pp-pack-grid::-webkit-scrollbar {
     display: none;
 }
+
+
 
 .pp-pack-card {
     flex: 1;
@@ -1170,6 +1177,12 @@
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
+/* Featured styling (Gold) - Defined BEFORE selected to allow override */
+.pp-pack-card.featured {
+    border: 2px solid #ffc107;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.15);
+}
+
 .pp-pack-card.selected {
     background: linear-gradient(180deg, rgba(76, 175, 80, 0.25) 0%, rgba(20, 50, 25, 0.95) 100%);
     border-color: #4caf50;
@@ -1177,93 +1190,81 @@
     transform: translateY(-6px) scale(1.02);
 }
 
-.pp-pack-card.featured {
-    border-top: 4px solid #ffc107;
-    padding-top: 1.25rem;
-}
-
 /* Enhanced Premium Ribbons */
+/* Enhanced Premium Badges (Modern Pill Design) */
 .pp-pack-ribbon {
     position: absolute;
-    top: -14px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #ffd54f 0%, #ff9800 50%, #e65100 100%);
+    background: linear-gradient(90deg, #FFC107 0%, #FF9800 100%);
     color: #000;
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 0.4rem 1.25rem;
-    border-radius: 6px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
     white-space: nowrap;
-    box-shadow:
-        0 4px 12px rgba(255, 152, 0, 0.5),
-        0 2px 4px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     z-index: 10;
-    animation: ribbon-pulse 2s ease-in-out infinite;
+    animation: badge-pulse 2s ease-in-out infinite;
 }
 
+/* Remove old ribbon folds */
 .pp-pack-ribbon::before,
 .pp-pack-ribbon::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    border: 5px solid transparent;
-    border-top-color: #b86f00;
+    display: none;
 }
 
-.pp-pack-ribbon::before {
-    left: 0;
-    border-left-color: #b86f00;
-}
-
-.pp-pack-ribbon::after {
-    right: 0;
-    border-right-color: #b86f00;
-}
-
-@keyframes ribbon-pulse {
+@keyframes badge-pulse {
 
     0%,
     100% {
-        box-shadow:
-            0 4px 12px rgba(255, 152, 0, 0.5),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 15px rgba(255, 193, 7, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        transform: translateX(-50%) scale(1);
     }
 
     50% {
-        box-shadow:
-            0 4px 20px rgba(255, 152, 0, 0.7),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 25px rgba(255, 193, 7, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        transform: translateX(-50%) scale(1.05);
     }
 }
 
 .pp-pack-title {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
+    /* Increased from 1.15rem */
     font-weight: 700;
     color: white;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
     margin-top: 0.5rem;
 }
 
+.pp-pack-sublabel {
+    font-size: 0.9rem;
+    /* Increased from 0.8rem */
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
 .pp-pack-price {
-    font-size: 1.75rem;
+    font-size: 2rem;
+    /* Increased from 1.75rem */
     font-weight: 800;
     color: white;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 2px;
+    gap: 4px;
     line-height: 1.1;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .pp-pack-price .pp-currency {
-    font-size: 1rem;
+    font-size: 1.5rem;
+    /* Large increase */
     font-weight: 600;
     margin-top: 0.3rem;
 }
@@ -1278,7 +1279,10 @@
 
 .pp-pack-select-btn {
     margin-top: 1.25rem;
-    width: 100%;
+    width: 90%;
+    /* Reduced width */
+    margin-left: auto;
+    margin-right: auto;
     padding: 0.75rem 0.5rem;
     font-size: 0.85rem;
     font-weight: 700;
@@ -2096,7 +2100,55 @@
 
 @media (max-width: 768px) {
     .pp-container {
-        padding: 0 1.25rem;
+        padding: 0 0.75rem;
+        overflow-x: hidden;
+    }
+
+    /* Keep gap tight on mobile */
+    .pp-hero {
+        padding: 2rem 0 0.5rem;
+    }
+
+    .pp-product-showcase {
+        padding: 1rem 0 4rem;
+    }
+
+    .pp-product-details {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .pp-bundle-list-detailed {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .pp-bundle-row-item {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pp-bundle-row-header {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .pp-bundle-row-header h4 {
+        font-size: 0.85rem;
+    }
+
+    .pp-row-price {
+        font-size: 0.85rem;
+    }
+
+    .pp-pricing-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .pp-hero-title {
@@ -3515,5 +3567,110 @@
 
     .pp-benefits-title {
         font-size: 1.8rem;
+    }
+}
+
+/* Mobile: All 3 pack cards in one row - extremely small (Fixed Cascade) */
+@media (max-width: 600px) {
+    .pp-pack-selection-container {
+        margin: 0.5rem 0;
+        padding: 10px 0;
+        /* Added padding to accommodate glow */
+        overflow: visible;
+        /* Fixed glow clipping */
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .pp-pack-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 4px;
+        /* Reduced to 4px to further fix clipping */
+        padding: 0.6rem 0 0.25rem;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pp-pack-card {
+        flex: 1 1 25%;
+        min-width: 0 !important;
+        /* Force override */
+        width: auto !important;
+        max-width: 32% !important;
+        /* Slightly increased from 28% to use space */
+        padding: 0.6rem 0.15rem 0.5rem;
+        border-width: 1px;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    .pp-pack-title {
+        font-size: 0.8rem;
+        /* Slight increase for mobile */
+        margin-bottom: 0.1rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .pp-pack-sublabel {
+        font-size: 0.55rem;
+        /* Slight increase */
+        margin-bottom: 0.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+    }
+
+    .pp-pack-price {
+        font-size: 1.1rem;
+        /* Increased from 0.95rem */
+        margin: 0.2rem 0;
+        flex-wrap: wrap;
+        /* allow wrapping if absolutely needed */
+        justify-content: center;
+    }
+
+    .pp-pack-price .pp-currency {
+        font-size: 0.75rem;
+        /* Increased from 0.55rem */
+        margin-top: 2px;
+    }
+
+    .pp-pack-save {
+        font-size: 0.55rem;
+        padding: 0.1rem 0.4rem;
+        margin: 0.25rem 0;
+        line-height: 1.2;
+    }
+
+    .pp-pack-select-btn {
+        font-size: 0.55rem;
+        padding: 0.3rem 0.1rem;
+        margin-top: 0.3rem;
+        width: 90%;
+        /* Gap for mobile too */
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pp-pack-ribbon {
+        font-size: 0.45rem;
+        padding: 0.15rem 0.6rem;
+        top: -7px;
+        border-radius: 10px;
+        letter-spacing: 0;
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .pp-section-label {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem !important;
     }
 }
