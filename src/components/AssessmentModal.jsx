@@ -201,7 +201,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             });
         }
 
-        // Background Submission
+        // Background Submission - Clean payload matching Airtable columns
         const payload = {
             name: formData.name,
             age: parseInt(formData.age),
@@ -209,16 +209,10 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             weight: parseInt(formData.weight),
             phone: formData.phone,
             email: formData.email,
-            answers: formData.answers,
-            answerTexts: answerTexts,
-            totalScore: totalScore,
-            maxScore: 35,
-            tempId: tempId,
             source: urlParams.get('utm_source') || urlParams.get('ref') || document.referrer || 'Direct',
             utm_medium: urlParams.get('utm_medium') || '',
             utm_campaign: urlParams.get('utm_campaign') || '',
             status: 'Lead',
-            readinessLevel: getReadinessLevel(totalScore),
             submittedAt: new Date().toISOString(),
             userAgent: navigator.userAgent,
             pageUrl: window.location.href

@@ -815,6 +815,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 isOpen={isCheckoutOpen}
                 onClose={() => setIsCheckoutOpen(false)}
                 userData={userData}
+                selectedPack={PACK_OPTIONS.find(p => p.id === selectedPack)}
                 onProceedToPayment={processPayment}
             />
         </div >

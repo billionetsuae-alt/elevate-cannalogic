@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, MapPin, User, Phone, Home, Loader2 } from 'lucide-react';
 import './CheckoutModal.css';
 
-const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
+const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPayment }) => {
     const [formData, setFormData] = useState({
         fullName: '',
         phone: '',
@@ -251,12 +251,12 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                     {/* Order Summary */}
                     <div className="checkout-summary">
                         <div className="summary-row">
-                            <span>Elevate Full Spectrum Bundle</span>
-                            <span>₹3,899</span>
+                            <span>{selectedPack ? `Elevate Bundle - ${selectedPack.label}` : 'Elevate Full Spectrum Bundle'}</span>
+                            <span>₹{selectedPack ? selectedPack.price.toLocaleString('en-IN') : '3,899'}</span>
                         </div>
                         <div className="summary-row total">
                             <span>Total</span>
-                            <span>₹3,899</span>
+                            <span>₹{selectedPack ? selectedPack.price.toLocaleString('en-IN') : '3,899'}</span>
                         </div>
                     </div>
 
@@ -272,7 +272,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, onProceedToPayment }) => {
                                 Processing...
                             </>
                         ) : (
-                            <>Pay ₹3,899</>
+                            <>Pay ₹{selectedPack ? selectedPack.price.toLocaleString('en-IN') : '3,899'}</>
                         )}
                     </button>
 
