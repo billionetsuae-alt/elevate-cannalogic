@@ -2193,6 +2193,15 @@
 
     .pp-ingredients-grid {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .pp-usage-section {
+        padding-bottom: 0.5rem;
+    }
+
+    .pp-benefits-exhibition {
+        padding-top: 0.5rem;
     }
 
     .pp-certifications {
@@ -3549,13 +3558,12 @@
 
 @media (max-width: 768px) {
     .pp-benefits-grid-content {
-        grid-template-columns: 1fr;
-        gap: 0;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
         padding: 0 1rem 1.5rem 1rem;
         text-align: center;
     }
 
-    .pp-benefit-col.col-slow,
     .pp-benefit-col.col-fast {
         display: none;
     }
@@ -3567,6 +3575,14 @@
 
     .pp-benefits-title {
         font-size: 1.8rem;
+    }
+
+    .pp-benefits-exhibition {
+        padding: 0.5rem 0 3rem;
+    }
+
+    .pp-dosing-options {
+        margin-bottom: 1rem;
     }
 }
 
@@ -3672,5 +3688,58 @@
     .pp-section-label {
         font-size: 0.7rem;
         margin-bottom: 0.4rem !important;
+    }
+}
+
+
+
+
+/* Override grids when strictly inside the right column (pp-extra-details) to handle the 'old' components */
+.pp-extra-details .pp-dosing-grid,
+.pp-extra-details .pp-ingredients-grid,
+.pp-extra-details .pp-support-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+}
+
+.pp-extra-details .pp-dosing-card,
+.pp-extra-details .pp-ingredient-item {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* Adjust card paddings for tighter space */
+.pp-extra-details .pp-dosing-header,
+.pp-extra-details .pp-dosing-body {
+    padding: 1rem;
+}
+
+.pp-extra-details .pp-dosing-body {
+    gap: 0.75rem;
+}
+
+.pp-extra-details .dosing-block strong {
+    font-size: 0.75rem;
+}
+
+.pp-extra-details .dosing-block p {
+    font-size: 0.95rem;
+}
+
+
+/* Restore full width grids */
+.pp-dosing-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.pp-ingredients-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+@media (max-width: 768px) {
+
+    .pp-dosing-grid,
+    .pp-ingredients-grid {
+        grid-template-columns: 1fr !important;
     }
 }

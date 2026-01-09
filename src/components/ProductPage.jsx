@@ -11,8 +11,8 @@ import {
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
-    { id: 2, label: '2 Packs', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
-    { id: 3, label: '3 Packs', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
+    { id: 2, label: '2 Packs', subLabel: '60 Softgels • 60 Days', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
+    { id: 3, label: '3 Packs', subLabel: '90 Softgels • 90 Days', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
 ];
 
 const UNIFIED_PHASE = {
@@ -238,8 +238,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     <div className="pp-hero-content">
                         <div className="pp-badge-row">
                             <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
-                                <Sparkles size={16} />
-                                <span>Prepared for {firstName}</span>
+                                <Leaf size={16} />
+                                <span>Cannabis Full Spectrum Softgels</span>
                             </div>
                         </div>
 
@@ -281,41 +281,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                         {/* Right: Pack Selection + Pricing + CTA */}
                         <div className="pp-product-details">
-                            {/* Bundle Items - MOVED to Right Column */}
-                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem' }}>
-                                {/* 1-on-1 Guidance Removed as per request */}
-                                <div className="pp-bundle-row-item">
-                                    <div className="pp-bundle-thumb">
-                                        <img src="/elevate product image.png" alt="Elevate Capsules" />
-                                    </div>
-                                    <div className="pp-bundle-content">
-                                        <div className="pp-bundle-row-header">
-                                            <h4>Elevate Capsules (30-day supply)</h4>
-                                            <span className="pp-row-price">₹6,000</span>
-                                        </div>
-                                        <p>Full spectrum hemp extract for deep healing.</p>
-                                    </div>
-                                </div>
-
-                                <div className="pp-bundle-row-item">
-                                    <div className="pp-bundle-thumb">
-                                        <img src="/ebook-cover.png" alt="Ebook" />
-                                    </div>
-                                    <div className="pp-bundle-content">
-                                        <div className="pp-bundle-row-header">
-                                            <h4>Mystery Transformation Ebook</h4>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
-                                                <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
-                                            </div>
-                                        </div>
-                                        <p>Unlock hidden potential with daily practices.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Pack Selection Section */}
-                            <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+                            {/* Pack Selection Section - MOVED TO TOP */}
+                            <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', marginBottom: '1.5rem' }}>
                                 <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#8bc34a', width: '100%' }}>Choose Your Elevation Path</div>
                                 <div className="pp-pack-grid" style={{ justifyContent: 'center' }}>
                                     {PACK_OPTIONS.map(pack => (
@@ -359,6 +326,23 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
                             </div>
 
+                            {/* Ebook Free Box - MOVED BELOW PACKS */}
+                            <div className="pp-bundle-row-item" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', padding: '12px', borderRadius: '12px' }}>
+                                <div className="pp-bundle-thumb">
+                                    <img src="/ebook-cover.png" alt="Ebook" />
+                                </div>
+                                <div className="pp-bundle-content">
+                                    <div className="pp-bundle-row-header">
+                                        <h4>Mystery Transformation Ebook</h4>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
+                                            <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                        </div>
+                                    </div>
+                                    <p>Unlock hidden potential with daily practices.</p>
+                                </div>
+                            </div>
+
                             {/* Total Value & Pricing */}
                             {/* Total Value & Pricing - REMOVED -> Direct Checkout */}
                             {/* <div className="pp-pricing-card">
@@ -390,23 +374,77 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Analysis Section (Restored & Moved) */}
-            < section className="pp-analysis" >
+
+            {/* What's Inside (Moved Up) */}
+            < section className="pp-ingredients" >
                 <div className="pp-container">
-                    <div className="pp-analysis-content">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Experience</span>
-                        <h2 className="pp-analysis-title">What Alignment Means For {firstName}</h2>
-                        <h3 className="pp-experience-label">You may experience:</h3>
-                        <div className="pp-meaning-grid-2col">
-                            {currentPhase.meaning.map((point, i) => (
-                                <div key={i} className="pp-meaning-card" style={{
-                                    borderColor: currentPhase.color + '30',
-                                    background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, ' + currentPhase.color + '05 100%)'
-                                }}>
-                                    <div className="pp-card-icon" style={{ backgroundColor: currentPhase.color + '20', color: currentPhase.color }}>
-                                        <Check size={14} strokeWidth={3} />
+                    <div className="pp-section-header light">
+                        <span className="pp-section-label">Premium Quality</span>
+                        <h2 className="pp-section-title">What's Inside Each Capsule</h2>
+                    </div>
+
+                    <div className="pp-ingredients-grid">
+                        {[
+                            { title: "Premium Hemp Extract", desc: "High-quality, legal hemp compounds" },
+                            { title: "Coconut Oil Base", desc: "Optimal absorption & purity" }
+                        ].map((item, i) => (
+                            <div className="pp-ingredient-item" key={i}>
+                                <div className="pp-ingredient-check">
+                                    <Check size={18} />
+                                </div>
+                                <div className="pp-ingredient-content">
+                                    <strong>{item.title}</strong>
+                                    <span>{item.desc}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="pp-certifications">
+                        <div className="pp-cert-item">
+                            <ShieldCheck size={24} />
+                            <span>Ministry of AYUSH Approved</span>
+                        </div>
+                        <div className="pp-cert-item">
+                            <Award size={24} />
+                            <span>Third-Party Lab Tested</span>
+                        </div>
+                        <div className="pp-cert-item">
+                            <BadgeCheck size={24} />
+                            <span>GMP Certified Facility</span>
+                        </div>
+                    </div>
+                </div>
+            </section >
+
+            {/* Choosing Your Support Level (Moved Up) - Extracted Dosing Options */}
+            < section className="pp-usage-section" >
+                <div className="pp-container">
+                    <div className="pp-dosing-options">
+                        <div className="pp-section-header">
+                            <span className="pp-section-label">Your Path</span>
+                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
+                        </div>
+                        <div className="pp-dosing-grid">
+                            {currentPhase.dosing.map((option, i) => (
+                                <div className="pp-dosing-card" key={i}>
+                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
+                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
                                     </div>
-                                    <span className="pp-card-text">{point}</span>
+                                    <div className="pp-dosing-body">
+                                        <div className="dosing-block">
+                                            <strong>🎯 Best For:</strong>
+                                            <p>{option.bestFor}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>🌊 Experience:</strong>
+                                            <p>{option.experience}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>⏰ When to use:</strong>
+                                            <p>{option.when}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -414,52 +452,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Effects Section (New) */}
-            < section className="pp-effects-section" >
-                <div className="pp-container">
-                    <div className="pp-section-header">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Transformation</span>
-                        <h2 className="pp-section-title">What You Will Feel</h2>
-                    </div>
-                    <div className="pp-effects-grid">
-                        {/* Card 1: Sensory */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Eye size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Heightened Sensory Awareness</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Colors appear vibrant, sounds more nuanced.</li>
-                                    <li>Helps anchor you in the 'now' for honest mindfulness.</li>
-                                    <li>Fosters clarity for deep introspective growth.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* Card 2: Physical */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Feather size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Physical Relaxation & Balance</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Melts tension, shifting body from effort to ease.</li>
-                                    <li>Recalibrates the nervous system to restore balance.</li>
-                                    <li>Heightens connection to physical sensations.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section >
+            {/* Effects Section REMOVED */}
 
             {/* Benefits Exhibition Scrolling Section */}
             < section className="pp-benefits-exhibition" >
@@ -467,7 +460,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     <div className="pp-benefits-card-parent">
                         <div className="pp-benefits-header">
                             <span className="pp-section-label" style={{ color: currentPhase.color }}>Holistic Impact</span>
-                            <h2 className="pp-benefits-title">The Benefits Exhibition</h2>
+                            <h2 className="pp-benefits-title">Cannabis + Intention</h2>
                             <p className="pp-benefits-subtitle">Touch every aspect of your life with Full Spectrum Alignment.</p>
                         </div>
 
@@ -544,107 +537,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Usage & Dosing Section */}
-            < section className="pp-usage-section" >
-                <div className="pp-container">
-                    {/* Guided Usage */}
-                    <div className="pp-usage-guide">
-                        <h3 className="pp-inner-title">
-                            <Sparkles size={20} style={{ color: currentPhase.color }} />
-                            Guided Usage Ritual
-                        </h3>
-                        <ul className="pp-usage-list">
-                            {currentPhase.usage.guide.map((step, i) => (
-                                <li key={i}>
-                                    <span className="usage-dot" style={{ background: currentPhase.color }}></span>
-                                    {step}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Dosing Options */}
-                    <div className="pp-dosing-options">
-                        <div className="pp-section-header">
-                            <span className="pp-section-label">Your Path</span>
-                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
-                        </div>
-                        <div className="pp-dosing-grid">
-                            {currentPhase.dosing.map((option, i) => (
-                                <div className="pp-dosing-card" key={i}>
-                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
-                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
-                                    </div>
-                                    <div className="pp-dosing-body">
-                                        <div className="dosing-block">
-                                            <strong>🎯 Best For:</strong>
-                                            <p>{option.bestFor}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>🌊 Experience:</strong>
-                                            <p>{option.experience}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>⏰ When to use:</strong>
-                                            <p>{option.when}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Gentle Reminder */}
-                    <div className="pp-reminder-box" style={{ borderColor: currentPhase.color + '40', background: currentPhase.color + '05' }}>
-                        <Heart size={24} className="reminder-icon" style={{ color: currentPhase.color }} />
-                        <h3>Gentle Reminder</h3>
-                        <p>{currentPhase.reminder}</p>
-                    </div>
-                </div>
-            </section >
-
-            {/* What's Inside */}
-            < section className="pp-ingredients" >
-                <div className="pp-container">
-                    <div className="pp-section-header light">
-                        <span className="pp-section-label">Premium Quality</span>
-                        <h2 className="pp-section-title">What's Inside Each Capsule</h2>
-                    </div>
-
-                    <div className="pp-ingredients-grid">
-                        {[
-                            { title: "Premium Hemp Extract", desc: "High-quality, legal hemp compounds" },
-                            { title: "Coconut Oil Base", desc: "Optimal absorption & purity" }
-                        ].map((item, i) => (
-                            <div className="pp-ingredient-item" key={i}>
-                                <div className="pp-ingredient-check">
-                                    <Check size={18} />
-                                </div>
-                                <div className="pp-ingredient-content">
-                                    <strong>{item.title}</strong>
-                                    <span>{item.desc}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="pp-certifications">
-                        <div className="pp-cert-item">
-                            <ShieldCheck size={24} />
-                            <span>Ministry of AYUSH Approved</span>
-                        </div>
-                        <div className="pp-cert-item">
-                            <Award size={24} />
-                            <span>Third-Party Lab Tested</span>
-                        </div>
-                        <div className="pp-cert-item">
-                            <BadgeCheck size={24} />
-                            <span>GMP Certified Facility</span>
-                        </div>
-                    </div>
-                </div>
-            </section >
-
             {/* Testimonials */}
             < section className="pp-testimonials" >
                 <div className="pp-container">
@@ -685,47 +577,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Mindful Use Section (Final Message) */}
-            < section className="pp-mindful" >
-                <div className="pp-container">
-                    <div className="pp-mindful-content">
-                        <div className="pp-mindful-header">
-                            <Sparkles className="pp-mindful-icon" size={32} />
-                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
-                            <p className="pp-mindful-subtitle">
-                                You become your higher self. This works best when paired with intention—gently, naturally, in your own time.
-                            </p>
-                            <div className="pp-mindful-tip">
-                                <Lightbulb size={20} />
-                                <span>Always start with the single dose and increase only if your body feels comfortable.</span>
-                            </div>
-                        </div>
-
-                        <div className="pp-mindful-grid">
-                            <div className="pp-mindful-card">
-                                <h3><Sprout size={20} /> How To Use Mindfully</h3>
-                                <ul>
-                                    <li>Start low, go slow</li>
-                                    <li>Use in a calm environment</li>
-                                    <li>Avoid mixing with alcohol or stimulants</li>
-                                    <li>Stay hydrated</li>
-                                    <li>Listen to your body — it always knows</li>
-                                    <li>Observe your body</li>
-                                    <li>Use consistently, not excessively</li>
-                                </ul>
-                            </div>
-
-                            <div className="pp-mindful-card intent">
-                                <h3><Leaf size={20} /> A Note On Intention</h3>
-                                <p>
-                                    This is not about escaping reality. It’s about meeting yourself with clarity.
-                                    When used with awareness, the plant supports what already exists within you — calm, balance, and presence.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section >
+            {/* Mindful Use Section REMOVED */}
 
             {/* FAQ */}
             < section className="pp-faq" >
