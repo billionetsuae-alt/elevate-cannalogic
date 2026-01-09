@@ -757,9 +757,9 @@
         font-size: 2rem;
     }
 
-    .form-row-2 {
+    /* .form-row-2 {
         grid-template-columns: 1fr;
-    }
+    } removed to keep 2 columns on mobile */
 
     .product-features {
         grid-template-columns: 1fr;

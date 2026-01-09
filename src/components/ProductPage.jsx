@@ -11,8 +11,8 @@ import {
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
-    { id: 2, label: '2 Packs', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
-    { id: 3, label: '3 Packs', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
+    { id: 2, label: '2 Packs', subLabel: '60 Softgels • 60 Days', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
+    { id: 3, label: '3 Packs', subLabel: '90 Softgels • 90 Days', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
 ];
 
 const UNIFIED_PHASE = {
@@ -232,24 +232,21 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </nav>
 
-            {/* Hero Section - Personalized */}
+            {/* Hero Section - Restored with Correct Badge */}
             <section className="pp-hero">
                 <div className="pp-container">
                     <div className="pp-hero-content">
                         <div className="pp-badge-row">
                             <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
-                                <Sparkles size={16} />
-                                <span>Prepared for {firstName}</span>
+                                <Leaf size={16} />
+                                <span>Cannabis Full Spectrum Softgels</span>
                             </div>
                         </div>
-
-
-
-
-                        {/* Title and Subtitle removed as per request to declutter */}
                     </div>
                 </div>
             </section>
+
+
 
 
 
@@ -281,43 +278,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                         {/* Right: Pack Selection + Pricing + CTA */}
                         <div className="pp-product-details">
-                            {/* Bundle Items - MOVED to Right Column */}
-                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem' }}>
-                                {/* 1-on-1 Guidance Removed as per request */}
-                                <div className="pp-bundle-row-item">
-                                    <div className="pp-bundle-thumb">
-                                        <img src="/elevate product image.png" alt="Elevate Capsules" />
-                                    </div>
-                                    <div className="pp-bundle-content">
-                                        <div className="pp-bundle-row-header">
-                                            <h4>Elevate Capsules (30-day supply)</h4>
-                                            <span className="pp-row-price">₹6,000</span>
-                                        </div>
-                                        <p>Full spectrum hemp extract for deep healing.</p>
-                                    </div>
-                                </div>
-
-                                <div className="pp-bundle-row-item">
-                                    <div className="pp-bundle-thumb">
-                                        <img src="/ebook-cover.png" alt="Ebook" />
-                                    </div>
-                                    <div className="pp-bundle-content">
-                                        <div className="pp-bundle-row-header">
-                                            <h4>Mystery Transformation Ebook</h4>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
-                                                <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
-                                            </div>
-                                        </div>
-                                        <p>Unlock hidden potential with daily practices.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Pack Selection Section */}
+                            {/* Pack Selection Section - MOVED TO TOP */}
                             <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#8bc34a', width: '100%' }}>Choose Your Elevation Path</div>
-                                <div className="pp-pack-grid" style={{ justifyContent: 'center' }}>
+                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '6rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
+                                <div className="pp-pack-grid" style={{ justifyContent: 'center', marginTop: '2rem' }}>
                                     {PACK_OPTIONS.map(pack => (
                                         <div
                                             key={pack.id}
@@ -359,6 +323,25 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
                             </div>
 
+                            {/* Bundle Items - Ebook Only */}
+                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
+                                <div className="pp-bundle-row-item">
+                                    <div className="pp-bundle-thumb">
+                                        <img src="/ebook-cover.png" alt="Ebook" />
+                                    </div>
+                                    <div className="pp-bundle-content">
+                                        <div className="pp-bundle-row-header">
+                                            <h4>Mystery Transformation Ebook</h4>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
+                                                <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                            </div>
+                                        </div>
+                                        <p>Unlock hidden potential with daily practices.</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Total Value & Pricing */}
                             {/* Total Value & Pricing - REMOVED -> Direct Checkout */}
                             {/* <div className="pp-pricing-card">
@@ -390,219 +373,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Analysis Section (Restored & Moved) */}
-            < section className="pp-analysis" >
-                <div className="pp-container">
-                    <div className="pp-analysis-content">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Experience</span>
-                        <h2 className="pp-analysis-title">What Alignment Means For {firstName}</h2>
-                        <h3 className="pp-experience-label">You may experience:</h3>
-                        <div className="pp-meaning-grid-2col">
-                            {currentPhase.meaning.map((point, i) => (
-                                <div key={i} className="pp-meaning-card" style={{
-                                    borderColor: currentPhase.color + '30',
-                                    background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, ' + currentPhase.color + '05 100%)'
-                                }}>
-                                    <div className="pp-card-icon" style={{ backgroundColor: currentPhase.color + '20', color: currentPhase.color }}>
-                                        <Check size={14} strokeWidth={3} />
-                                    </div>
-                                    <span className="pp-card-text">{point}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section >
-
-            {/* Effects Section (New) */}
-            < section className="pp-effects-section" >
-                <div className="pp-container">
-                    <div className="pp-section-header">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>The Transformation</span>
-                        <h2 className="pp-section-title">What You Will Feel</h2>
-                    </div>
-                    <div className="pp-effects-grid">
-                        {/* Card 1: Sensory */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Eye size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Heightened Sensory Awareness</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Colors appear vibrant, sounds more nuanced.</li>
-                                    <li>Helps anchor you in the 'now' for honest mindfulness.</li>
-                                    <li>Fosters clarity for deep introspective growth.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* Card 2: Physical */}
-                        <div className="pp-effect-card">
-                            <video className="pp-effect-video" autoPlay muted loop playsInline>
-                                <source src="/smoke.mp4" type="video/mp4" />
-                            </video>
-                            <div className="pp-effect-content">
-                                <div className="pp-effect-icon-wrapper">
-                                    <Feather size={32} />
-                                </div>
-                                <h3 className="pp-effect-title">Physical Relaxation & Balance</h3>
-                                <ul className="pp-effect-list">
-                                    <li>Melts tension, shifting body from effort to ease.</li>
-                                    <li>Recalibrates the nervous system to restore balance.</li>
-                                    <li>Heightens connection to physical sensations.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section >
-
-            {/* Benefits Exhibition Scrolling Section */}
-            < section className="pp-benefits-exhibition" >
-                <div className="pp-container">
-                    <div className="pp-benefits-card-parent">
-                        <div className="pp-benefits-header">
-                            <span className="pp-section-label" style={{ color: currentPhase.color }}>Holistic Impact</span>
-                            <h2 className="pp-benefits-title">The Benefits Exhibition</h2>
-                            <p className="pp-benefits-subtitle">Touch every aspect of your life with Full Spectrum Alignment.</p>
-                        </div>
-
-                        <div className="pp-benefits-scroll-window">
-                            <div className="pp-benefits-scroll-track">
-                                {/* Duplicated Content for Seamless Loop */}
-                                {[...Array(2)].map((_, loopIndex) => (
-                                    <div key={loopIndex} className="pp-benefits-grid-content">
-                                        <div className="pp-benefit-col col-slow">
-                                            {benefitWords.slice(0, 16).map((word, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className={activeBenefitIndex === idx ? 'glow-active' : ''}
-                                                >
-                                                    {word}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        <div className="pp-benefit-col col-medium">
-                                            {benefitWords.slice(16, 32).map((word, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className={activeBenefitIndex === (idx + 16) ? 'glow-active' : ''}
-                                                >
-                                                    {word}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        <div className="pp-benefit-col col-fast">
-                                            {benefitWords.slice(32, 48).map((word, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className={activeBenefitIndex === (idx + 32) ? 'glow-active' : ''}
-                                                >
-                                                    {word}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            {/* Gradient Overlay for Fade Effect */}
-                            <div className="pp-benefits-overlay-top"></div>
-                            <div className="pp-benefits-overlay-bottom"></div>
-                        </div>
-                    </div>
-                </div>
-            </section >
-
-            {/* Dynamic Support Section */}
-            < section className="pp-dynamic-support" >
-                <div className="pp-container">
-                    <div className="pp-section-header">
-                        <span className="pp-section-label" style={{ color: currentPhase.color }}>Tailored Support</span>
-                        <h2 className="pp-section-title">How the Full-Spectrum Extract Supports {firstName}</h2>
-                        <p className="pp-support-subtitle">{currentPhase.support.heading}</p>
-                    </div>
-
-                    <div className="pp-support-grid">
-                        {currentPhase.support.points.map((point, i) => {
-                            const SupportIcons = [Brain, Sparkles, Zap, Heart];
-                            const Icon = SupportIcons[i % SupportIcons.length];
-
-                            return (
-                                <div className="pp-support-card" key={i} style={{ borderTopColor: currentPhase.color }}>
-                                    <div className="pp-support-icon" style={{ color: currentPhase.color, background: currentPhase.color + '15' }}>
-                                        <Icon size={24} />
-                                    </div>
-                                    <p>{point}</p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section >
-
-            {/* Usage & Dosing Section */}
-            < section className="pp-usage-section" >
-                <div className="pp-container">
-                    {/* Guided Usage */}
-                    <div className="pp-usage-guide">
-                        <h3 className="pp-inner-title">
-                            <Sparkles size={20} style={{ color: currentPhase.color }} />
-                            Guided Usage Ritual
-                        </h3>
-                        <ul className="pp-usage-list">
-                            {currentPhase.usage.guide.map((step, i) => (
-                                <li key={i}>
-                                    <span className="usage-dot" style={{ background: currentPhase.color }}></span>
-                                    {step}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Dosing Options */}
-                    <div className="pp-dosing-options">
-                        <div className="pp-section-header">
-                            <span className="pp-section-label">Your Path</span>
-                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
-                        </div>
-                        <div className="pp-dosing-grid">
-                            {currentPhase.dosing.map((option, i) => (
-                                <div className="pp-dosing-card" key={i}>
-                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
-                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
-                                    </div>
-                                    <div className="pp-dosing-body">
-                                        <div className="dosing-block">
-                                            <strong>🎯 Best For:</strong>
-                                            <p>{option.bestFor}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>🌊 Experience:</strong>
-                                            <p>{option.experience}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>⏰ When to use:</strong>
-                                            <p>{option.when}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Gentle Reminder */}
-                    <div className="pp-reminder-box" style={{ borderColor: currentPhase.color + '40', background: currentPhase.color + '05' }}>
-                        <Heart size={24} className="reminder-icon" style={{ color: currentPhase.color }} />
-                        <h3>Gentle Reminder</h3>
-                        <p>{currentPhase.reminder}</p>
-                    </div>
-                </div>
-            </section >
-
             {/* What's Inside */}
             < section className="pp-ingredients" >
                 <div className="pp-container">
@@ -628,22 +398,137 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
 
-                    <div className="pp-certifications">
-                        <div className="pp-cert-item">
-                            <ShieldCheck size={24} />
+                    <div className="pp-certifications-container" style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        borderRadius: '16px',
+                        padding: '1.5rem 2rem',
+                        marginTop: '3.5rem',
+                        width: 'fit-content',
+                        minWidth: '300px',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem'
+                    }}>
+                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
+                            <ShieldCheck size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
                             <span>Ministry of AYUSH Approved</span>
                         </div>
-                        <div className="pp-cert-item">
-                            <Award size={24} />
+                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
+                            <Award size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
                             <span>Third-Party Lab Tested</span>
                         </div>
-                        <div className="pp-cert-item">
-                            <BadgeCheck size={24} />
+                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
+                            <BadgeCheck size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
                             <span>GMP Certified Facility</span>
                         </div>
                     </div>
                 </div>
             </section >
+
+            {/* Choosing Your Support Level (Moved Up) - Extracted Dosing Options */}
+            < section className="pp-usage-section" style={{ paddingBottom: '0', marginBottom: '-2rem' }}>
+                <div className="pp-container" style={{ paddingBottom: '0' }}>
+                    <div className="pp-dosing-options" style={{ marginBottom: '0' }}>
+                        <div className="pp-section-header">
+                            <span className="pp-section-label">Your Path</span>
+                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
+                        </div>
+                        <div className="pp-dosage-pills">
+                            <div className="pp-dosage-pill">
+                                <span className="pp-dosage-count">1 Softgel</span>
+                                <span className="pp-dosage-effect">Subtle Effects</span>
+                            </div>
+                            <div className="pp-dosage-pill">
+                                <span className="pp-dosage-count">2 Softgels</span>
+                                <span className="pp-dosage-effect">Deep Effects</span>
+                            </div>
+                        </div>
+                        <div className="pp-dosing-grid" style={{ marginBottom: '0' }}>
+                            {currentPhase.dosing.map((option, i) => (
+                                <div className="pp-dosing-card" key={i}>
+                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
+                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
+                                    </div>
+                                    <div className="pp-dosing-body">
+                                        <div className="dosing-block">
+                                            <strong>🎯 Best For:</strong>
+                                            <p>{option.bestFor}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>🌊 Experience:</strong>
+                                            <p>{option.experience}</p>
+                                        </div>
+                                        <div className="dosing-block">
+                                            <strong>⏰ When to use:</strong>
+                                            <p>{option.when}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section >
+
+            {/* Benefits Exhibition Scrolling Section */}
+            < section className="pp-benefits-exhibition" style={{ paddingTop: '1rem' }}>
+                <div className="pp-container">
+                    <div className="pp-benefits-card-parent">
+                        <div className="pp-benefits-header">
+                            <span className="pp-section-label" style={{ color: currentPhase.color }}>Holistic Impact</span>
+                            <h2 className="pp-benefits-title">Cannabis + Intention</h2>
+                        </div>
+
+                        <div className="pp-benefits-scroll-window">
+                            <div className="pp-benefits-scroll-track">
+                                {/* Duplicated Content for Seamless Loop */}
+                                {[...Array(2)].map((_, loopIndex) => (
+                                    <div key={loopIndex} className="pp-benefits-grid-content">
+                                        <div className="pp-benefit-col col-slow">
+                                            {benefitWords.slice(0, 16).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="glow-active"
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="pp-benefit-col col-medium">
+                                            {benefitWords.slice(16, 32).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="glow-active"
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="pp-benefit-col col-fast">
+                                            {benefitWords.slice(32, 48).map((word, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="glow-active"
+                                                >
+                                                    {word}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Gradient Overlay for Fade Effect */}
+                            <div className="pp-benefits-overlay-top"></div>
+                            <div className="pp-benefits-overlay-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </section >
+
+
 
             {/* Testimonials */}
             < section className="pp-testimonials" >

@@ -1,0 +1,92 @@
+
+Section Removals (Deletions):
+Removed the "What Alignment Means For [Name]" section.
+Removed the "What You Will Feel" (Effects) section.
+Removed the "Guided Usage Ritual" (Campfire/Ritual) section.
+Removed a duplicate "Gentle Reminder" box.
+Mindful Use Section Restoration:
+Restored the "Your Journey to Higher Alignment" section (Mindful Use) exactly as it was in commit 5f295cc9.
+CSS Restoration: Retrieved and restored the missing .pp-mindful CSS styles from git history to fix the layout.
+Benefits Exhibition (Glowing Words):
+Static Glow: Modified the scrolling benefits section so ALL words glow green permanently (removed the cycling loop animation).
+CSS Restoration: Retrieved and restored the missing .pp-benefits-exhibition CSS styles to fix the background and layout.
+The "Fast-Track" Re-Implementation Recipe
+When you are ready to re-apply these changes, simple copy and paste the instructions below. This prompt covers everything in a logical order for the AI to execute efficiently.
+
+markdown
+I have reverted the code. Please re-apply the following changes to ProductPage.jsx and ProductPage.css in a single pass where possible:
+1. **Refine Hero Section:**
+   - In the Hero Badge, change the text to "Cannabis Full Spectrum Softgels" and change the icon to <Leaf />.
+   - Remove the personalized Hero Title and Subtitle.
+2. **Reorganize Product Layout (Right Column):**
+   - Move the "Pack Selection" container to the very top of the `pp-product-details` column.
+   - Move the "Free Ebook" box to be immediately below the Pack Selection.
+   - Remove the "Elevate capsule 30-day" box and "Total Value" pricing card.
+3. **Remove Sections:**
+   - Remove "What Alignment Means For..." section.
+   - Remove "What You Will Feel" section.
+   - Remove "Guided Usage Ritual" section.
+   - Remove duplicate "Gentle Reminder" box.
+4. **Restore "Mindful Use" Section:**
+   - Insert the "Mindful Use" section (Header: "Your Journey to Higher Alignment", with the 2-column card layout) above the FAQ.
+   - Ensure the `.pp-mindful` CSS is present (if missing, restore it from commit 5f295cc9).
+5. **Update Benefits Section:**
+   - In "Benefits Exhibition", remove the cycling animation logic.
+   - Apply a permanent 'glow-active' class to ALL benefit words.
+   - Add/Restore the CSS for `.pp-benefits-exhibition` and `.glow-active` (Green glow) if missing.
+
+
+
+
+next implementations to make.
+
+product/offer page.
+
+1. (remove personalization name) instead use "Cannabis Full Spectrum Softgels " and change the icon appropriate to it.
+
+2. Remove elevate capsule 30-day rectangle box and bring the pack selection section to top and below it, use the ebook free box.
+
+3. hide or remove What Alignment Means For name
+and What You Will Feel - sections,
+
+4. remove the Guided Usage Ritual
+Start with intention, not just habit
+Best taken in the evening or during overwhelm
+Create a calm space — dim lights, silence
+Listen to your body — it always knows
+
+card/section
+
+
+
+1. Add 60 softgels-60 days, 90 softgels-90 days  , like we did for 30 Softgels • 30 Days in the 1 pack
+
+2. under the bundle sections
+
+bring the "Premium Quality
+What's Inside Each Capsule"
+section up.
+
+
+and below it ,bring the 
+"Your Path
+Choosing Your Support Level"
+section.
+
+so flow will be 
+bundlw section -> What's Inside Each Capsule section -> Choosing Your Support Level section - > Holistic Impact
+The Benefits Exhibition
+ -> ....
+
+3. 
+Holsitic Impact Cannabis + Intention (replace The benefits exhibition) 
+
+[two column scroll] in mobile view needed
+
+
+3. 
+Holsitic Impact Cannabis + Intention (replace The benefits exhibition) 
+
+[two column scroll] in mobile view needed,
+and remove the cycling animation logic.
+ Apply a permanent 'glow-active' class to ALL benefit words.
