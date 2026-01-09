@@ -2086,6 +2086,67 @@
     font-style: italic;
 }
 
+/* Mindful Use Section */
+.pp-mindful-use {
+    padding: 5rem 0;
+}
+
+.pp-mindful-guide {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+}
+
+.pp-mindful-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.pp-mindful-tip:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+}
+
+.pp-mindful-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.pp-mindful-tip p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .pp-mindful-guide {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .pp-mindful-tip {
+        padding: 1.25rem;
+    }
+
+    .pp-mindful-use {
+        padding: 3rem 0;
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
 
@@ -3646,13 +3707,17 @@
 /* Mobile: All 3 pack cards in one row - extremely small (Fixed Cascade) */
 @media (max-width: 600px) {
     .pp-pack-selection-container {
-        margin: 0.5rem 0;
-        padding: 10px 0;
+        margin: 0 0 0.5rem 0;
+        padding: 0 0 10px 0;
         /* Added padding to accommodate glow */
         overflow: visible;
         /* Fixed glow clipping */
         width: 100%;
         max-width: 100%;
+    }
+
+    .pp-pack-selection-container .pp-section-label {
+        margin-bottom: 2rem !important;
     }
 
     .pp-pack-grid {
@@ -3798,5 +3863,273 @@
     .pp-dosing-grid,
     .pp-ingredients-grid {
         grid-template-columns: 1fr !important;
+    }
+}
+/* Mindful Use Section - Restored */
+.pp-mindful {
+    padding: 6rem 0;
+    position: relative;
+    background: radial-gradient(circle at center, rgba(30,30,30,1) 0%, rgba(10,10,10,1) 100%);
+    overflow: hidden;
+}
+
+.pp-mindful-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.pp-mindful-header {
+    margin-bottom: 4rem;
+}
+
+.pp-mindful-icon {
+    color: #4caf50;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.4));
+}
+
+.pp-mindful-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pp-mindful-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+}
+
+.pp-mindful-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    text-align: left;
+}
+
+.pp-mindful-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pp-mindful-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(76, 175, 80, 0.4);
+}
+
+.pp-mindful-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    font-family: 'Lora', serif;
+}
+
+.pp-mindful-card h3 svg {
+    color: #4caf50;
+}
+
+.pp-mindful-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pp-mindful-card li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.pp-mindful-card li::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.pp-mindful-card.intent h3 svg {       
+    color: #ffd700;
+}
+
+.pp-mindful-card.intent p {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .pp-mindful {
+        padding: 4rem 0;
+    }
+    .pp-mindful-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .pp-mindful-card {
+        padding: 1.5rem;
+    }
+    .pp-mindful-subtitle {
+        font-size: 1.1rem;
+    }
+    .pp-mindful-tip {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column; 
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+}
+
+/* Benefits Exhibition Scrolling Section - Restored & Constant Glow */
+.pp-benefits-exhibition {
+    padding: 6rem 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.pp-benefits-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.pp-benefits-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.pp-benefits-subtitle {
+     font-size: 1.2rem;
+     color: rgba(255,255,255,0.6);
+     max-width: 600px;
+     margin: 0 auto;
+}
+
+.pp-benefits-scroll-window {
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    margin-top: 2rem;
+    /* Fade mask for top/bottom */
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.pp-benefits-scroll-track {
+    /* Container for the scrolling content */
+    display: flex;
+    flex-direction: column; 
+    /* We stack the duplicates vertically to allow infinite scroll if we animated the track. 
+       But here columns animate. Since columns are inside rows (grid-content), 
+       we need to ensure rows flow naturally. */
+}
+
+.pp-benefits-grid-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem 0;
+    /* Maintain width */
+    width: 100%;
+}
+
+.pp-benefit-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Space between words */
+    align-items: center;
+    width: 30%;
+}
+
+.pp-benefit-col span {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+/* 
+   GLOW EFFECT 
+   User wants 'all text same green glow effect'.
+*/
+.glow-active {
+    color: #4caf50 !important;
+    text-shadow: 0 0 12px rgba(76, 175, 80, 0.6), 0 0 25px rgba(76, 175, 80, 0.3);
+    opacity: 1 !important;
+    font-weight: 600;
+    transform: scale(1.05);
+}
+
+/* Scroll Animations */
+/* Note: For these animations to effectively 'loop' with just 2 duplicated blocks in the DOM 
+   structured as rows, it's tricky. 
+   We will try a basic vertical scroll on the COLUMNS.
+   Since 'col-slow' appears twice (once in each grid-content row), 
+   if we translate them, they move relative to their row.
+   This might look disjointed. 
+   
+   Better visual: Animate the TRACK to move up? 
+   No, the request was just for the GLOW. 
+   Use a simple marquee if possible or just static if the user didn't ask for motion correction.
+   User asked: 'make all the text glow like this...'.
+   I will keep the motion hints but focus on the glow.
+*/
+
+.col-slow { 
+    /* animation: scrollUp 45s linear infinite; */ 
+}
+.col-medium { 
+    /* animation: scrollUp 35s linear infinite; */ 
+}
+.col-fast { 
+    /* animation: scrollUp 25s linear infinite; */ 
+}
+
+@keyframes scrollUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+@media (max-width: 768px) {
+    .pp-benefits-grid-content {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    .pp-benefit-col span {
+        font-size: 0.9rem;
     }
 }

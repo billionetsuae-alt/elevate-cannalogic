@@ -73,7 +73,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
     const [checkoutData, setCheckoutData] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
-    const [activeBenefitIndex, setActiveBenefitIndex] = useState(0);
 
     // Benefit words for auto-glow animation
     const benefitWords = [
@@ -122,20 +121,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
         return () => clearInterval(timer);
     }, []);
-
     // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    // Auto-cycle through benefit words for glow effect
-    useEffect(() => {
-        const glowTimer = setInterval(() => {
-            setActiveBenefitIndex(prev => (prev + 1) % benefitWords.length);
-        }, 1500); // Change every 1.5 seconds for slower, more readable effect
-
-        return () => clearInterval(glowTimer);
-    }, [benefitWords.length]);
 
     // Open checkout modal first
     const handleBuyNow = () => {
@@ -425,16 +414,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <span className="pp-section-label">Your Path</span>
                             <h2 className="pp-section-title">Choosing Your Support Level</h2>
                         </div>
-                        <div className="pp-dosage-pills">
-                            <div className="pp-dosage-pill">
-                                <span className="pp-dosage-count">1 Softgel</span>
-                                <span className="pp-dosage-effect">Subtle Effects</span>
-                            </div>
-                            <div className="pp-dosage-pill">
-                                <span className="pp-dosage-count">2 Softgels</span>
-                                <span className="pp-dosage-effect">Deep Effects</span>
-                            </div>
-                        </div>
                         <div className="pp-dosing-grid">
                             {currentPhase.dosing.map((option, i) => (
                                 <div className="pp-dosing-card" key={i}>
@@ -476,14 +455,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                         <div className="pp-benefits-scroll-window">
                             <div className="pp-benefits-scroll-track">
-                                {/* Duplicated Content for Seamless Loop */}
+                                {
+                                    /* Duplicated Content for Seamless Loop */
+                                }
                                 {[...Array(2)].map((_, loopIndex) => (
                                     <div key={loopIndex} className="pp-benefits-grid-content">
                                         <div className="pp-benefit-col col-slow">
                                             {benefitWords.slice(0, 16).map((word, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className={activeBenefitIndex === idx ? 'glow-active' : ''}
+                                                    className="glow-active"
                                                 >
                                                     {word}
                                                 </span>
@@ -493,7 +474,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             {benefitWords.slice(16, 32).map((word, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className={activeBenefitIndex === (idx + 16) ? 'glow-active' : ''}
+                                                    className="glow-active"
                                                 >
                                                     {word}
                                                 </span>
@@ -503,7 +484,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             {benefitWords.slice(32, 48).map((word, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className={activeBenefitIndex === (idx + 32) ? 'glow-active' : ''}
+                                                    className="glow-active"
                                                 >
                                                     {word}
                                                 </span>
@@ -587,7 +568,47 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Mindful Use Section REMOVED */}
+            {/* Mindful Use Section (Final Message) */}
+            < section className="pp-mindful" >
+                <div className="pp-container">
+                    <div className="pp-mindful-content">
+                        <div className="pp-mindful-header">
+                            <Sparkles className="pp-mindful-icon" size={32} />
+                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
+                            <p className="pp-mindful-subtitle">
+                                You become your higher self. This works best when paired with intention—gently, naturally, in your own time.
+                            </p>
+                            <div className="pp-mindful-tip">
+                                <Lightbulb size={20} />
+                                <span>Always start with the single dose and increase only if your body feels comfortable.</span>
+                            </div>
+                        </div>
+
+                        <div className="pp-mindful-grid">
+                            <div className="pp-mindful-card">
+                                <h3><Sprout size={20} /> How To Use Mindfully</h3>
+                                <ul>
+                                    <li>Start low, go slow</li>
+                                    <li>Use in a calm environment</li>
+                                    <li>Avoid mixing with alcohol or stimulants</li>
+                                    <li>Stay hydrated</li>
+                                    <li>Listen to your body — it always knows</li>
+                                    <li>Observe your body</li>
+                                    <li>Use consistently, not excessively</li>
+                                </ul>
+                            </div>
+
+                            <div className="pp-mindful-card intent">
+                                <h3><Leaf size={20} /> A Note On Intention</h3>
+                                <p>
+                                    This is not about escaping reality. It's about meeting yourself with clarity.
+                                    When used with awareness, the plant supports what already exists within you — calm, balance, and presence.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section >
 
             {/* FAQ */}
             < section className="pp-faq" >
