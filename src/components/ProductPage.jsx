@@ -425,6 +425,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <span className="pp-section-label">Your Path</span>
                             <h2 className="pp-section-title">Choosing Your Support Level</h2>
                         </div>
+                        <div className="pp-dosage-pills">
+                            <div className="pp-dosage-pill">
+                                <span className="pp-dosage-count">1 Softgel</span>
+                                <span className="pp-dosage-effect">Subtle Effects</span>
+                            </div>
+                            <div className="pp-dosage-pill">
+                                <span className="pp-dosage-count">2 Softgels</span>
+                                <span className="pp-dosage-effect">Deep Effects</span>
+                            </div>
+                        </div>
                         <div className="pp-dosing-grid">
                             {currentPhase.dosing.map((option, i) => (
                                 <div className="pp-dosing-card" key={i}>
