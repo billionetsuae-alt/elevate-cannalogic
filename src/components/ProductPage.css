@@ -3416,17 +3416,15 @@
 }
 
 .pp-benefits-card-parent {
-    background: #0a0a0a;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    padding: 3rem 2rem;
+    background: transparent;
+    /* Removed border and padding to eliminate double-border */
     text-align: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .pp-benefits-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     position: relative;
     z-index: 2;
 }
@@ -3550,8 +3548,10 @@
 @media (max-width: 768px) {
     .pp-benefits-grid-content {
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        padding: 0 1rem 1.5rem 1rem;
+        gap: 0.5rem;
+        /* Reduced from 1rem */
+        padding: 0 0.5rem 1.5rem 0.5rem;
+        /* Reduced horizontal padding */
         text-align: center;
     }
 
@@ -3568,8 +3568,20 @@
         gap: 1rem;
     }
 
+    .pp-benefit-col span {
+        font-size: 1rem;
+        /* Slightly smaller for better fit */
+        white-space: nowrap;
+        /* Prevent text wrapping */
+    }
+
     .pp-benefits-title {
         font-size: 1.8rem;
+    }
+
+    .pp-benefits-scroll-window {
+        max-width: 100%;
+        /* Use full width on mobile */
     }
 }
 
@@ -3677,6 +3689,7 @@
         margin-bottom: 0.4rem !important;
     }
 }
+
 /* Dosage Pills */
 .pp-dosage-pills {
     display: flex;
@@ -3790,6 +3803,7 @@
 .pp-usage-section {
     padding-bottom: 2rem !important;
 }
+
 .pp-benefits-exhibition {
     padding-top: 2rem !important;
 }
@@ -3797,8 +3811,10 @@
 /* Certifications Container - Vertical Stack Style */
 .pp-certifications-container {
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08); /* Darker border to match screenshot */
-    border-radius: 16px; /* Rounded corners like ingredients */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Darker border to match screenshot */
+    border-radius: 16px;
+    /* Rounded corners like ingredients */
     padding: 1.5rem;
     margin-top: 1rem;
     max-width: 600px;
@@ -3819,6 +3835,7 @@
 }
 
 .pp-cert-row svg {
-    color: #4caf50; /* Green icons */
+    color: #4caf50;
+    /* Green icons */
     min-width: 24px;
 }

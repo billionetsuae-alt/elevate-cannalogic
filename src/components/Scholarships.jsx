@@ -14,7 +14,7 @@ const Scholarships = () => {
                             <span>Researchers</span>
                             <span>Medical Professionals</span>
                         </div>
-                        <button className="btn btn-primary">Check Eligibility</button>
+                        <button className="btn btn-primary">Get Access</button>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,6 @@ import VideoSection from './components/VideoSection'
 import ProblemSection from './components/ProblemSection'
 import BenefitsSection from './components/BenefitsSection'
 import TruthSection from './components/TruthSection'
-import QuoteSection from './components/QuotesSlider'
 import ScienceSection from './components/ScienceSection'
 import PartnersMarquee from './components/PartnersMarquee'
 import LegalitySection from './components/LegalitySection'
@@ -37,7 +36,6 @@ function LandingPage({ onOpenAssessment }) {
                 <ProblemSection onOpenAssessment={onOpenAssessment} />
                 <BenefitsSection />
                 <TruthSection />
-                <QuoteSection />
                 <ScienceSection />
                 <PartnersMarquee />
                 <LegalitySection />

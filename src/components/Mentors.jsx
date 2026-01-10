@@ -6,31 +6,31 @@ const Mentors = () => {
         {
             name: "Dr. Sankalp Khullar",
             role: "BAMS, Panchkarma Specialist",
-            company: "",
+            company: "Rudra Ayurveda",
             image: "/dr-sankalp-pro.png",
             initials: "SK",
             color: "#4caf50"
         },
         {
-            name: "Dr. Arathy Ravi",
-            role: "BAMS, Holistic Healing",
-            company: "",
+            name: "Dr. Arathy",
+            role: "BAMS, Alternative Holistic Healing",
+            company: "Akshayogam Centre",
             image: "/dr-arathy-pro.png",
             initials: "AR",
             color: "#8bc34a"
         },
         {
             name: "Thampi Nagarjuna",
-            role: "Ancient Ayurveda Healer",
-            company: "Ecoherb",
+            role: "Ancient Spiritual Healer",
+            company: "Ecoherb Health And Ayur",
             image: "/thampi-nagarjuna-pro.png",
             initials: "TN",
             color: "#26a69a"
         },
         {
             name: "Akhil Tony",
-            role: "Cannabis Activist",
-            company: "Ecoherb",
+            role: "M.A Psychology",
+            company: "Ecoherb Health And Ayur",
             image: "/akhil-tony-pro.png",
             initials: "AT",
             color: "#66bb6a"

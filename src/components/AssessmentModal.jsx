@@ -109,10 +109,30 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         email: '',
         answers: {}
     });
+    const [validationErrors, setValidationErrors] = useState({
+        phone: '',
+        email: ''
+    });
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        // Allow 10 digits, or 10 digits with +91 prefix
+        const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
+        return phoneRegex.test(phone.replace(/\s/g, '')); // Remove spaces
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+
+        // Clear validation error when user starts typing
+        if (name === 'email' || name === 'phone') {
+            setValidationErrors(prev => ({ ...prev, [name]: '' }));
+        }
     };
 
     const handleAnswerSelect = (questionId, points) => {
@@ -138,6 +158,11 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
     const prevStep = () => setStep(prev => prev - 1);
 
     const handleSubmit = async () => {
+        // Validate before submitting
+        if (!validateAndShowErrors()) {
+            return;
+        }
+
         setIsSubmitting(true);
 
         const totalScore = calculateScore();
@@ -271,7 +296,22 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
     };
 
     const isContactInfoValid = () => {
-        return formData.phone && formData.email;
+        if (!formData.phone || !formData.email) return false;
+        return validatePhone(formData.phone) && validateEmail(formData.email);
+    };
+
+    const validateAndShowErrors = () => {
+        let errors = { phone: '', email: '' };
+
+        if (formData.phone && !validatePhone(formData.phone)) {
+            errors.phone = 'Please enter a valid 10-digit phone number';
+        }
+        if (formData.email && !validateEmail(formData.email)) {
+            errors.email = 'Please enter a valid email address';
+        }
+
+        setValidationErrors(errors);
+        return errors.phone === '' && errors.email === '';
     };
 
     if (!isOpen) return null;
@@ -318,7 +358,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     }}
                                 />
                             </div>
-                            <h2>Get Cannabis Access</h2>
+                            <h2>Join Cannabis Access</h2>
                             <p className="intro-subtitle">
                                 Create your access for medical cannabis in India. Safe, Legal, and Ministry of AYUSH Approved.
                             </p>
@@ -337,7 +377,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                 </div>
                             </div>
                             <button className="btn-start" onClick={nextStep}>
-                                Create Now
+                                Get Access
                                 <ArrowRight size={20} />
                             </button>
                         </div>
@@ -423,13 +463,11 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
 
                             <div className="ebook-hook" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <img
-                                    src="/ebook-cover.png"
+                                    src="/ebook.png"
                                     alt="Free Ebook Gift"
                                     style={{
                                         width: '120px',
                                         height: 'auto',
-                                        borderRadius: '8px',
-                                        boxShadow: '0 10px 30px rgba(76, 175, 80, 0.3)',
                                         marginBottom: '1rem'
                                     }}
                                 />
@@ -438,7 +476,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     Free Bonus Gift Unlocked!
                                 </h3>
                                 <p style={{ fontSize: '0.9rem', color: '#fff', opacity: 0.9 }}>
-                                    Enter your details to reveal your eligibility result and get our <strong>"Mystery Transformation Ebook"</strong> (Worth ₹1,500) for FREE.
+                                    Enter your details to reveal your eligibility result and get our <strong>"Cannabis Transformation Guide"</strong> (Worth ₹1,500) for FREE.
                                 </p>
                             </div>
 
@@ -452,7 +490,14 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         onChange={handleInputChange}
                                         placeholder="+91 98765 43210"
                                         autoFocus
+                                        required
+                                        className={validationErrors.phone ? 'input-error' : ''}
                                     />
+                                    {validationErrors.phone && (
+                                        <span className="error-message" style={{ color: '#ef5350', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
+                                            {validationErrors.phone}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="form-field">
                                     <label style={{ textAlign: 'left', display: 'block' }}><Mail size={14} /> Email Address</label>
@@ -462,7 +507,14 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         placeholder="you@example.com"
+                                        required
+                                        className={validationErrors.email ? 'input-error' : ''}
                                     />
+                                    {validationErrors.email && (
+                                        <span className="error-message" style={{ color: '#ef5350', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
+                                            {validationErrors.email}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 

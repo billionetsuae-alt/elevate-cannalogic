@@ -205,19 +205,9 @@
 /* Desktop Layout */
 @media (min-width: 900px) {
     .workflow-comparison {
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 2rem;
-        align-items: center;
-    }
-
-    .vs-badge {
-        margin: 0;
-        width: 70px;
-        height: 70px;
-    }
-
-    .vs-badge span {
-        font-size: 1.5rem;
+        align-items: stretch;
     }
 
     /* Make Truth card slightly larger/more prominent */
@@ -227,6 +217,23 @@
 
     .the-truth:hover {
         transform: scale(1.04);
+    }
+
+    /* Image placeholder styling */
+    .truth-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #1a1a1a, #141414);
+        border: 2px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        min-height: 400px;
+    }
+
+    .truth-image-placeholder .placeholder-content {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1.1rem;
     }
 }
 

@@ -224,7 +224,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const productImages = [
         { src: '/elevate product image.png', alt: 'Elevate Capsules - Main' },
         { src: '/capsule-2.png', alt: 'Elevate Capsules - Close Up' },
-        { src: '/ebook-cover.png', alt: 'Mystery Transformation Ebook' },
+        { src: '/ebook-cover.png', alt: 'Cannabis Transformation Guide' },
         { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
     ];
     const [selectedImage, setSelectedImage] = useState(0);
@@ -482,7 +482,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     </div>
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
-                                            <h4>Mystery Transformation Ebook</h4>
+                                            <h4>Cannabis Transformation Guide</h4>
                                             <span className="pp-row-price">₹1,500</span>
                                         </div>
                                         <p>Unlock hidden potential with daily practices.</p>

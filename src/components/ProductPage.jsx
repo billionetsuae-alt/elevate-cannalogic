@@ -101,7 +101,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const productImages = [
         { src: '/elevate product image.png', alt: 'Elevate Capsules - Main' },
         { src: '/capsule-2.png', alt: 'Elevate Capsules - Close Up' },
-        { src: '/ebook-cover.png', alt: 'Mystery Transformation Ebook' },
+        { src: '/ebook-cover.png', alt: 'Cannabis Transformation Guide' },
         { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
     ];
     const [selectedImage, setSelectedImage] = useState(0);
@@ -331,7 +331,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     </div>
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
-                                            <h4>Mystery Transformation Ebook</h4>
+                                            <h4>Cannabis Transformation Guide</h4>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                 <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
                                                 <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
@@ -578,7 +578,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <Sparkles className="pp-mindful-icon" size={32} />
                             <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
                             <p className="pp-mindful-subtitle">
-                                You become your higher self. This works best when paired with intention—gently, naturally, in your own time.
+                                You become your higher self. This works best when paired with <b>intention</b> —gently, naturally, in your own time.
                             </p>
                             <div className="pp-mindful-tip">
                                 <Lightbulb size={20} />

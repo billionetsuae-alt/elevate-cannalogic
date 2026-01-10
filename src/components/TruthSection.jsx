@@ -7,7 +7,7 @@ const TruthSection = () => {
             <div className="container">
                 <div className="section-header">
                     <p className="subheading">THE CANNABIS INDUSTRY DILEMMA</p>
-                    <h2>The Truth vs. The Lie</h2>
+                    <h2>The Truth</h2>
                 </div>
 
                 <div className="workflow-comparison">
@@ -25,22 +25,11 @@ const TruthSection = () => {
                         </ul>
                     </div>
 
-                    <div className="vs-badge">
-                        <span>VS</span>
-                    </div>
-
-                    <div className="workflow-card the-lie animate-on-scroll">
-                        <div className="card-header">
-                            <h3>The Lie</h3>
-                            <p>What they want you to believe</p>
+                    {/* Image placeholder for future image */}
+                    <div className="truth-image-placeholder">
+                        <div className="placeholder-content">
+                            <p>Image Coming Soon</p>
                         </div>
-                        <ul className="workflow-list">
-                            <li>Cannabis is just a recreational drug</li>
-                            <li>"Ayurveda is pseudoscience"</li>
-                            <li>You can't build a career in this field</li>
-                            <li>It's illegal and dangerous</li>
-                            <li>Only doctors can work with cannabis</li>
-                        </ul>
                     </div>
                 </div>
             </div>

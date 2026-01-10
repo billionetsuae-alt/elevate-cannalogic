@@ -68,14 +68,14 @@ const ProblemSection = ({ onOpenAssessment }) => {
                         </p>
                         {/* Desktop button - hidden on mobile */}
                         <div className="venn-text-cta">
-                            <button onClick={onOpenAssessment} className="btn btn-primary">Check Eligibility</button>
+                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Access</button>
                         </div>
                     </div>
                     <div className="venn-image">
                         <img src="/ikigai-dark.png" alt="Ikigai Diagram" />
                     </div>
                     <div className="venn-cta">
-                        <button onClick={onOpenAssessment} className="btn btn-primary">Check Eligibility</button>
+                        <button onClick={onOpenAssessment} className="btn btn-primary">Get Access</button>
                     </div>
                 </div>
             </section>
