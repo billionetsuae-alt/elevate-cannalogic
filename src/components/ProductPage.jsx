@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
-import {
-    Sparkles, Leaf, ShieldCheck, Award, Heart,
-    Check, Star, Users, Package, Eye, Feather,
-    Rocket, ArrowRight, Quote, Zap, Brain,
-    Gift, Crown, BadgeCheck, Lightbulb, Sprout, ChevronDown
-} from 'lucide-react';
+import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles } from 'lucide-react';
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
@@ -106,6 +101,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     ];
     const [selectedImage, setSelectedImage] = useState(0);
     const [selectedPack, setSelectedPack] = useState(2); // Default to Most Chosen (2 Packs)
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+
+    // Carousel images
+    const carouselImages = [
+        { src: '/bundle-hero.png', alt: 'Elevate Full Spectrum Bundle' },
+        { src: '/ebook-mockup.jpg', alt: 'Cannabis Transformation Guide' },
+        { src: '/ebook-cover.png', alt: 'Ebook Cover' }
+    ];
 
     // Countdown timer effect
     useEffect(() => {
@@ -254,34 +259,68 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <section className="pp-product-showcase">
                 <div className="pp-container">
                     <div className="pp-product-grid">
-                        {/* Left: Hero Image + Bundle Items */}
+                        {/* Left: Hero Image Carousel */}
                         <div className="pp-product-gallery">
-                            <div className="pp-product-header" style={{ marginBottom: '2rem', textAlign: 'left' }}>
-                                <div className="pp-header-top" style={{ justifyContent: 'flex-start' }}>
-                                    <span className="pp-badge secondary">Best Value</span>
-                                    <div className="pp-rating">
-                                        <Star size={16} fill="#ffc107" color="#ffc107" />
-                                        <span>4.9 (120+ Reviews)</span>
-                                    </div>
-                                </div>
-                                <h1 className="pp-title">Elevate Full Spectrum Bundle</h1>
-                            </div>
-                            <div className="pp-hero-image-container">
+                            <div className="pp-carousel-container"
+                                onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)}
+                                onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)}
+                                onTouchEnd={() => {
+                                    if (touchStart - touchEnd > 75) {
+                                        // Swipe left - next image
+                                        setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+                                    }
+                                    if (touchStart - touchEnd < -75) {
+                                        // Swipe right - previous image
+                                        setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+                                    }
+                                }}
+                            >
                                 <img
-                                    src="/bundle-hero.png"
-                                    alt="Elevate Full Spectrum Bundle"
+                                    src={carouselImages[carouselIndex].src}
+                                    alt={carouselImages[carouselIndex].alt}
                                     className="pp-main-image single-hero"
                                 />
-                            </div>
 
+                                {/* Carousel Dots */}
+                                <div className="pp-carousel-dots">
+                                    {carouselImages.map((_, index) => (
+                                        <button
+                                            key={index}
+                                            className={`pp-carousel-dot ${index === carouselIndex ? 'active' : ''}`}
+                                            onClick={() => setCarouselIndex(index)}
+                                            aria-label={`Go to image ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Navigation Arrows for Desktop */}
+                                {carouselImages.length > 1 && (
+                                    <>
+                                        <button
+                                            className="pp-carousel-arrow pp-carousel-arrow-left"
+                                            onClick={() => setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)}
+                                            aria-label="Previous image"
+                                        >
+                                            <ChevronLeft size={28} />
+                                        </button>
+                                        <button
+                                            className="pp-carousel-arrow pp-carousel-arrow-right"
+                                            onClick={() => setCarouselIndex((prev) => (prev + 1) % carouselImages.length)}
+                                            aria-label="Next image"
+                                        >
+                                            <ChevronRight size={28} />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
                         {/* Right: Pack Selection + Pricing + CTA */}
                         <div className="pp-product-details">
                             {/* Pack Selection Section - MOVED TO TOP */}
                             <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '6rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
-                                <div className="pp-pack-grid" style={{ justifyContent: 'center', marginTop: '2rem' }}>
+                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
+                                <div className="pp-pack-grid" style={{ justifyContent: 'center', marginTop: '0' }}>
                                     {PACK_OPTIONS.map(pack => (
                                         <div
                                             key={pack.id}
@@ -383,8 +422,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-ingredients-grid">
                         {[
-                            { title: "Premium Hemp Extract", desc: "High-quality, legal hemp compounds" },
-                            { title: "Coconut Oil Base", desc: "Optimal absorption & purity" }
+                            { title: "Cannabis Extract", desc: "High quality, Full Spectrum Compounds" },
+                            { title: "Virgin Coconut Oil", desc: "For optimal absorption & purity" }
                         ].map((item, i) => (
                             <div className="pp-ingredient-item" key={i}>
                                 <div className="pp-ingredient-check">
