@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
-import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill } from 'lucide-react';
+import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag } from 'lucide-react';
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
@@ -459,7 +459,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
                             <button className="pp-cta-button" onClick={() => handleBuyNow()} style={{ marginTop: '1.5rem' }}>
-                                <Rocket size={22} />
+                                <ShoppingBag size={22} />
                                 <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
                             </button>

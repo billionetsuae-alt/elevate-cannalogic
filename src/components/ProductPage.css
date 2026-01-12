@@ -103,8 +103,8 @@
    =========================================== */
 
 .pp-hero {
-    padding: 3.5rem 0 2rem;
-    /* Increased for Desktop Gap */
+    padding: 1rem 0 1rem;
+    /* Reduced padding to bring content up */
 }
 
 .pp-hero-content {
@@ -261,16 +261,16 @@
    =========================================== */
 
 .pp-product-showcase {
-    padding: 2rem 0 4rem;
-    /* Increased for Desktop Gap */
+    padding: 0 0 4rem;
+    /* Reduced top padding */
 }
 
 .pp-product-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: start;
-    /* Changed from center to align top */
+    align-items: center;
+    /* Vertically center aligned as requested */
 }
 
 .pp-product-visual {
