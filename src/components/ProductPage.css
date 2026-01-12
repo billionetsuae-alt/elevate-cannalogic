@@ -4080,16 +4080,16 @@
 }
 
 .pp-dosing-icon-wrapper.double .pp-pill-icon:first-child {
-    transform: translateX(-5px) rotate(45deg);
+    transform: translateX(-5px) rotate(90deg);
 }
 
 .pp-dosing-icon-wrapper.double .pp-pill-icon:last-child {
-    transform: translateX(5px) rotate(45deg);
+    transform: translateX(5px) rotate(90deg);
 }
 
 .pp-pill-icon {
     color: #4caf50;
-    transform: rotate(45deg);
+    transform: rotate(90deg);
     filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.4));
     transition: all 0.4s ease;
 }
@@ -4097,7 +4097,7 @@
 .pp-dosing-option-card:hover .pp-pill-icon {
     filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.8));
     color: #66bb6a;
-    transform: rotate(45deg) scale(1.1);
+    transform: rotate(90deg) scale(1.1);
 }
 
 .pp-dosing-content h3 {

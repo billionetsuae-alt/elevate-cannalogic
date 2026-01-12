@@ -26,5 +26,4 @@ dist-ssr
 .getassessmentdata.json
 .updateaddresswebhook.json
 
-.notToPushToGit
-.notToPushToGit/*
+notToPushToGit/

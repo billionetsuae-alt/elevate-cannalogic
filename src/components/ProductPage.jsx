@@ -524,8 +524,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <section className="pp-usage-section">
                 <div className="pp-container">
                     <div className="pp-section-header">
-                        <span className="pp-section-label">Your Path</span>
-                        <h2 className="pp-section-title">Choosing Your Support Level</h2>
+                        <h2 className="pp-section-title">Dosage Options</h2>
                     </div>
 
                     <div className="pp-dosing-redesign-grid">
