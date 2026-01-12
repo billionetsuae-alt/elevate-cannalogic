@@ -242,12 +242,12 @@ const InvoiceTemplate = ({ order }) => {
                     <View style={styles.addressBox}>
                         <Text style={styles.addressLabel}>Bill To</Text>
                         <Text style={styles.addressName}>{customerName}</Text>
-                        {customerPhone && <Text style={styles.addressLine}>📞 {customerPhone}</Text>}
-                        {customerEmail && <Text style={styles.addressLine}>✉️ {customerEmail}</Text>}
+                        {customerPhone && <Text style={styles.addressLine}>Phone: {customerPhone}</Text>}
+                        {customerEmail && <Text style={styles.addressLine}>Email: {customerEmail}</Text>}
                         {customerAddress && <Text style={styles.addressLine}>{customerAddress}</Text>}
                         {(customerCity || customerState) && (
                             <Text style={styles.addressLine}>
-                                {customerCity}{customerCity && customerState ? ', ' : ''}{customerState} {customerPincode}
+                                {customerCity}{customerCity && customerState ? ', ' : ''}{customerState} - {customerPincode}
                             </Text>
                         )}
                     </View>
@@ -255,8 +255,8 @@ const InvoiceTemplate = ({ order }) => {
                         <Text style={styles.addressLabel}>From</Text>
                         <Text style={styles.addressName}>Cannalogic Wellness Pvt. Ltd.</Text>
                         <Text style={styles.addressLine}>GSTIN: 29AABCC1234H1Z5</Text>
-                        <Text style={styles.addressLine}>📞 +91 98765 43210</Text>
-                        <Text style={styles.addressLine}>✉️ support@cannalogic.in</Text>
+                        <Text style={styles.addressLine}>Phone: +91 98765 43210</Text>
+                        <Text style={styles.addressLine}>Email: support@cannalogic.in</Text>
                         <Text style={styles.addressLine}>Bangalore, Karnataka</Text>
                     </View>
                 </View>
