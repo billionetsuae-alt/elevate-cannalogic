@@ -49,12 +49,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(239, 68, 68, 0.1);
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
-    animation: pulseRed 2s infinite;
     line-height: 1;
     min-width: 40px;
     /* Ensure width for labels */

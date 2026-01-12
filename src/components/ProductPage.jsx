@@ -100,7 +100,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
     ];
     const [selectedImage, setSelectedImage] = useState(0);
-    const [selectedPack, setSelectedPack] = useState(2); // Default to Most Chosen (2 Packs)
+    const [selectedPack, setSelectedPack] = useState(null); // Default to null (no pack selected)
     const [carouselIndex, setCarouselIndex] = useState(0);
     const [touchStart, setTouchStart] = useState(0);
     const [touchEnd, setTouchEnd] = useState(0);
@@ -133,6 +133,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         window.scrollTo(0, 0);
     }, []);
 
+    // Ebook selection state (default true)
+    const [isEbookSelected, setIsEbookSelected] = useState(true);
+    const [showPackWarning, setShowPackWarning] = useState(false);
+
     // Auto-cycle through benefit words for glow effect
     useEffect(() => {
         const glowTimer = setInterval(() => {
@@ -142,8 +146,32 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         return () => clearInterval(glowTimer);
     }, [benefitWords.length]);
 
-    // Open checkout modal first
-    const handleBuyNow = () => {
+    // Open checkout modal first, optionally with a specific pack ID
+    const handleBuyNow = (packId = null) => {
+        // If packId is an event (object), treat it as null
+        if (typeof packId === 'object') packId = null;
+
+        // If a specific pack is passed (e.g. from click), use it
+        // Otherwise use the state selectedPack
+        const packToBuy = packId || selectedPack;
+
+        if (!packToBuy) {
+            setShowPackWarning(true);
+            const packSection = document.getElementById('pack-selection');
+            if (packSection) {
+                packSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // Hide warning if selection is made
+        setShowPackWarning(false);
+
+        // Ensure state is synced if we passed a direct ID (case: click on unselected pack)
+        if (packId && packId !== selectedPack) {
+            setSelectedPack(packId);
+        }
+
         setIsCheckoutOpen(true);
     };
 
@@ -152,12 +180,17 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         setCheckoutData(checkoutFormData);
         setIsCheckoutOpen(false);
 
+        // Calculate total amount: Pack Price + (Ebook Price if expired and selected)
+        const packPrice = PACK_OPTIONS.find(p => p.id === selectedPack).price;
+        const ebookPrice = (offerExpired && isEbookSelected) ? 1500 : 0;
+        const totalAmount = packPrice + ebookPrice;
+
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-            amount: PACK_OPTIONS.find(p => p.id === selectedPack).price * 100, // Amount in paise
+            amount: totalAmount * 100, // Amount in paise
             currency: 'INR',
             name: 'CannaLogic',
-            description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}`,
+            description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
             image: '/Cannalogic-White.svg',
             prefill: {
                 name: checkoutFormData.fullName || name || '',
@@ -197,8 +230,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 state: checkoutFormData.state
                             },
                             recordId: userData?.recordId,
-                            amount: PACK_OPTIONS.find(p => p.id === selectedPack).price,
-                            product: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}`,
+                            amount: totalAmount,
+                            product: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
                             pack_details: PACK_OPTIONS.find(p => p.id === selectedPack)
                         })
                     });
@@ -318,16 +351,20 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         {/* Right: Pack Selection + Pricing + CTA */}
                         <div className="pp-product-details">
                             {/* Pack Selection Section - MOVED TO TOP */}
-                            <div className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
+                            <div id="pack-selection" className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '0.5rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
+                                {showPackWarning && (
+                                    <div style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: 'bold' }}>
+                                        ⚠ Please select a pack to proceed
+                                    </div>
+                                )}
                                 <div className="pp-pack-grid" style={{ justifyContent: 'center', marginTop: '0' }}>
                                     {PACK_OPTIONS.map(pack => (
                                         <div
                                             key={pack.id}
                                             className={`pp-pack-card ${selectedPack === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
                                             onClick={() => {
-                                                setSelectedPack(pack.id);
-                                                handleBuyNow();
+                                                handleBuyNow(pack.id);
                                             }}
                                         >
                                             {pack.best && (
@@ -351,8 +388,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                                 className="pp-pack-select-btn"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    setSelectedPack(pack.id);
-                                                    handleBuyNow(); // Direct checkout
+                                                    handleBuyNow(pack.id); // Direct checkout
                                                 }}
                                             >
                                                 {`Select ${pack.label}`}
@@ -364,7 +400,28 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                             {/* Bundle Items - Ebook Only */}
                             <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
-                                <div className="pp-bundle-row-item">
+                                <div className="pp-bundle-row-item"
+                                    onClick={() => offerExpired && setIsEbookSelected(!isEbookSelected)}
+                                    style={{ cursor: offerExpired ? 'pointer' : 'default', opacity: (offerExpired && !isEbookSelected) ? 0.6 : 1 }}>
+
+                                    {/* Checkbox for expired offer */}
+                                    {offerExpired && (
+                                        <div style={{
+                                            marginRight: '10px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '24px',
+                                            height: '24px',
+                                            borderRadius: '4px',
+                                            border: isEbookSelected ? 'none' : '2px solid rgba(255,255,255,0.3)',
+                                            background: isEbookSelected ? '#4caf50' : 'transparent',
+                                            transition: 'all 0.2s'
+                                        }}>
+                                            {isEbookSelected && <Check size={16} color="white" />}
+                                        </div>
+                                    )}
+
                                     <div className="pp-bundle-thumb">
                                         <img src="/ebook-cover.jpg" alt="Ebook" />
                                     </div>
@@ -372,8 +429,14 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                         <div className="pp-bundle-row-header">
                                             <h4>Cannabis Transformation Guide</h4>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
-                                                <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                                {!offerExpired ? (
+                                                    <>
+                                                        <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
+                                                        <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                                    </>
+                                                ) : (
+                                                    <span className="pp-row-price" style={{ color: 'white', fontWeight: 'bold' }}>₹1,500</span>
+                                                )}
                                             </div>
                                         </div>
                                         <p>Unlock hidden potential with daily practices.</p>
@@ -402,9 +465,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
-                            <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired} style={{ marginTop: '1.5rem' }}>
+                            <button className="pp-cta-button" onClick={() => handleBuyNow()} style={{ marginTop: '1.5rem' }}>
                                 <Rocket size={22} />
-                                <span>{offerExpired ? 'Offer Expired' : 'Buy Now'}</span>
+                                <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
                             </button>
                         </div>
@@ -713,7 +776,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 !offerExpired && (
                     <div className="pp-sticky-footer">
                         <div className="pp-sticky-timer">
-                            <span className="pp-sticky-label" style={{ display: 'block', color: 'white', fontSize: '12px', marginBottom: '4px', textAlign: 'center' }}>Offer Will Expire In</span>
+                            <span className="pp-sticky-label" style={{ display: 'block', color: 'white', fontSize: '12px', marginBottom: '4px', textAlign: 'center' }}>Free Guide Offer Ends in</span>
                             <div className="pp-sticky-countdown">
                                 <div className="pp-sticky-time-unit">
                                     <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
