@@ -28,7 +28,7 @@ const TruthSection = () => {
                     {/* Image placeholder for future image */}
                     {/* Comparison Image */}
                     <div className="truth-image-container">
-                        <img src="/truth-hero.png" alt="Fusion of Ayurveda and Modern Science" />
+                        <img src="/truth-hero.jpg" alt="Fusion of Ayurveda and Modern Science" />
                     </div>
                 </div>
             </div>

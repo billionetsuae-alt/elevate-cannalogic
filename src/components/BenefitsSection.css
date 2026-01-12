@@ -49,21 +49,21 @@
 /* Card Specific Backgrounds with Dark Overlay for Readability */
 .audience-card:nth-child(1) .card-bg-placeholder {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
-        url('/bg-calm.png');
+        url('/bg-calm.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .audience-card:nth-child(2) .card-bg-placeholder {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
-        url('/bg-stability.png');
+        url('/bg-stability.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .audience-card:nth-child(3) .card-bg-placeholder {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.85)),
-        url('/bg-sleep.png');
+        url('/bg-sleep.jpg');
     background-size: cover;
     background-position: center;
 }

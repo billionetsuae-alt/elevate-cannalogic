@@ -11,7 +11,7 @@ const ProblemSection = ({ onOpenAssessment }) => {
                     <p className="section-label mobile-label">The Magical Healing</p>
 
                     <div className="discovery-image">
-                        <img src="/cannabis-leaf-spiritual.png" alt="Sacred Cannabis Leaf" />
+                        <img src="/cannabis-leaf-spiritual.jpg" alt="Sacred Cannabis Leaf" />
                     </div>
                     <div className="discovery-text">
                         {/* Desktop Heading - Visible on Desktop Only */}

@@ -135,6 +135,20 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         }
     };
 
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        if (name === 'email') {
+            if (value && !validateEmail(value)) {
+                setValidationErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+            }
+        }
+        if (name === 'phone') {
+            if (value && !validatePhone(value)) {
+                setValidationErrors(prev => ({ ...prev, phone: 'Please enter a valid 10-digit phone number' }));
+            }
+        }
+    };
+
     const handleAnswerSelect = (questionId, points) => {
         setFormData(prev => ({
             ...prev,
@@ -377,7 +391,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                 </div>
                             </div>
                             <button className="btn-start" onClick={nextStep}>
-                                Get Access
+                                Create Access
                                 <ArrowRight size={20} />
                             </button>
                         </div>
@@ -488,6 +502,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
+                                        onBlur={handleBlur}
                                         placeholder="+91 98765 43210"
                                         autoFocus
                                         required
@@ -506,6 +521,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        onBlur={handleBlur}
                                         placeholder="you@example.com"
                                         required
                                         className={validationErrors.email ? 'input-error' : ''}

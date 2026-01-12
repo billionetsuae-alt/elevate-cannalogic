@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
-import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles } from 'lucide-react';
+import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill } from 'lucide-react';
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
@@ -96,7 +96,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const productImages = [
         { src: '/elevate product image.png', alt: 'Elevate Capsules - Main' },
         { src: '/capsule-2.png', alt: 'Elevate Capsules - Close Up' },
-        { src: '/ebook-cover.png', alt: 'Cannabis Transformation Guide' },
+        { src: '/ebook-cover.jpg', alt: 'Cannabis Transformation Guide' },
         { src: '/ebook-mockup.jpg', alt: 'Ebook Mockup' }
     ];
     const [selectedImage, setSelectedImage] = useState(0);
@@ -109,7 +109,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const carouselImages = [
         { src: '/bundle-hero.png', alt: 'Elevate Full Spectrum Bundle' },
         { src: '/ebook-mockup.jpg', alt: 'Cannabis Transformation Guide' },
-        { src: '/ebook-cover.png', alt: 'Ebook Cover' }
+        { src: '/ebook-cover.jpg', alt: 'Ebook Cover' }
     ];
 
     // Countdown timer effect
@@ -366,7 +366,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
                                 <div className="pp-bundle-row-item">
                                     <div className="pp-bundle-thumb">
-                                        <img src="/ebook-cover.png" alt="Ebook" />
+                                        <img src="/ebook-cover.jpg" alt="Ebook" />
                                     </div>
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
@@ -467,50 +467,41 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section >
 
-            {/* Choosing Your Support Level (Moved Up) - Extracted Dosing Options */}
-            < section className="pp-usage-section" style={{ paddingBottom: '0', marginBottom: '-2rem' }}>
-                <div className="pp-container" style={{ paddingBottom: '0' }}>
-                    <div className="pp-dosing-options" style={{ marginBottom: '0' }}>
-                        <div className="pp-section-header">
-                            <span className="pp-section-label">Your Path</span>
-                            <h2 className="pp-section-title">Choosing Your Support Level</h2>
-                        </div>
-                        <div className="pp-dosage-pills">
-                            <div className="pp-dosage-pill">
-                                <span className="pp-dosage-count">1 Softgel</span>
-                                <span className="pp-dosage-effect">Subtle Effects</span>
+
+            {/* Choosing Your Support Level - Redesigned */}
+            <section className="pp-usage-section">
+                <div className="pp-container">
+                    <div className="pp-section-header">
+                        <span className="pp-section-label">Your Path</span>
+                        <h2 className="pp-section-title">Choosing Your Support Level</h2>
+                    </div>
+
+                    <div className="pp-dosing-redesign-grid">
+                        {/* Single Dose Option */}
+                        <div className="pp-dosing-option-card">
+                            <div className="pp-dosing-icon-wrapper">
+                                <Pill size={32} className="pp-pill-icon" />
                             </div>
-                            <div className="pp-dosage-pill">
-                                <span className="pp-dosage-count">2 Softgels</span>
-                                <span className="pp-dosage-effect">Deep Effects</span>
+                            <div className="pp-dosing-content">
+                                <h3>Single Dose</h3>
+                                <p className="pp-dosing-desc">1 Softgel • Subtle Effects</p>
                             </div>
                         </div>
-                        <div className="pp-dosing-grid" style={{ marginBottom: '0' }}>
-                            {currentPhase.dosing.map((option, i) => (
-                                <div className="pp-dosing-card" key={i}>
-                                    <div className="pp-dosing-header" style={{ background: i === 1 ? currentPhase.color + '10' : '' }}>
-                                        <h4 style={{ color: currentPhase.color }}>{option.title}</h4>
-                                    </div>
-                                    <div className="pp-dosing-body">
-                                        <div className="dosing-block">
-                                            <strong>🎯 Best For:</strong>
-                                            <p>{option.bestFor}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>🌊 Experience:</strong>
-                                            <p>{option.experience}</p>
-                                        </div>
-                                        <div className="dosing-block">
-                                            <strong>⏰ When to use:</strong>
-                                            <p>{option.when}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+
+                        {/* Double Dose Option */}
+                        <div className="pp-dosing-option-card">
+                            <div className="pp-dosing-icon-wrapper double">
+                                <Pill size={32} className="pp-pill-icon" />
+                                <Pill size={32} className="pp-pill-icon" />
+                            </div>
+                            <div className="pp-dosing-content">
+                                <h3>Double Dose</h3>
+                                <p className="pp-dosing-desc">2 Softgels • Deep Effects</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Benefits Exhibition Scrolling Section */}
             < section className="pp-benefits-exhibition" style={{ paddingTop: '1rem' }}>

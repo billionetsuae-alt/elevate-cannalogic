@@ -3909,6 +3909,7 @@
         height: 7px;
     }
 }
+
 /* Carousel Navigation Arrows */
 .pp-carousel-arrow {
     position: absolute;
@@ -3950,5 +3951,110 @@
 @media (max-width: 768px) {
     .pp-carousel-arrow {
         display: none;
+    }
+}
+
+/* ===========================================
+   REDESIGNED DOSING SECTION
+   =========================================== */
+
+.pp-dosing-redesign-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+    margin: 2rem auto 5rem;
+}
+
+.pp-dosing-option-card {
+    background: linear-gradient(145deg, #1e2820, #131c15);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    cursor: pointer;
+}
+
+/* Glowing top edge effect like Truth card */
+.pp-dosing-option-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #4caf50, transparent);
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+
+.pp-dosing-option-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(76, 175, 80, 0.15);
+    border-color: rgba(76, 175, 80, 0.6);
+}
+
+.pp-dosing-option-card:hover::before {
+    opacity: 0.8;
+}
+
+.pp-dosing-icon-wrapper {
+    margin-bottom: 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.pp-dosing-icon-wrapper.double .pp-pill-icon:first-child {
+    transform: translateX(-5px) rotate(45deg);
+}
+
+.pp-dosing-icon-wrapper.double .pp-pill-icon:last-child {
+    transform: translateX(5px) rotate(45deg);
+}
+
+.pp-pill-icon {
+    color: #4caf50;
+    transform: rotate(45deg);
+    filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.4));
+    transition: all 0.4s ease;
+}
+
+.pp-dosing-option-card:hover .pp-pill-icon {
+    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.8));
+    color: #66bb6a;
+    transform: rotate(45deg) scale(1.1);
+}
+
+.pp-dosing-content h3 {
+    font-size: 1.75rem;
+    color: white;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-heading);
+    background: linear-gradient(to right, #fff, #a5d6a7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pp-dosing-desc {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .pp-dosing-redesign-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
     }
 }
