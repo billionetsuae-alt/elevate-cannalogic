@@ -261,14 +261,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <div className="pp-bg-glow"></div>
             <div className="pp-bg-pattern"></div>
 
-            {/* Navigation */}
-            <nav className="pp-nav">
-                <div className="pp-container">
-                    <div className="pp-nav-logo">
-                        <img src="/Cannalogic-White.svg" alt="CannaLogic" className="pp-logo-img" />
-                    </div>
-                </div>
-            </nav>
+
 
             {/* Hero Section - Restored with Correct Badge */}
             <section className="pp-hero">
@@ -572,7 +565,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     <div className="pp-benefits-card-parent">
                         <div className="pp-benefits-header">
                             <span className="pp-section-label" style={{ color: currentPhase.color }}>Holistic Impact</span>
-                            <h2 className="pp-benefits-title">Cannabis + Intention</h2>
+                            <h2 className="pp-benefits-title">Potential Outcomes</h2>
+                            <p className="pp-benefits-subtitle">When used with intention and guidance</p>
                         </div>
 
                         <div className="pp-benefits-scroll-window">
