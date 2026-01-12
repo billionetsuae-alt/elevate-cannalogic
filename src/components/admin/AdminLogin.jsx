@@ -18,8 +18,8 @@ const AdminLogin = () => {
         e.preventDefault();
         setLoading(true);
 
-        const envUsername = import.meta.env.VITE_ADMIN_USERNAME;
-        const envPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+        const envUsername = import.meta.env.ADMIN_USERNAME;
+        const envPassword = import.meta.env.ADMIN_PASSWORD;
 
         // If env vars are not set, allow access with default (safe failover for mock)
         // OR simpler: just strict check

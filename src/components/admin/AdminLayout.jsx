@@ -22,13 +22,12 @@ const AdminLayout = () => {
 
         // 2. Fetch Data (Real Webhook)
         const fetchData = async () => {
-            const webhookUrl = import.meta.env.VITE_ADMIN_DATA_WEBHOOK;
+            const webhookUrl = import.meta.env.ADMIN_DATA_WEBHOOK;
             let success = false;
 
             // Try fetching real data first
             if (webhookUrl) {
                 try {
-                    console.log('Admin: Fetching data from', webhookUrl);
                     const response = await fetch(webhookUrl);
 
                     if (response.ok) {
@@ -41,21 +40,16 @@ const AdminLayout = () => {
                                 success = true;
                                 return;
                             } catch (e) {
-                                console.error('Admin: JSON Parse Error. Response was:', text);
+                                // Silent failure on parse error
                             }
-                        } else {
-                            console.warn('Admin: Webhook returned empty response. Check n8n workflow activation.');
                         }
-                    } else {
-                        console.warn(`Admin: Webhook failed with status ${response.status}`);
                     }
                 } catch (err) {
-                    console.error('Admin: Network Error:', err);
+                    // Silent failure on network error
                 }
             }
 
             if (!success) {
-                console.error('Admin: Failed to load real data');
                 setError('Failed to load dashboard data. Please check Webhook URL.');
                 setLoading(false);
             }
