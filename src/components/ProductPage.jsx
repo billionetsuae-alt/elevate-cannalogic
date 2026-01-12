@@ -478,12 +478,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-ingredients-grid">
                         {[
-                            { title: "Cannabis Extract", desc: "High quality, Full Spectrum Compounds" },
-                            { title: "Virgin Coconut Oil", desc: "For optimal absorption & purity" }
+                            { title: "Cannabis Extract", desc: "High quality, Full Spectrum Compounds", img: "/ingredient-cannabis.png" },
+                            { title: "Virgin Coconut Oil", desc: "For optimal absorption & purity", img: "/ingredient-coconut.png" }
                         ].map((item, i) => (
                             <div className="pp-ingredient-item" key={i}>
-                                <div className="pp-ingredient-check">
-                                    <Check size={18} />
+                                <div className="pp-ingredient-image-container">
+                                    <img src={item.img} alt={item.title} className="pp-ingredient-img" />
                                 </div>
                                 <div className="pp-ingredient-content">
                                     <strong>{item.title}</strong>
