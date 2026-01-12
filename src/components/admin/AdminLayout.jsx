@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, Settings } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, Settings, FileText } from 'lucide-react';
 import './Admin.css';
 
 // Context to share data across views
@@ -111,6 +111,11 @@ const AdminLayout = () => {
                         <NavLink to="/admin/orders" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                             <ShoppingBag size={20} />
                             <span>Orders</span>
+                        </NavLink>
+
+                        <NavLink to="/admin/invoices" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                            <FileText size={20} />
+                            <span>Invoices</span>
                         </NavLink>
 
                         <div className="nav-item" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
