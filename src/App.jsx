@@ -18,6 +18,30 @@ import ProductPage from './components/ProductPage'
 import ThankYouPage from './components/ThankYouPage'
 import ScrollProgress from './components/ScrollProgress'
 
+// Security: Clean up expired localStorage data (30-day expiry)
+const SESSION_EXPIRY_DAYS = 30;
+const cleanupExpiredData = () => {
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('elevate_'));
+    const now = Date.now();
+    const expiryMs = SESSION_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+
+    keys.forEach(key => {
+        try {
+            const data = JSON.parse(localStorage.getItem(key));
+            if (data?.createdAt && (now - new Date(data.createdAt).getTime()) > expiryMs) {
+                localStorage.removeItem(key);
+            }
+        } catch {
+            // Invalid JSON, remove it
+            localStorage.removeItem(key);
+        }
+    });
+};
+
+// Run cleanup on app load
+cleanupExpiredData();
+
+
 // Landing Page Component
 function LandingPage({ onOpenAssessment }) {
     const scrollToVideo = () => {
@@ -104,18 +128,18 @@ function ProductPageWrapper() {
                     const response = await fetch(`https://n8n-642200223.kloudbeansite.com/webhook/get-assessment?id=${recordId}`)
                     if (response.ok) {
                         const data = await response.json()
-                        console.log("ProductPage: Fetched data from n8n:", data)
+
 
                         // Handle if n8n returns an array (common)
                         let rawData = data
                         if (Array.isArray(data) && data.length > 0) {
-                            console.log("ProductPage: Response is array, using first item")
+
                             rawData = data[0]
                         }
                         // Handle if data is wrapped in 'fields' (Airtable format)
                         rawData = rawData.fields || rawData
 
-                        console.log("ProductPage: Raw data for normalization:", rawData)
+
 
                         // Normalize Airtable field names to camelCase for frontend
                         const normalizedData = {

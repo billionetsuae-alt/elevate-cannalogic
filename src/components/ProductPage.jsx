@@ -209,7 +209,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             },
             handler: async function (response) {
                 // Payment successful
-                console.log('Payment Success:', response);
+
 
                 // Send to webhook with address
                 try {
@@ -246,7 +246,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             },
             modal: {
                 ondismiss: function () {
-                    console.log('Payment cancelled');
+
                 }
             }
         };

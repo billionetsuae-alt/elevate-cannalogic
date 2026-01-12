@@ -226,7 +226,8 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             totalScore: totalScore,
             maxScore: 35, // Updated max score
             readinessLevel: getReadinessLevel(totalScore),
-            tempId: tempId
+            tempId: tempId,
+            createdAt: new Date().toISOString() // For session expiry
         };
 
         // Store in localStorage
