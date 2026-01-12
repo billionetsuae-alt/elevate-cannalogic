@@ -3445,7 +3445,7 @@
 }
 
 .pp-benefits-scroll-window {
-    height: 400px;
+    height: 280px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
@@ -3481,7 +3481,7 @@
 
 /* Column specific delays for 'living' feel */
 .pp-benefit-col.col-slow {
-    transform: translateY(10px);
+    transform: translateY(0);
 }
 
 .pp-benefit-col.col-medium {
@@ -3489,7 +3489,7 @@
 }
 
 .pp-benefit-col.col-fast {
-    transform: translateY(-10px);
+    transform: translateY(0);
 }
 
 .pp-benefit-col span {
@@ -3548,11 +3548,13 @@
 @media (max-width: 768px) {
     .pp-benefits-grid-content {
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-        /* Reduced from 1rem */
+        gap: 0;
+        /* Removed gap to prevent overflow */
         padding: 0 0.5rem 1.5rem 0.5rem;
         /* Reduced horizontal padding */
         text-align: center;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .pp-benefit-col.col-fast {
@@ -3569,10 +3571,14 @@
     }
 
     .pp-benefit-col span {
-        font-size: 1rem;
-        /* Slightly smaller for better fit */
+        font-size: 0.85rem;
+        /* Smaller font for mobile safety */
         white-space: nowrap;
         /* Prevent text wrapping */
+        width: 100%;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .pp-benefits-title {

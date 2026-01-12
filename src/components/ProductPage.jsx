@@ -404,7 +404,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                             <button className="pp-cta-button" onClick={handleBuyNow} disabled={offerExpired} style={{ marginTop: '1.5rem' }}>
                                 <Rocket size={22} />
-                                <span>{offerExpired ? 'Offer Expired' : 'Claim My Exclusive Bundle'}</span>
+                                <span>{offerExpired ? 'Offer Expired' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
                             </button>
                         </div>
@@ -620,12 +620,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <div className="pp-mindful-card">
                                 <h3><Sprout size={20} /> How To Use Mindfully</h3>
                                 <ul>
-                                    <li>Start low, go slow</li>
+                                    <li>Set an intention</li>
                                     <li>Use in a calm environment</li>
-                                    <li>Avoid mixing with alcohol or stimulants</li>
+                                    <li>Avoid Smoking or Drinking Alcohol</li>
                                     <li>Stay hydrated</li>
-                                    <li>Listen to your body — it always knows</li>
-                                    <li>Observe your body</li>
+                                    <li>Engage in Calming Activities like Nature walk, Music or Socializing</li>
+                                    <li>Listen to your Soul</li>
                                     <li>Use consistently, not excessively</li>
                                 </ul>
                             </div>
@@ -633,8 +633,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <div className="pp-mindful-card intent">
                                 <h3><Leaf size={20} /> A Note On Intention</h3>
                                 <p>
-                                    This is not about escaping reality. It’s about meeting yourself with clarity.
-                                    When used with awareness, the plant supports what already exists within you — calm, balance, and presence.
+                                    Cannabis, when approached consciously, can become more than a substance — it can be a mirror for self-reflection and inner growth. The key is intention.
+                                    <br /><br />
+                                    Before engaging, pause and ask yourself:
+                                    <br />
+                                    <b>Why am I doing this? What am I seeking to understand, heal, or release?</b>
+                                    <br /><br />
+                                    Intention shapes experience. When used mindlessly, it becomes escape. When used mindfully, it becomes exploration.
                                 </p>
                             </div>
                         </div>
