@@ -4,20 +4,32 @@ import './FAQ.css';
 const FAQ = () => {
     const faqs = [
         {
-            question: "Is this program certified?",
-            answer: "Yes, our program is approved by the Ministry of AYUSH and recognized by leading medical cannabis institutions."
+            question: "What is Full Spectrum Cannabis Oil?",
+            answer: "It represents the complete extraction of the plant, preserving CBD, THC, and minor cannabinoids to create the \"Entourage Effect\" for maximum therapeutic potential, unlike isolated compounds."
         },
         {
-            question: "Do I need a medical background?",
-            answer: "While beneficial, it is not strictly required. The curriculum is designed to take you from foundational concepts to advanced applications."
+            question: "Is this product legal in India?",
+            answer: "Yes, 100%. Our products are approved by the Ministry of Ayush and compliant with all Government of India regulations for Vijaya (Medical Cannabis) products."
         },
         {
-            question: "What is the duration of the course?",
-            answer: "The program is a 6-month intensive fellowship with hybrid learning modules."
+            question: "Will I get \"high\" from using this?",
+            answer: "No. Our formulation is chemically balanced to provide therapeutic relief (pain, stress, sleep) without intoxication or psychoactive effects when strictly dosed as prescribed."
         },
         {
-            question: "Is financial aid available?",
-            answer: "Yes, we offer flexible payment plans and limited scholarships for eligible candidates."
+            question: "Do I need a prescription?",
+            answer: "Yes, a valid prescription is mandatory by law. We provide a complimentary medical consultation with our certified doctors to assess your eligibility and generate a prescription."
+        },
+        {
+            question: "What conditions can this help with?",
+            answer: "It is effective for managing chronic pain, stress, anxiety, insomnia, and inflammation. It helps regulate your body's Endocannabinoid System (ECS) for overall balance."
+        },
+        {
+            question: "Are there any side effects?",
+            answer: "It is natural and safe. Mild side effects like dry mouth or drowsiness may occur initially as your body adjusts. It is non-addictive and safer than many chemical painkillers."
+        },
+        {
+            question: "How do I take the softgels?",
+            answer: "Take 1 softgel daily after dinner or before bed for sleep/recovery. For stress/pain, take as directed by our physician. Swallow whole with water; do not chew."
         }
     ];
 

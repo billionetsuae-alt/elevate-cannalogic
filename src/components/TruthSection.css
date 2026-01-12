@@ -74,6 +74,7 @@
     font-size: 1.25rem;
     background: linear-gradient(to right, #888, #fff);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -175,6 +176,7 @@
 .the-truth .card-header h3 {
     background: linear-gradient(to right, #fff, #a5d6a7);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -376,10 +378,7 @@
     line-height: 1.4;
 }
 
-.overlay-green {
-    /* To mimic the greenish vibe in original if any, or just keep dark */
-    /* background: linear-gradient(to top, rgba(0, 30, 0, 0.9), transparent); */
-}
+
 
 @media (min-width: 768px) {
     .workflow-card {

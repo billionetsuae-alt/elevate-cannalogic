@@ -661,10 +661,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-faq-grid">
                         {[
-                            { q: "Is this legal in India?", a: "Yes! Our product is Ministry of AYUSH approved and 100% legal. We use only permitted hemp compounds within legal THC limits." },
-                            { q: "How long until I see results?", a: "Most people notice subtle changes within the first week, with more significant benefits after 2-4 weeks of consistent use." },
-                            { q: "Are there any side effects?", a: "Our natural formulation is gentle and well-tolerated. Some may experience mild relaxation initially. Always consult your doctor if you have concerns." },
-                            { q: "How do I take it?", a: "Simply take one capsule daily with water, preferably in the morning or as directed. Each bottle contains 30 capsules (one month supply)." }
+                            { q: "What is Full Spectrum Cannabis Oil?", a: "It represents the complete extraction of the plant, preserving CBD, THC, and minor cannabinoids to create the \"Entourage Effect\" for maximum therapeutic potential, unlike isolated compounds." },
+                            { q: "Is this product legal in India?", a: "Yes, 100%. Our products are approved by the Ministry of Ayush and compliant with all Government of India regulations for Vijaya (Medical Cannabis) products." },
+                            { q: "Will I get \"high\" from using this?", a: "No. Our formulation is chemically balanced to provide therapeutic relief (pain, stress, sleep) without intoxication or psychoactive effects when strictly dosed as prescribed." },
+                            { q: "Do I need a prescription?", a: "Yes, a valid prescription is mandatory by law. We provide a complimentary medical consultation with our certified doctors to assess your eligibility and generate a prescription." },
+                            { q: "What conditions can this help with?", a: "It is effective for managing chronic pain, stress, anxiety, insomnia, and inflammation. It helps regulate your body's Endocannabinoid System (ECS) for overall balance." },
+                            { q: "Are there any side effects?", a: "It is natural and safe. Mild side effects like dry mouth or drowsiness may occur initially as your body adjusts. It is non-addictive and safer than many chemical painkillers." },
+                            { q: "How do I take the softgels?", a: "Take 1 softgel daily after dinner or before bed for sleep/recovery. For stress/pain, take as directed by our physician. Swallow whole with water; do not chew." }
                         ].map((faq, i) => (
                             <div
                                 className={`pp-faq-item ${openFaq === i ? 'open' : ''}`}
