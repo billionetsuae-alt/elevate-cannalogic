@@ -392,7 +392,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             </div>
 
                             {/* Bundle Items - Ebook Only */}
-                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
+                            <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '0.5rem', marginTop: '0.5rem' }}>
                                 <div className="pp-bundle-row-item"
                                     onClick={() => offerExpired && setIsEbookSelected(!isEbookSelected)}
                                     style={{ cursor: offerExpired ? 'pointer' : 'default', opacity: (offerExpired && !isEbookSelected) ? 0.6 : 1 }}>
@@ -458,7 +458,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
-                            <button className="pp-cta-button" onClick={() => handleBuyNow()} style={{ marginTop: '1.5rem' }}>
+                            <button className="pp-cta-button" onClick={() => handleBuyNow()} style={{ marginTop: '0.75rem' }}>
                                 <ShoppingBag size={22} />
                                 <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
