@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
-import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag } from 'lucide-react';
+import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
@@ -493,31 +493,27 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
 
-                    <div className="pp-certifications-container" style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '16px',
-                        padding: '1.5rem 2rem',
-                        marginTop: '3.5rem',
-                        width: 'fit-content',
-                        minWidth: '300px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1rem'
-                    }}>
-                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
-                            <ShieldCheck size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
-                            <span>Ministry of AYUSH Approved</span>
+                    <div className="pp-cert-grid">
+                        <div className="pp-cert-card">
+                            <div className="pp-cert-icon-circle" style={{ background: 'transparent', border: 'none' }}>
+                                <img src="/ministry-ayush-emblem.png" alt="Ministry of AYUSH" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            </div>
+                            <h4 className="pp-cert-title">Ministry Approved</h4>
+                            <p className="pp-cert-sub">Fully compliant with AYUSH regulations and Indian law.</p>
                         </div>
-                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
-                            <Award size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
-                            <span>Third-Party Lab Tested</span>
+                        <div className="pp-cert-card">
+                            <div className="pp-cert-icon-circle">
+                                <Stethoscope size={28} />
+                            </div>
+                            <h4 className="pp-cert-title">Doctor Dispensed</h4>
+                            <p className="pp-cert-sub">Prescribed by certified Ayurvedic practitioners only.</p>
                         </div>
-                        <div className="pp-cert-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem', fontWeight: '500' }}>
-                            <BadgeCheck size={20} style={{ color: '#4caf50', minWidth: '24px' }} />
-                            <span>GMP Certified Facility</span>
+                        <div className="pp-cert-card">
+                            <div className="pp-cert-icon-circle">
+                                <ShieldCheck size={28} />
+                            </div>
+                            <h4 className="pp-cert-title">100% Safe</h4>
+                            <p className="pp-cert-sub">Pure, full-spectrum extract. Non-dependency forming.</p>
                         </div>
                     </div>
                 </div>
