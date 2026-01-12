@@ -109,7 +109,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const carouselImages = [
         { src: '/bundle-hero.png', alt: 'Elevate Full Spectrum Bundle' },
         { src: '/ebook-mockup.jpg', alt: 'Cannabis Transformation Guide' },
-        { src: '/ebook-cover.jpg', alt: 'Ebook Cover' }
+        // { src: '/ebook-cover.jpg', alt: 'Ebook Cover' }
     ];
 
     // Countdown timer effect
@@ -495,18 +495,18 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-cert-grid">
                         <div className="pp-cert-card">
-                            <div className="pp-cert-icon-circle" style={{ background: 'transparent', border: 'none' }}>
-                                <img src="/ministry-ayush-emblem.png" alt="Ministry of AYUSH" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </div>
-                            <h4 className="pp-cert-title">Ministry Approved</h4>
-                            <p className="pp-cert-sub">Fully compliant with AYUSH regulations and Indian law.</p>
-                        </div>
-                        <div className="pp-cert-card">
                             <div className="pp-cert-icon-circle">
                                 <Stethoscope size={28} />
                             </div>
                             <h4 className="pp-cert-title">Doctor Dispensed</h4>
                             <p className="pp-cert-sub">Prescribed by certified Ayurvedic practitioners only.</p>
+                        </div>
+                        <div className="pp-cert-card">
+                            <div className="pp-cert-icon-circle" style={{ background: 'transparent', border: 'none' }}>
+                                <img src="/ministry-ayush-emblem.png" alt="Ministry of AYUSH" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            </div>
+                            <h4 className="pp-cert-title">Ministry Approved</h4>
+                            <p className="pp-cert-sub">Fully compliant with AYUSH regulations and Indian law.</p>
                         </div>
                         <div className="pp-cert-card">
                             <div className="pp-cert-icon-circle">
@@ -613,46 +613,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
-            {/* Testimonials */}
-            < section className="pp-testimonials" >
-                <div className="pp-container">
-                    <div className="pp-section-header">
-                        <span className="pp-section-label">Real Stories</span>
-                        <h2 className="pp-section-title">What Our Community Says</h2>
-                    </div>
-
-                    <div className="pp-testimonials-grid">
-                        {[
-                            { name: "Rahul M.", location: "Mumbai", text: "This has completely transformed my morning routine. I feel more centered and aware throughout the day. Highly recommend to anyone on a conscious journey!" },
-                            { name: "Priya S.", location: "Bangalore", text: "Finally found something natural that actually works. The quality is exceptional and I've noticed real changes in my mental clarity and emotional stability." },
-                            { name: "Amit K.", location: "Delhi", text: "I was skeptical at first, but after a month I can honestly say this has helped me tremendously on my journey of self-discovery and inner peace." }
-                        ].map((review, i) => (
-                            <div className="pp-testimonial-card" key={i}>
-                                <div className="pp-testimonial-quote">
-                                    <Quote size={24} />
-                                </div>
-                                <div className="pp-testimonial-stars">
-                                    {[...Array(5)].map((_, j) => (
-                                        <Star key={j} size={16} fill="#ffc107" color="#ffc107" />
-                                    ))}
-                                </div>
-                                <p className="pp-testimonial-text">{review.text}</p>
-                                <div className="pp-testimonial-author">
-                                    <div className="pp-author-avatar">
-                                        {review.name.charAt(0)}
-                                    </div>
-                                    <div className="pp-author-info">
-                                        <span className="pp-author-name">{review.name}</span>
-                                        <span className="pp-author-location">{review.location}</span>
-                                    </div>
-                                    <BadgeCheck size={18} className="pp-verified" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section >
-
             {/* Mindful Use Section (Final Message) */}
             < section className="pp-mindful" >
                 <div className="pp-container">
@@ -696,6 +656,46 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section >
+
+            {/* Testimonials */}
+            < section className="pp-testimonials" >
+                <div className="pp-container">
+                    <div className="pp-section-header">
+                        <span className="pp-section-label">Real Stories</span>
+                        <h2 className="pp-section-title">What Our Community Says</h2>
+                    </div>
+
+                    <div className="pp-testimonials-grid">
+                        {[
+                            { name: "Rahul M.", location: "Mumbai", text: "This has completely transformed my morning routine. I feel more centered and aware throughout the day. Highly recommend to anyone on a conscious journey!" },
+                            { name: "Priya S.", location: "Bangalore", text: "Finally found something natural that actually works. The quality is exceptional and I've noticed real changes in my mental clarity and emotional stability." },
+                            { name: "Amit K.", location: "Delhi", text: "I was skeptical at first, but after a month I can honestly say this has helped me tremendously on my journey of self-discovery and inner peace." }
+                        ].map((review, i) => (
+                            <div className="pp-testimonial-card" key={i}>
+                                <div className="pp-testimonial-quote">
+                                    <Quote size={24} />
+                                </div>
+                                <div className="pp-testimonial-stars">
+                                    {[...Array(5)].map((_, j) => (
+                                        <Star key={j} size={16} fill="#ffc107" color="#ffc107" />
+                                    ))}
+                                </div>
+                                <p className="pp-testimonial-text">{review.text}</p>
+                                <div className="pp-testimonial-author">
+                                    <div className="pp-author-avatar">
+                                        {review.name.charAt(0)}
+                                    </div>
+                                    <div className="pp-author-info">
+                                        <span className="pp-author-name">{review.name}</span>
+                                        <span className="pp-author-location">{review.location}</span>
+                                    </div>
+                                    <BadgeCheck size={18} className="pp-verified" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section >
