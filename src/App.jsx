@@ -24,6 +24,7 @@ import AdminLogin from './components/admin/AdminLogin'
 import AnalyticsView from './components/admin/AnalyticsView'
 import OrdersView from './components/admin/OrdersView'
 import InvoicesView from './components/admin/InvoicesView'
+import LeadsView from './components/admin/LeadsView'
 
 // Security: Clean up expired localStorage data (30-day expiry)
 const SESSION_EXPIRY_DAYS = 30;
@@ -312,6 +313,7 @@ function AppRouter() {
                     <Route index element={<AnalyticsView />} />
                     <Route path="orders" element={<OrdersView />} />
                     <Route path="invoices" element={<InvoicesView />} />
+                    <Route path="leads" element={<LeadsView />} />
                 </Route>
 
                 {/* Default route */}

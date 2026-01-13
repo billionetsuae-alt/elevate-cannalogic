@@ -409,6 +409,7 @@
         /* Prevent wrapping */
     }
 }
+
 /* Desktop Grid */
 .charts-grid {
     display: grid;
@@ -418,15 +419,334 @@
 
 @media (max-width: 768px) {
     .charts-grid {
-        grid-template-columns: 1fr; /* Force single column on mobile */
+        grid-template-columns: 1fr;
+        /* Force single column on mobile */
         gap: 1.5rem;
     }
-    
+
     /* Optimize Recharts fonts for mobile */
     .recharts-cartesian-axis-tick-value {
         font-size: 10px;
     }
+
     .recharts-tooltip-label {
-         font-size: 12px;
+        font-size: 12px;
+    }
+}
+
+/* Leads View Styles */
+.leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.lead-card {
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.lead-card:hover {
+    border-color: var(--admin-accent);
+    transform: translateY(-2px);
+}
+
+.lead-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.lead-card-header svg {
+    color: var(--admin-accent);
+}
+
+.lead-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.lead-status {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.status-lead {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-contacted {
+    background: rgba(33, 150, 243, 0.15);
+    color: #2196f3;
+}
+
+.status-converted {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+}
+
+.lead-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lead-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.lead-info svg {
+    color: var(--admin-text-muted);
+    flex-shrink: 0;
+}
+
+.lead-info a {
+    color: var(--admin-accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.lead-info a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.lead-card-footer {
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--admin-border);
+}
+
+.lead-date {
+    font-size: 0.75rem;
+    color: var(--admin-text-muted);
+}
+
+@media (max-width: 768px) {
+    .leads-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Date Filter Component */
+.date-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 0.25rem;
+}
+
+.date-filter-icon {
+    color: var(--admin-text-muted);
+    margin-left: 0.5rem;
+}
+
+.date-filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--admin-text-muted);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.date-filter-btn:hover {
+    color: var(--admin-text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.date-filter-btn.active {
+    background: var(--admin-accent);
+    color: white;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .date-filter {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .date-filter-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+/* Export Button */
+.export-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 1px solid #4caf50;
+    color: #4caf50;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.export-btn:hover {
+    background: #4caf50;
+    color: white;
+}
+
+/* Funnel Chart */
+.funnel-container {
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.funnel-chart {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.funnel-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.funnel-bar {
+    width: 120px;
+    background: linear-gradient(180deg, #4caf50, #2e7d32);
+    border-radius: 8px 8px 0 0;
+    transition: height 0.3s ease;
+    min-height: 20px;
+}
+
+.funnel-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--admin-text);
+}
+
+.funnel-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--admin-text);
+    margin-top: 0.25rem;
+}
+
+.funnel-percent {
+    font-size: 0.75rem;
+    color: var(--admin-text-muted);
+}
+
+/* Top Products */
+.top-products {
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.product-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.product-name {
+    width: 150px;
+    font-size: 0.85rem;
+    color: var(--admin-text);
+}
+
+.product-bar-container {
+    flex: 1;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 1rem;
+}
+
+.product-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.product-amount {
+    width: 100px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+/* Device Breakdown */
+.device-chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.device-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.device-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.device-legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .funnel-chart {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .funnel-bar {
+        width: 80px;
     }
 }

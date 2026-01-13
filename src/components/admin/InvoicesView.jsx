@@ -3,9 +3,10 @@ import { pdf } from '@react-pdf/renderer';
 import { Download, FileText, Search, RefreshCw } from 'lucide-react';
 import { AdminContext } from './AdminLayout';
 import InvoiceTemplate from './InvoiceTemplate';
+import DateFilter from './DateFilter';
 
 const InvoicesView = () => {
-    const { data, refreshData } = useContext(AdminContext);
+    const { data, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [generating, setGenerating] = useState(null);
 
@@ -50,9 +51,11 @@ const InvoicesView = () => {
                     <h1 className="admin-title">Invoices</h1>
                     <p style={{ color: '#888' }}>Generate and download invoices for completed orders</p>
                 </div>
-                <button onClick={refreshData} className="refresh-btn">
-                    <RefreshCw size={16} /> Refresh
-                </button>
+                <DateFilter
+                    dateFilter={dateFilter}
+                    setDateFilter={setDateFilter}
+                    DATE_FILTERS={DATE_FILTERS}
+                />
             </header>
 
             {/* Stats */}

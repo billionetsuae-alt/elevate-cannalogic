@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Search, Filter, RefreshCw, Download } from 'lucide-react';
 import { AdminContext } from './AdminLayout';
+import DateFilter from './DateFilter';
 
 const OrdersView = () => {
-    const { data, refreshData } = useContext(AdminContext);
+    const { data, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
 
@@ -20,6 +21,37 @@ const OrdersView = () => {
         return matchesSearch && matchesStatus;
     });
 
+    // CSV Export Function
+    const exportToCSV = () => {
+        const headers = ['Order ID', 'Customer', 'Email', 'Phone', 'Items', 'Date', 'Amount', 'Status', 'City', 'State'];
+        const rows = filteredOrders.map(order => [
+            order.id,
+            order.customer,
+            order.email,
+            order.phone,
+            order.items,
+            order.date,
+            order.amount,
+            order.status,
+            order.city,
+            order.state
+        ]);
+
+        const csvContent = [headers, ...rows]
+            .map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))
+            .join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `orders-${dateFilter}-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="orders-view">
             <header className="admin-header">
@@ -27,9 +59,16 @@ const OrdersView = () => {
                     <h1 className="admin-title">Orders Management</h1>
                     <p style={{ color: '#888' }}>Track and manage customer orders</p>
                 </div>
-                <button onClick={refreshData} className="refresh-btn">
-                    <RefreshCw size={16} /> Refresh
-                </button>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <button onClick={exportToCSV} className="export-btn" title="Export to CSV">
+                        <Download size={16} /> Export
+                    </button>
+                    <DateFilter
+                        dateFilter={dateFilter}
+                        setDateFilter={setDateFilter}
+                        DATE_FILTERS={DATE_FILTERS}
+                    />
+                </div>
             </header>
 
             {/* Controls */}
