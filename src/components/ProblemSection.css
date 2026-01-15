@@ -178,14 +178,7 @@
     height: auto;
 }
 
-/* CTA Button - Appears after image on mobile */
-.venn-cta {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    order: 3;
-    margin-top: 2rem;
-}
+
 
 /* Mobile: text first, image second, button third */
 .venn-text {
@@ -194,8 +187,19 @@
 }
 
 /* Desktop button inside text - hidden on mobile */
+/* Mobile: Visible and centered, compact */
 .venn-text-cta {
-    display: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.venn-text-cta .btn {
+    padding: 0.6rem 1.2rem;
+    /* Slightly more compact than default */
+    font-size: 0.9rem;
+    min-width: 160px;
 }
 
 @media (min-width: 768px) {
@@ -271,15 +275,19 @@
         font-size: 1.25rem;
     }
 
-    /* On desktop, hide the separate CTA since button should be inline */
-    .venn-cta {
-        display: none;
-    }
+
 
     /* Show the inline button on desktop */
     .venn-text-cta {
         display: block;
         margin-top: 2rem;
+    }
+
+    .venn-text-cta .btn {
+        padding: 0.75rem 2rem;
+        /* Restore desktop padding */
+        font-size: 1rem;
+        min-width: auto;
     }
 
     /* Desktop layout for venn section */

@@ -6,7 +6,7 @@ const BottomStickyBar = ({ onOpenAssessment }) => {
         <div className="bottom-sticky-bar">
             <div className="sticky-glass-container">
                 <p className="sticky-text">Limited Intakes Only.</p>
-                <button onClick={onOpenAssessment} className="btn btn-primary sticky-btn">Get Access</button>
+                <button onClick={onOpenAssessment} className="btn btn-primary sticky-btn">Get Free Access</button>
             </div>
         </div>
     );

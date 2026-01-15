@@ -24,6 +24,9 @@ const ProblemSection = ({ onOpenAssessment }) => {
                             What you ate became your body, and what you think and experienced became your mind —
                             but what if the negativity you've accumulated in the past is holding you back from your best future?
                         </p>
+                        <div className="venn-text-cta" style={{ marginTop: '1.5rem' }}>
+                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -45,6 +48,9 @@ const ProblemSection = ({ onOpenAssessment }) => {
                         <p className="energy-description">
                             <strong>Consciousness isn't static—it's a spectrum.</strong> When we are caught in survival modes like fear or stress, our frequency drops. Elevate is formulated to help shift your baseline state upwards, moving you from contraction into expansion, clarity, and flow.
                         </p>
+                        <div className="venn-text-cta" style={{ marginTop: '1.5rem' }}>
+                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -68,15 +74,13 @@ const ProblemSection = ({ onOpenAssessment }) => {
                         </p>
                         {/* Desktop button - hidden on mobile */}
                         <div className="venn-text-cta">
-                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Access</button>
+                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
                         </div>
                     </div>
                     <div className="venn-image">
                         <img src="/ikigai-dark.png" alt="Ikigai Diagram" />
                     </div>
-                    <div className="venn-cta">
-                        <button onClick={onOpenAssessment} className="btn btn-primary">Get Access</button>
-                    </div>
+
                 </div>
             </section>
         </>

@@ -29,7 +29,7 @@ const QualificationSection = ({ onOpenAssessment }) => {
                             <p>Access begins with a simple assessment.</p>
                         </div>
 
-                        <button onClick={onOpenAssessment} className="btn btn-primary btn-block">Get Access</button>
+                        <button onClick={onOpenAssessment} className="btn btn-primary btn-block">Get Free Access</button>
 
                         <div className="pricing-list-container">
                             <p style={{ marginBottom: '1rem', color: 'gray' }}>We are looking for those who are:</p>

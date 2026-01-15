@@ -69,7 +69,7 @@ const Hero = ({ onOpenAssessment, onWatchVideo }) => {
                             </div>
 
                             <div className="hero-actions">
-                                <button onClick={onOpenAssessment} className="btn btn-primary">Get Access</button>
+                                <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
                                 <button onClick={onWatchVideo} className="btn btn-outline">Watch Video</button>
                             </div>
                         </div>
