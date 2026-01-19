@@ -416,6 +416,7 @@ const AdminLayout = () => {
     return (
         <AdminContext.Provider value={{
             data,
+            rawRecords,
             dateFilter,
             setDateFilter: handleFilterChange,
             DATE_FILTERS,

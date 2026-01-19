@@ -183,8 +183,31 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         // Calculate total amount: Pack Price + (Ebook Price if expired and selected)
         const packPrice = PACK_OPTIONS.find(p => p.id === selectedPack).price;
         const ebookPrice = (offerExpired && isEbookSelected) ? 1500 : 0;
-        const totalAmount = packPrice + ebookPrice;
+        // Total calculations
+        const subtotal = packPrice + ebookPrice;
+        const totalAmount = subtotal;
 
+        // 🎯 TRACK PAYMENT ATTEMPT - Update existing record
+        try {
+            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recordId: userData?.recordId,
+                    Payment_Attempted: true,
+                    Payment_Attempt_Time: new Date().toISOString(),
+                    Payment_Amount_Attempted: totalAmount,
+                    Pack_Selected: PACK_OPTIONS.find(p => p.id === selectedPack).label,
+                    Razorpay_Order_ID: '' // Will be filled if we create order_id beforehand
+                })
+            });
+            console.log('Payment attempt tracked for record:', userData?.recordId);
+        } catch (error) {
+            console.error('Failed to track payment attempt:', error);
+            // Continue to payment even if tracking fails
+        }
+
+        // Configure Razorpay options
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: totalAmount * 100, // Amount in paise
@@ -229,7 +252,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 city: checkoutFormData.city,
                                 state: checkoutFormData.state
                             },
-                            recordId: paymentAttemptRecordId || userData?.recordId, // Use attempt record for Option A
+                            recordId: userData?.recordId,
                             amount: totalAmount,
                             product: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
                             pack_details: PACK_OPTIONS.find(p => p.id === selectedPack)
@@ -246,52 +269,29 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             },
             modal: {
                 ondismiss: async function () {
+                    console.log('🔴 RAZORPAY DISMISSED - ondismiss triggered!', userData?.recordId);
+
                     // Track payment cancellation/failure
-                    if (paymentAttemptRecordId) {
+                    if (userData?.recordId) {
                         try {
                             await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    recordId: paymentAttemptRecordId,
+                                    recordId: userData.recordId,
                                     Payment_Failure_Reason: 'Payment cancelled by user'
                                 })
                             });
+                            console.log('✅ Cancellation tracked successfully');
                         } catch (error) {
-                            console.error('Failed to track cancellation:', error);
+                            console.error('❌ Failed to track cancellation:', error);
                         }
+                    } else {
+                        console.warn('⚠️ No recordId found, cannot track cancellation');
                     }
                 }
             }
         };
-
-        // 🎯 TRACK PAYMENT ATTEMPT BEFORE OPENING RAZORPAY
-        let paymentAttemptRecordId = null;
-        try {
-            const attemptResponse = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/payment-attempt', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: checkoutFormData.fullName,
-                    email: userData?.email || '',
-                    phone: checkoutFormData.phone,
-                    address: checkoutFormData.fullAddress,
-                    pincode: checkoutFormData.pincode,
-                    city: checkoutFormData.city,
-                    state: checkoutFormData.state,
-                    packLabel: PACK_OPTIONS.find(p => p.id === selectedPack).label,
-                    amount: totalAmount,
-                    timestamp: new Date().toISOString(),
-                    razorpayOrderId: '' // Will be filled if we create order_id beforehand
-                })
-            });
-            const attemptData = await attemptResponse.json();
-            paymentAttemptRecordId = attemptData.recordId;
-            console.log('Payment attempt tracked:', paymentAttemptRecordId);
-        } catch (error) {
-            console.error('Failed to track payment attempt:', error);
-            // Continue to payment even if tracking fails
-        }
 
         // Now open Razorpay
         const razorpay = new window.Razorpay(options);

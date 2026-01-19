@@ -1,16 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { Search, AlertCircle, Download, Clock, XCircle, CheckCircle } from 'lucide-react';
+import { Search, AlertCircle, Download, Clock, XCircle, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { AdminContext } from './AdminLayout';
 import DateFilter from './DateFilter';
 
 const PaymentAttemptsView = () => {
-    const { data, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
+    const { data, rawRecords, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
+    const [expandedId, setExpandedId] = useState(null);
+    const [filterReason, setFilterReason] = useState('all');
 
     if (!data) return null;
 
     // Get all records where Payment_Attempted is true but Payment_ID is null (failed/abandoned)
-    const paymentAttempts = data.rawRecords ? data.rawRecords.filter(record =>
+    const paymentAttempts = rawRecords ? rawRecords.filter(record =>
         record.Payment_Attempted === true && !record.Payment_ID
     ).sort((a, b) => {
         // Sort by most recent attempt first
@@ -19,12 +21,19 @@ const PaymentAttemptsView = () => {
         return dateB - dateA;
     }) : [];
 
-    // Filter by search
-    const filteredAttempts = paymentAttempts.filter(attempt =>
-        (attempt.Name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (attempt.Phone?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (attempt.Email?.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    // Filter by search and reason
+    const filteredAttempts = paymentAttempts.filter(attempt => {
+        const matchesSearch =
+            (attempt.Name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (attempt.Phone?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (attempt.Email?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+        const matchesReason = filterReason === 'all' ||
+            (filterReason === 'cancelled' && attempt.Payment_Failure_Reason?.includes('cancel')) ||
+            (filterReason === 'pending' && !attempt.Payment_Failure_Reason);
+
+        return matchesSearch && matchesReason;
+    });
 
     // CSV Export
     const exportToCSV = () => {
@@ -46,7 +55,7 @@ const PaymentAttemptsView = () => {
 
         const csvContent = [headers, ...rows]
             .map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))
-            .join('\\n');
+            .join('\n');
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
@@ -65,7 +74,6 @@ const PaymentAttemptsView = () => {
         return date.toLocaleString('en-IN', {
             day: '2-digit',
             month: 'short',
-            year: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -75,6 +83,10 @@ const PaymentAttemptsView = () => {
         if (!reason) return <Clock size={16} color="#FFA500" />;
         if (reason.includes('cancel')) return <XCircle size={16} color="#ef5350" />;
         return <AlertCircle size={16} color="#ef5350" />;
+    };
+
+    const toggleExpand = (id) => {
+        setExpandedId(expandedId === id ? null : id);
     };
 
     return (
@@ -88,6 +100,7 @@ const PaymentAttemptsView = () => {
                             marginLeft: '1rem',
                             padding: '0.25rem 0.75rem',
                             background: '#ef5350',
+                            color: '#fff',
                             borderRadius: '12px',
                             fontSize: '0.85rem',
                             fontWeight: '600'
@@ -108,104 +121,142 @@ const PaymentAttemptsView = () => {
                 </div>
             </header>
 
-            {/* Search */}
-            <div style={{ position: 'relative', marginBottom: '1.5rem', maxWidth: '400px' }}>
-                <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888' }} />
-                <input
-                    type="text"
-                    placeholder="Search by name, phone, or email..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                        width: '100%',
-                        padding: '0.75rem 0.75rem 0.75rem 2.75rem',
-                        background: 'var(--admin-card-bg)',
-                        border: '1px solid var(--admin-border)',
-                        borderRadius: '8px',
-                        color: 'white'
-                    }}
-                />
+            {/* Controls */}
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+                    <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888' }} />
+                    <input
+                        type="text"
+                        placeholder="Search by name, phone, or email..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="admin-input"
+                        style={{ paddingLeft: '2.75rem' }}
+                    />
+                </div>
+                <div style={{ position: 'relative', minWidth: '150px' }}>
+                    <select
+                        className="admin-input"
+                        value={filterReason}
+                        onChange={(e) => setFilterReason(e.target.value)}
+                    >
+                        <option value="all">All Reasons</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
             </div>
 
-            {/* Table */}
-            <div style={{ overflowX: 'auto' }}>
-                <table className="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Customer</th>
-                            <th>Contact</th>
-                            <th>Address</th>
-                            <th>Pack</th>
-                            <th>Amount</th>
-                            <th>Status / Reason</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredAttempts.length === 0 ? (
-                            <tr>
-                                <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
-                                    <CheckCircle size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-                                    <p>No abandoned payment attempts found!</p>
-                                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>All payment clicks resulted in successful conversions 🎉</p>
-                                </td>
-                            </tr>
-                        ) : (
-                            filteredAttempts.map((attempt, index) => (
-                                <tr key={attempt.id || index}>
-                                    <td style={{ fontSize: '0.85rem', color: '#888' }}>
-                                        {formatDate(attempt.Payment_Attempt_Time || attempt.Submitted_At)}
-                                    </td>
-                                    <td>
-                                        <div style={{ fontWeight: '600' }}>{attempt.Name || '—'}</div>
-                                        <div style={{ fontSize: '0.85rem', color: '#888' }}>{attempt.Email || '—'}</div>
-                                    </td>
-                                    <td>
-                                        <div style={{ fontWeight: '500' }}>{attempt.Phone || '—'}</div>
-                                    </td>
-                                    <td style={{ maxWidth: '250px', fontSize: '0.9rem' }}>
-                                        {attempt.Address ? (
-                                            <>
-                                                <div>{attempt.Address}</div>
-                                                <div style={{ fontSize: '0.85rem', color: '#888' }}>
-                                                    {attempt.City}, {attempt.State} - {attempt.Pincode}
-                                                </div>
-                                            </>
-                                        ) : '—'}
-                                    </td>
-                                    <td>
-                                        <span style={{
-                                            padding: '0.25rem 0.75rem',
-                                            background: 'rgba(76, 175, 80, 0.1)',
-                                            border: '1px solid rgba(76, 175, 80, 0.3)',
-                                            borderRadius: '8px',
-                                            fontSize: '0.85rem',
-                                            display: 'inline-block'
-                                        }}>
-                                            {attempt.Pack_Selected || '—'}
-                                        </span>
-                                    </td>
-                                    <td style={{ fontWeight: '600', color: '#4caf50' }}>
-                                        ₹{attempt.Payment_Amount_Attempted?.toLocaleString('en-IN') || '—'}
-                                    </td>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            {getFailureIcon(attempt.Payment_Failure_Reason)}
-                                            <span style={{ fontSize: '0.9rem', color: '#ef5350' }}>
-                                                {attempt.Payment_Failure_Reason || 'Payment pending/abandoned'}
-                                            </span>
+            {/* Cards */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {filteredAttempts.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
+                        <CheckCircle size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
+                        <p>No abandoned payment attempts found!</p>
+                        <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>All payment clicks resulted in successful conversions 🎉</p>
+                    </div>
+                ) : (
+                    filteredAttempts.map((attempt, index) => {
+                        const isExpanded = expandedId === (attempt.id || index);
+                        return (
+                            <div
+                                key={attempt.id || index}
+                                onClick={() => toggleExpand(attempt.id || index)}
+                                style={{
+                                    background: 'var(--admin-card-bg)',
+                                    border: '1px solid var(--admin-border)',
+                                    borderRadius: '12px',
+                                    padding: '1rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease'
+                                }}
+                            >
+                                {/* Compact View */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontWeight: '600', fontSize: '1rem', marginBottom: '0.25rem' }}>
+                                            {attempt.Name || 'Unknown'}
                                         </div>
-                                        {attempt.Razorpay_Order_ID && (
-                                            <div style={{ fontSize: '0.75rem', color: '#666', marginTop: '0.25rem' }}>
-                                                Order: {attempt.Razorpay_Order_ID}
+                                        <div style={{ color: '#888', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                                            {attempt.Phone || '—'}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#888' }}>
+                                            <Clock size={14} />
+                                            {formatDate(attempt.Payment_Attempt_Time || attempt.Submitted_At)}
+                                        </div>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontWeight: '700', fontSize: '1.1rem', color: '#4caf50', marginBottom: '0.25rem' }}>
+                                            ₹{attempt.Payment_Amount_Attempted?.toLocaleString('en-IN') || '—'}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                                            {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Expanded View */}
+                                {isExpanded && (
+                                    <div style={{
+                                        marginTop: '1rem',
+                                        paddingTop: '1rem',
+                                        borderTop: '1px solid var(--admin-border)',
+                                        display: 'grid',
+                                        gap: '0.75rem'
+                                    }}>
+                                        <div>
+                                            <div style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Email</div>
+                                            <div style={{ fontSize: '0.9rem' }}>{attempt.Email || '—'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Address</div>
+                                            <div style={{ fontSize: '0.9rem' }}>
+                                                {attempt.Address ? (
+                                                    <>
+                                                        {attempt.Address}<br />
+                                                        {attempt.City}, {attempt.State} - {attempt.Pincode}
+                                                    </>
+                                                ) : '—'}
                                             </div>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                                        </div>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Pack</div>
+                                                <div style={{
+                                                    padding: '0.25rem 0.75rem',
+                                                    background: 'rgba(76, 175, 80, 0.1)',
+                                                    border: '1px solid rgba(76, 175, 80, 0.3)',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.85rem',
+                                                    display: 'inline-block'
+                                                }}>
+                                                    {attempt.Pack_Selected || '—'}
+                                                </div>
+                                            </div>
+                                            {attempt.Razorpay_Order_ID && (
+                                                <div>
+                                                    <div style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Order ID</div>
+                                                    <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: '#888' }}>
+                                                        {attempt.Razorpay_Order_ID}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Failure Reason</div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                {getFailureIcon(attempt.Payment_Failure_Reason)}
+                                                <span style={{ fontSize: '0.9rem', color: '#ef5350' }}>
+                                                    {attempt.Payment_Failure_Reason || 'Payment pending/abandoned'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })
+                )}
             </div>
         </div>
     );
