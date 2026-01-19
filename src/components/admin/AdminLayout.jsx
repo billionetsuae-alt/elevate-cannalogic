@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, Settings, FileText, Users, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, FileText, Users, AlertCircle } from 'lucide-react';
 import './Admin.css';
 
 // Context to share data across views
@@ -452,11 +452,6 @@ const AdminLayout = () => {
                             <AlertCircle size={20} />
                             <span>Payment Attempts</span>
                         </NavLink>
-
-                        <div className="nav-item" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
-                            <Settings size={20} />
-                            <span>Settings</span>
-                        </div>
                     </nav>
 
                     <button onClick={handleLogout} className="nav-item nav-logout" style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', font: 'inherit' }}>
