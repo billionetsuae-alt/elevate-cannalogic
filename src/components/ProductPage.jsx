@@ -198,13 +198,11 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     Payment_Attempt_Time: new Date().toISOString(),
                     Payment_Amount_Attempted: totalAmount,
                     Pack_Selected: PACK_OPTIONS.find(p => p.id === selectedPack).label,
-                    Razorpay_Order_ID: '' // Will be filled if we create order_id beforehand
+                    Razorpay_Order_ID: ''
                 })
             });
-            console.log('Payment attempt tracked for record:', userData?.recordId);
         } catch (error) {
             console.error('Failed to track payment attempt:', error);
-            // Continue to payment even if tracking fails
         }
 
         // Configure Razorpay options
@@ -269,9 +267,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             },
             modal: {
                 ondismiss: async function () {
-                    console.log('🔴 RAZORPAY DISMISSED - ondismiss triggered!', userData?.recordId);
-
-                    // Track payment cancellation/failure
                     if (userData?.recordId) {
                         try {
                             await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
@@ -282,12 +277,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     Payment_Failure_Reason: 'Payment cancelled by user'
                                 })
                             });
-                            console.log('✅ Cancellation tracked successfully');
                         } catch (error) {
-                            console.error('❌ Failed to track cancellation:', error);
+                            console.error('Payment cancellation tracking failed:', error);
                         }
-                    } else {
-                        console.warn('⚠️ No recordId found, cannot track cancellation');
                     }
                 }
             }
