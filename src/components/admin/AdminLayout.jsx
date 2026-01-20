@@ -459,7 +459,7 @@ const AdminLayout = () => {
                         </NavLink>
                     </nav>
 
-                    <button onClick={handleLogout} className="nav-item nav-logout" style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', font: 'inherit' }}>
+                    <button onClick={handleLogout} className="nav-item nav-logout">
                         <LogOut size={20} />
                         <span>Logout</span>
                     </button>

@@ -130,8 +130,20 @@
 }
 
 .nav-logout {
-    margin-top: auto;
+    margin-top: 0;
+    /* Place directly below items */
     color: #ef5350;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font: inherit;
+    justify-content: flex-start;
+    /* Ensure left alignment of content in button */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.85rem 1rem;
 }
 
 .nav-logout:hover {
@@ -291,7 +303,7 @@
     /* Top Header Bar (Logo + Logout) */
     .admin-sidebar {
         width: 100%;
-        padding: 1rem;
+        padding: 0.75rem 1rem;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
@@ -301,6 +313,8 @@
         top: 0;
         z-index: 100;
         background: var(--admin-card-bg);
+        height: 60px;
+        /* Enforce compact height */
     }
 
     .sidebar-logo {
@@ -319,8 +333,10 @@
         border-top: 1px solid var(--admin-border);
         display: flex;
         justify-content: space-evenly;
-        padding: 4px 8px; /* Compact padding */
-        padding-bottom: max(4px, env(safe-area-inset-bottom)); /* Safe area */
+        padding: 4px 8px;
+        /* Compact padding */
+        padding-bottom: max(4px, env(safe-area-inset-bottom));
+        /* Safe area */
         z-index: 1000;
         box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
     }
@@ -330,14 +346,17 @@
         /* Icon Top, Text Bottom */
         gap: 2px;
         padding: 6px 2px;
-        font-size: 10px; /* Smaller text */
+        font-size: 10px;
+        /* Smaller text */
         margin-bottom: 0;
         flex: 1;
         justify-content: center;
-        border-radius: 6px; /* Rounded highlight */
+        border-radius: 6px;
+        /* Rounded highlight */
         background: transparent !important;
         /* Remove hover bg on mobile */
-        min-width: 0; /* Allow shrinking */
+        min-width: 0;
+        /* Allow shrinking */
         color: #888;
     }
 
@@ -361,8 +380,10 @@
 
     .nav-item.active {
         color: var(--admin-accent);
-        border-top: none; /* Removed harsh border */
-        background: rgba(76, 175, 80, 0.1) !important; /* Subtle bg highlight */
+        border-top: none;
+        /* Removed harsh border */
+        background: rgba(76, 175, 80, 0.1) !important;
+        /* Subtle bg highlight */
     }
 
     .nav-item.active svg {
@@ -370,17 +391,32 @@
         transform: scale(1.1);
     }
 
-    /* Hide Logout in Bottom Nav (It's in top bar for mobile if we want, or side) */
-    /* Actually sidebar logic in Layout needs a tweak to separate logout if we want it top.
-       For now, let's keep Logout as a small icon in the top header (sidebar area) */
+    /* Logout Button - Positioned Top Right on Mobile */
     .nav-logout {
-        margin-top: 0;
+        position: fixed;
+        top: 12px;
+        right: 1rem;
         width: auto;
         padding: 0.5rem;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent !important;
+        z-index: 1001;
+        /* Above header */
+        margin-top: 0;
     }
 
     .nav-logout span {
         display: none !important;
+    }
+
+    .nav-logout svg {
+        width: 20px;
+        height: 20px;
+        color: #ef5350;
+        /* Keep red color */
     }
 
     /* Content Area */
