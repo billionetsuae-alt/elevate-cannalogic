@@ -315,7 +315,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         trackEvent(EVENTS.CLICK, 'payment', 'payment_completed');
                     });
                 } catch (e) {
-                    console.log('Payment method tracking unavailable');
+                    // Fail silently
                 }
                 // Payment successful
 

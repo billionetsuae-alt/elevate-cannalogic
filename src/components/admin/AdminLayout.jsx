@@ -435,7 +435,7 @@ const AdminLayout = () => {
 
                         <NavLink to="/admin/deep" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                             <BarChart3 size={20} />
-                            <span>Deep Analytics</span>
+                            <span>Deep</span>
                         </NavLink>
 
                         <NavLink to="/admin/orders" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
@@ -455,7 +455,7 @@ const AdminLayout = () => {
 
                         <NavLink to="/admin/payment-attempts" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                             <AlertCircle size={20} />
-                            <span>Payment Attempts</span>
+                            <span>Payments</span>
                         </NavLink>
                     </nav>
 

@@ -51,8 +51,6 @@ export const trackEvent = async (eventType, pageName, elementId = null, value = 
 
         if (error) {
             console.warn('Analytics Error:', error);
-        } else {
-            // console.log(`📡 Tracked: ${eventType} - ${elementId || ''}`);
         }
     } catch (err) {
         console.warn('Analytics Exception:', err);
