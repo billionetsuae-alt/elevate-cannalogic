@@ -433,6 +433,11 @@ const AdminLayout = () => {
                             <span>Analytics</span>
                         </NavLink>
 
+                        <NavLink to="/admin/deep" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                            <BarChart3 size={20} />
+                            <span>Deep Analytics</span>
+                        </NavLink>
+
                         <NavLink to="/admin/orders" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                             <ShoppingBag size={20} />
                             <span>Orders</span>

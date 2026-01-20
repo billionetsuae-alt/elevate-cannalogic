@@ -97,6 +97,11 @@ const ScienceSection = () => {
     }, []);
 
     const scrollToLevel = (index) => {
+        const cardNames = ['inner_clarity', 'unlocking_potential', 'somatic_relief', 'relationship_harmony', 'financial_peace', 'emotional_lightness'];
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+            trackEvent(EVENTS.CLICK, 'landing', `qualification_card_${cardNames[index]}`)
+        );
+
         contentRefs.current[index]?.scrollIntoView({
             behavior: 'smooth',
             block: 'center'

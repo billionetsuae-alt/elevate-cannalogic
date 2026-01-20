@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AssessmentModal.css';
 import {
     Sparkles, Brain, Scale, HelpCircle,
@@ -114,6 +114,81 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         email: ''
     });
 
+    // Track step times and field interactions
+    const [stepStartTime, setStepStartTime] = useState(null);
+    const [fieldEditCounts, setFieldEditCounts] = useState({ age: 0, weight: 0 });
+    const [hasStarted, setHasStarted] = useState(false);
+
+    useEffect(() => {
+        if (isOpen) {
+            // Track Assessment View
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.PAGEVIEW, 'assessment');
+            });
+
+            const startTime = Date.now();
+
+            // Track Time in Assessment when closed
+            return () => {
+                const timeSpent = Math.round((Date.now() - startTime) / 1000);
+                if (timeSpent > 0) {
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.TIME_ON_PAGE, 'assessment', null, timeSpent);
+                    });
+                }
+
+                // Track abandonment if modal closed without submission
+                if (!isSubmitting && hasStarted) {
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        if (step === 0) {
+                            trackEvent(EVENTS.CLICK, 'assessment', 'abandoned_without_starting');
+                        } else if (step === 1) {
+                            trackEvent(EVENTS.CLICK, 'assessment', 'abandoned_step_1');
+                        } else if (step >= 2 && step <= 8) {
+                            trackEvent(EVENTS.CLICK, 'assessment', `abandoned_question_${step - 1}`);
+                        } else if (step === 9) {
+                            trackEvent(EVENTS.CLICK, 'assessment', 'abandoned_step_2');
+                        }
+                    });
+                }
+            };
+        }
+    }, [isOpen, step, hasStarted, isSubmitting]);
+
+    // Track step progression and time per step
+    useEffect(() => {
+        if (isOpen && step > 0) {
+            setStepStartTime(Date.now());
+
+            // Track step started events
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                if (step === 1) {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'step_1_started');
+                    trackEvent(EVENTS.CLICK, 'assessment', 'progress_getting_started');
+                } else if (step === 9) {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'step_2_started');
+                    trackEvent(EVENTS.CLICK, 'assessment', 'progress_almost_done');
+                }
+            });
+        }
+
+        // Track time spent on previous step when moving forward
+        return () => {
+            if (stepStartTime && step > 0) {
+                const timeOnStep = Math.round((Date.now() - stepStartTime) / 1000);
+                if (timeOnStep > 0) {
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        if (step === 1) {
+                            trackEvent(EVENTS.CLICK, 'assessment', 'time_step_1', timeOnStep);
+                        } else if (step === 9) {
+                            trackEvent(EVENTS.CLICK, 'assessment', 'time_step_2', timeOnStep);
+                        }
+                    });
+                }
+            }
+        };
+    }, [step, isOpen]);
+
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -127,7 +202,16 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        const prevValue = formData[name];
         setFormData(prev => ({ ...prev, [name]: value }));
+
+        // Track field edits (age/weight changes)
+        if ((name === 'age' || name === 'weight') && prevValue && prevValue !== value) {
+            setFieldEditCounts(prev => ({ ...prev, [name]: prev[name] + 1 }));
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.CLICK, 'assessment', `field_edited_${name}`);
+            });
+        }
 
         // Clear validation error when user starts typing
         if (name === 'email' || name === 'phone') {
@@ -135,16 +219,56 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         }
     };
 
+    // Track form field focus events
+    const handleFieldFocus = (fieldName) => {
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.CLICK, 'assessment', `focus_${fieldName}`);
+        });
+    };
+
+    // Track sex selection
+    const handleSexSelection = (sex) => {
+        setFormData(prev => ({ ...prev, sex }));
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.CLICK, 'assessment', `sex_selected_${sex}`);
+        });
+    };
+
     const handleBlur = (e) => {
         const { name, value } = e.target;
         if (name === 'email') {
             if (value && !validateEmail(value)) {
                 setValidationErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+                // Track validation error
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'validation_error_email');
+                });
             }
         }
         if (name === 'phone') {
             if (value && !validatePhone(value)) {
                 setValidationErrors(prev => ({ ...prev, phone: 'Please enter a valid 10-digit phone number' }));
+                // Track validation error
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'validation_error_phone');
+                });
+            }
+        }
+        // Track age/weight validation
+        if (name === 'age') {
+            const age = parseInt(value);
+            if (value && (age < 18 || age > 100 || isNaN(age))) {
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'validation_error_age');
+                });
+            }
+        }
+        if (name === 'weight') {
+            const weight = parseFloat(value);
+            if (value && (weight < 30 || weight > 200 || isNaN(weight))) {
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'assessment', 'validation_error_weight');
+                });
             }
         }
     };
@@ -168,8 +292,25 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
         return Object.values(formData.answers).reduce((sum, val) => sum + val, 0);
     };
 
-    const nextStep = () => setStep(prev => prev + 1);
-    const prevStep = () => setStep(prev => prev - 1);
+    const nextStep = () => {
+        // Track step completion
+        if (step === 1) {
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.CLICK, 'assessment', 'step_1_completed');
+            });
+        }
+        setStep(prev => prev + 1);
+    };
+
+    const prevStep = () => {
+        // Track back button patterns
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+            if (step === 9) {
+                trackEvent(EVENTS.CLICK, 'assessment', 'back_from_step_2');
+            }
+        });
+        setStep(prev => prev - 1);
+    };
 
     const handleSubmit = async () => {
         // Validate before submitting
@@ -391,7 +532,10 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                     <span>Instant Approval</span>
                                 </div>
                             </div>
-                            <button className="btn-start" onClick={nextStep}>
+                            <button className="btn-start" onClick={() => {
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'assessment', 'start_assessment'));
+                                nextStep();
+                            }}>
                                 Create Access
                                 <ArrowRight size={20} />
                             </button>
@@ -412,6 +556,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
+                                        onFocus={() => handleFieldFocus('name')}
                                         placeholder="Enter your name"
                                         autoFocus
                                     />
@@ -425,6 +570,8 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                             name="age"
                                             value={formData.age}
                                             onChange={handleInputChange}
+                                            onFocus={() => handleFieldFocus('age')}
+                                            onBlur={handleBlur}
                                             placeholder="25"
                                         />
                                     </div>
@@ -435,6 +582,8 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                             name="weight"
                                             value={formData.weight}
                                             onChange={handleInputChange}
+                                            onFocus={() => handleFieldFocus('weight')}
+                                            onBlur={handleBlur}
                                             placeholder="70"
                                         />
                                     </div>
@@ -448,7 +597,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                                 key={option}
                                                 type="button"
                                                 className={`sex-option ${formData.sex === option ? 'selected' : ''}`}
-                                                onClick={() => setFormData(prev => ({ ...prev, sex: option }))}
+                                                onClick={() => handleSexSelection(option)}
                                             >
                                                 {option}
                                             </button>
@@ -458,12 +607,18 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                             </div>
 
                             <div className="step-actions">
-                                <button className="btn-secondary" onClick={prevStep}>
+                                <button className="btn-secondary" onClick={() => {
+                                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'assessment', 'personal_info_back'));
+                                    prevStep();
+                                }}>
                                     <ChevronLeft size={18} /> Back
                                 </button>
                                 <button
                                     className="btn-primary"
-                                    onClick={() => setStep(9)} // SKIP QUIZ -> GO TO CONTACT
+                                    onClick={() => {
+                                        import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'assessment', 'personal_info_next'));
+                                        setStep(9);
+                                    }} // SKIP QUIZ -> GO TO CONTACT
                                     disabled={!isPersonalInfoValid()}
                                 >
                                     Continue
@@ -503,6 +658,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
+                                        onFocus={() => handleFieldFocus('phone')}
                                         onBlur={handleBlur}
                                         placeholder="+91 98765 43210"
                                         autoFocus
@@ -522,6 +678,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        onFocus={() => handleFieldFocus('email')}
                                         onBlur={handleBlur}
                                         placeholder="you@example.com"
                                         required
@@ -536,12 +693,18 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
                             </div>
 
                             <div className="step-actions">
-                                <button className="btn-secondary" onClick={() => setStep(1)}> {/* BACK TO PERSONAL */}
+                                <button className="btn-secondary" onClick={() => {
+                                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'assessment', 'contact_info_back'));
+                                    setStep(1);
+                                }}> {/* BACK TO PERSONAL */}
                                     <ChevronLeft size={18} /> Back
                                 </button>
                                 <button
                                     className="btn-primary btn-submit"
-                                    onClick={handleSubmit}
+                                    onClick={() => {
+                                        import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'assessment', 'submit_assessment'));
+                                        handleSubmit();
+                                    }}
                                     disabled={!isContactInfoValid() || isSubmitting}
                                 >
                                     {isSubmitting ? (

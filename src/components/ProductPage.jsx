@@ -128,6 +128,72 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         return () => clearInterval(timer);
     }, []);
 
+    // Scroll Depth Tracking
+    useEffect(() => {
+        const scrollDepths = { 25: false, 50: false, 75: false, 100: false };
+
+        const handleScroll = () => {
+            const scrollPercent = Math.round(
+                (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+            );
+
+            [25, 50, 75, 100].forEach(depth => {
+                if (scrollPercent >= depth && !scrollDepths[depth]) {
+                    scrollDepths[depth] = true;
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.CLICK, 'product', `scroll_${depth}_percent`);
+                    });
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Section Visibility Tracking using Intersection Observer
+    useEffect(() => {
+        const sections = [
+            { id: 'pp-ingredients', name: 'trust_badges_section' },
+            { id: 'pp-benefits-exhibition', name: 'benefits_section' },
+            { id: 'pp-testimonials', name: 'testimonials_section' }
+        ];
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const section = sections.find(s => entry.target.classList.contains(s.id));
+                        if (section) {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                                trackEvent(EVENTS.CLICK, 'product', `viewed_${section.name}`);
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    }
+                }
+                );
+            },
+            { threshold: 0.5 }
+        );
+
+        sections.forEach(section => {
+            const element = document.querySelector(`.${section.id}`);
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Timer Awareness Tracking
+    useEffect(() => {
+        if (!offerExpired) {
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.CLICK, 'product', 'viewed_with_active_timer');
+            });
+        }
+    }, [offerExpired]);
+
     // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -229,6 +295,28 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 color: '#4caf50'
             },
             handler: async function (response) {
+                // Track payment success
+                const paymentEndTime = Date.now();
+                const timeInModal = paymentModalStartTime ? Math.round((paymentEndTime - paymentModalStartTime) / 1000) : 0;
+
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'payment', 'payment_success', totalAmount);
+                    trackEvent(EVENTS.CLICK, 'payment', 'payment_id', response.razorpay_payment_id);
+                    if (timeInModal > 0) {
+                        trackEvent(EVENTS.CLICK, 'payment', 'time_in_payment_modal', timeInModal);
+                    }
+                });
+
+                // Try to capture payment method (if available via Razorpay API)
+                try {
+                    // Note: Payment method details require server-side fetch from Razorpay API
+                    // This is a placeholder for client-side tracking
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.CLICK, 'payment', 'payment_completed');
+                    });
+                } catch (e) {
+                    console.log('Payment method tracking unavailable');
+                }
                 // Payment successful
 
 
@@ -267,6 +355,17 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             },
             modal: {
                 ondismiss: async function () {
+                    // Track payment modal dismissed
+                    const paymentEndTime = Date.now();
+                    const timeInModal = paymentModalStartTime ? Math.round((paymentEndTime - paymentModalStartTime) / 1000) : 0;
+
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_closed');
+                        trackEvent(EVENTS.CLICK, 'payment', 'payment_abandoned');
+                        if (timeInModal > 0) {
+                            trackEvent(EVENTS.CLICK, 'payment', 'time_in_modal_before_abandon', timeInModal);
+                        }
+                    });
                     if (userData?.recordId) {
                         try {
                             await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
@@ -285,8 +384,37 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             }
         };
 
+        // Track payment modal opened and start timer
+        let paymentModalStartTime = Date.now();
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_opened', totalAmount);
+        });
+
         // Now open Razorpay
         const razorpay = new window.Razorpay(options);
+
+        // Track Razorpay payment.failed event
+        razorpay.on('payment.failed', function (response) {
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.CLICK, 'payment', 'payment_failed');
+                trackEvent(EVENTS.CLICK, 'payment', `payment_error_${response.error.code}`);
+                trackEvent(EVENTS.CLICK, 'payment', 'payment_failure_reason', response.error.description);
+            });
+
+            // Also track via webhook
+            if (userData?.recordId) {
+                fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        recordId: userData.recordId,
+                        Payment_Failed: true,
+                        Payment_Failure_Reason: `${response.error.code}: ${response.error.description}`
+                    })
+                }).catch(err => console.error('Failed to track payment error:', err));
+            }
+        });
+
         razorpay.open();
     };
 
@@ -348,7 +476,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                         <button
                                             key={index}
                                             className={`pp-carousel-dot ${index === carouselIndex ? 'active' : ''}`}
-                                            onClick={() => setCarouselIndex(index)}
+                                            onClick={() => {
+                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                    trackEvent(EVENTS.CLICK, 'product', `carousel_dot_${index + 1}`)
+                                                );
+                                                setCarouselIndex(index);
+                                            }}
                                             aria-label={`Go to image ${index + 1}`}
                                         />
                                     ))}
@@ -359,14 +492,24 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     <>
                                         <button
                                             className="pp-carousel-arrow pp-carousel-arrow-left"
-                                            onClick={() => setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)}
+                                            onClick={() => {
+                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                    trackEvent(EVENTS.CLICK, 'product', 'carousel_prev')
+                                                );
+                                                setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+                                            }}
                                             aria-label="Previous image"
                                         >
                                             <ChevronLeft size={28} />
                                         </button>
                                         <button
                                             className="pp-carousel-arrow pp-carousel-arrow-right"
-                                            onClick={() => setCarouselIndex((prev) => (prev + 1) % carouselImages.length)}
+                                            onClick={() => {
+                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                    trackEvent(EVENTS.CLICK, 'product', 'carousel_next')
+                                                );
+                                                setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+                                            }}
                                             aria-label="Next image"
                                         >
                                             <ChevronRight size={28} />
@@ -392,6 +535,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             key={pack.id}
                                             className={`pp-pack-card ${selectedPack === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
                                             onClick={() => {
+                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                    trackEvent(EVENTS.CLICK, 'product', `select_${pack.id}_pack`)
+                                                );
                                                 handleBuyNow(pack.id);
                                             }}
                                         >
@@ -416,6 +562,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                                 className="pp-pack-select-btn"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
+                                                    import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                        trackEvent(EVENTS.CLICK, 'product', `pack_${pack.id}_button`)
+                                                    );
                                                     handleBuyNow(pack.id); // Direct checkout
                                                 }}
                                             >
@@ -429,7 +578,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             {/* Bundle Items - Ebook Only */}
                             <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '0.5rem', marginTop: '0.5rem' }}>
                                 <div className="pp-bundle-row-item"
-                                    onClick={() => offerExpired && setIsEbookSelected(!isEbookSelected)}
+                                    onClick={() => {
+                                        if (offerExpired) {
+                                            const newState = !isEbookSelected;
+                                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                trackEvent(EVENTS.CLICK, 'product', newState ? 'ebook_selected' : 'ebook_deselected')
+                                            );
+                                            setIsEbookSelected(newState);
+                                        }
+                                    }}
                                     style={{ cursor: offerExpired ? 'pointer' : 'default', opacity: (offerExpired && !isEbookSelected) ? 0.6 : 1 }}>
 
                                     {/* Checkbox for expired offer */}
@@ -493,7 +650,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
-                            <button className="pp-cta-button" onClick={() => handleBuyNow()} style={{ marginTop: '0.75rem' }}>
+                            <button className="pp-cta-button" onClick={() => {
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'product', 'buy_now_main')
+                                );
+                                handleBuyNow();
+                            }} style={{ marginTop: '0.75rem' }}>
                                 <ShoppingBag size={22} />
                                 <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
@@ -564,7 +726,11 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-dosing-redesign-grid">
                         {/* Single Dose Option */}
-                        <div className="pp-dosing-option-card">
+                        <div className="pp-dosing-option-card" onClick={() => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.CLICK, 'product', 'dosage_single_clicked')
+                            );
+                        }} style={{ cursor: 'pointer' }}>
                             <div className="pp-dosing-icon-wrapper">
                                 <Pill size={32} className="pp-pill-icon" />
                             </div>
@@ -575,7 +741,11 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
 
                         {/* Double Dose Option */}
-                        <div className="pp-dosing-option-card">
+                        <div className="pp-dosing-option-card" onClick={() => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.CLICK, 'product', 'dosage_double_clicked')
+                            );
+                        }} style={{ cursor: 'pointer' }}>
                             <div className="pp-dosing-icon-wrapper double">
                                 <Pill size={32} className="pp-pill-icon" />
                                 <Pill size={32} className="pp-pill-icon" />
@@ -755,7 +925,15 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <div
                                 className={`pp-faq-item ${openFaq === i ? 'open' : ''}`}
                                 key={i}
-                                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                                onClick={() => {
+                                    const isOpening = openFaq !== i;
+                                    if (isOpening) {
+                                        import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                            trackEvent(EVENTS.CLICK, 'product', `faq_${i + 1}_opened`)
+                                        );
+                                    }
+                                    setOpenFaq(openFaq === i ? null : i);
+                                }}
                                 style={{ cursor: 'pointer' }}
                             >
                                 <div className="pp-faq-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -813,7 +991,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
                             </div>
                         </div>
-                        <button className="pp-sticky-cta" onClick={handleBuyNow}>
+                        <button className="pp-sticky-cta" onClick={() => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.CLICK, 'product', 'claim_now_floating')
+                            );
+                            handleBuyNow();
+                        }}>
                             Claim Now
                         </button>
                     </div>

@@ -21,6 +21,7 @@ import ScrollProgress from './components/ScrollProgress'
 // Admin Components
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './components/admin/AdminLogin'
+import DeepAnalyticsView from './components/admin/DeepAnalyticsView'
 import AnalyticsView from './components/admin/AnalyticsView'
 import OrdersView from './components/admin/OrdersView'
 import InvoicesView from './components/admin/InvoicesView'
@@ -53,12 +54,90 @@ cleanupExpiredData();
 
 // Landing Page Component
 function LandingPage({ onOpenAssessment }) {
+    // Track Page View and Time on Page
+    useEffect(() => {
+        // Track Page View
+        import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.PAGEVIEW, 'landing');
+        });
+
+        const startTime = Date.now();
+
+        // Track Time on Page when component unmounts
+        return () => {
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.TIME_ON_PAGE, 'landing', null, timeSpent);
+            });
+        };
+    }, []);
+
     const scrollToVideo = () => {
         const videoSection = document.querySelector('.video-section')
         if (videoSection) {
             videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
     }
+
+    // Scroll Depth Tracking for Landing Page
+    useEffect(() => {
+        const scrollDepths = { 25: false, 50: false, 75: false, 100: false };
+
+        const handleScroll = () => {
+            const scrollPercent = Math.round(
+                (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+            );
+
+            [25, 50, 75, 100].forEach(depth => {
+                if (scrollPercent >= depth && !scrollDepths[depth]) {
+                    scrollDepths[depth] = true;
+                    import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.CLICK, 'landing', `scroll_${depth}_percent`);
+                    });
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Section Visibility Tracking
+    useEffect(() => {
+        const sections = [
+            { selector: '.hero', name: 'hero_section' },
+            { selector: '.video-section', name: 'video_section' },
+            { selector: '.problem-section', name: 'problem_section' },
+            { selector: '.benefits-section', name: 'benefits_section' },
+            { selector: '.partners-marquee', name: 'partners_section' },
+            { selector: '.qualification-section', name: 'qualification_section' },
+            { selector: '.faq-section', name: 'faq_section' }
+        ];
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const section = sections.find(s => entry.target.matches(s.selector));
+                        if (section) {
+                            import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+                                trackEvent(EVENTS.CLICK, 'landing', `viewed_${section.name}`);
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+
+        sections.forEach(section => {
+            const element = document.querySelector(section.selector);
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <div className="App">
@@ -89,6 +168,23 @@ function ProductPageWrapper() {
 
     const [userData, setUserData] = useState(null)
     const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        // Track Page View
+        import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.PAGEVIEW, 'product');
+        });
+
+        const startTime = Date.now();
+
+        // Track Time on Page when component unmounts
+        return () => {
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            import('./utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.TIME_ON_PAGE, 'product', null, timeSpent);
+            });
+        };
+    }, []);
 
     useEffect(() => {
         const loadData = async () => {
@@ -312,6 +408,7 @@ function AppRouter() {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AnalyticsView />} />
+                    <Route path="deep" element={<DeepAnalyticsView />} />
                     <Route path="orders" element={<OrdersView />} />
                     <Route path="invoices" element={<InvoicesView />} />
                     <Route path="leads" element={<LeadsView />} />

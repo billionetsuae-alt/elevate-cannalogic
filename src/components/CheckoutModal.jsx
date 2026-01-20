@@ -16,6 +16,28 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
     const [pincodeError, setPincodeError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Track modal open/close and time in checkout
+    useEffect(() => {
+        if (isOpen) {
+            // Track checkout opened
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                trackEvent(EVENTS.CLICK, 'checkout', 'checkout_opened');
+            });
+
+            const startTime = Date.now();
+
+            // Track time in checkout when modal closes
+            return () => {
+                const timeSpent = Math.round((Date.now() - startTime) / 1000);
+                if (timeSpent > 0) {
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.TIME_ON_PAGE, 'checkout', null, timeSpent);
+                    });
+                }
+            };
+        }
+    }, [isOpen]);
+
     // Autofill from userData
     useEffect(() => {
         if (userData) {
@@ -73,6 +95,12 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFieldFocus = (fieldName) => {
+        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+            trackEvent(EVENTS.CLICK, 'checkout', `focus_${fieldName}`);
+        });
+    };
+
     const isFormValid = () => {
         return formData.fullName &&
             formData.phone &&
@@ -126,7 +154,12 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
     return (
         <div className="checkout-overlay" onClick={onClose}>
             <div className="checkout-modal" onClick={e => e.stopPropagation()}>
-                <button className="checkout-close" onClick={onClose}>
+                <button className="checkout-close" onClick={() => {
+                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                        trackEvent(EVENTS.CLICK, 'checkout', 'checkout_abandoned');
+                    });
+                    onClose();
+                }}>
                     <X size={20} />
                 </button>
 
@@ -147,6 +180,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
+                            onFocus={() => handleFieldFocus('fullName')}
                             placeholder="Enter your full name"
                             required
                         />
@@ -163,6 +197,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
+                            onFocus={() => handleFieldFocus('phone')}
                             placeholder="+91 XXXXXXXXXX"
                             required
                         />
@@ -178,6 +213,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
+                            onFocus={() => handleFieldFocus('address')}
                             placeholder="House/Flat No., Building, Street, Landmark"
                             rows={3}
                             required
@@ -196,6 +232,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                                 name="pincode"
                                 value={formData.pincode}
                                 onChange={handlePincodeChange}
+                                onFocus={() => handleFieldFocus('pincode')}
                                 placeholder="6-digit pincode"
                                 maxLength={6}
                                 required
@@ -214,6 +251,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                                 name="city"
                                 value={formData.city}
                                 onChange={handleChange}
+                                onFocus={() => handleFieldFocus('city')}
                                 placeholder="City"
                                 className={formData.city ? 'autofilled' : ''}
                                 required
@@ -226,6 +264,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                                 name="state"
                                 value={formData.state}
                                 onChange={handleChange}
+                                onFocus={() => handleFieldFocus('state')}
                                 placeholder="State"
                                 className={formData.state ? 'autofilled' : ''}
                                 required
@@ -241,6 +280,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                             name="country"
                             value={formData.country}
                             onChange={handleChange}
+                            onFocus={() => handleFieldFocus('country')}
                             placeholder="Country"
                             required
                         />
@@ -265,6 +305,11 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack, onProceedToPay
                         type="submit"
                         className="checkout-submit"
                         disabled={!isFormValid() || isSubmitting}
+                        onClick={() => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                                trackEvent(EVENTS.CLICK, 'checkout', 'pay_button_clicked');
+                            });
+                        }}
                     >
                         {isSubmitting ? (
                             <>

@@ -25,7 +25,7 @@ const ProblemSection = ({ onOpenAssessment }) => {
                             but what if the negativity you've accumulated in the past is holding you back from your best future?
                         </p>
                         <div className="venn-text-cta" style={{ marginTop: '1.5rem' }}>
-                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
+                            <button onClick={() => { import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'landing', 'discovery_cta')); onOpenAssessment(); }} className="btn btn-primary">Get Free Access</button>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ const ProblemSection = ({ onOpenAssessment }) => {
                             <strong>Consciousness isn't static—it's a spectrum.</strong> When we are caught in survival modes like fear or stress, our frequency drops. Elevate is formulated to help shift your baseline state upwards, moving you from contraction into expansion, clarity, and flow.
                         </p>
                         <div className="venn-text-cta" style={{ marginTop: '1.5rem' }}>
-                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
+                            <button onClick={() => { import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'landing', 'energy_cta')); onOpenAssessment(); }} className="btn btn-primary">Get Free Access</button>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ const ProblemSection = ({ onOpenAssessment }) => {
                         </p>
                         {/* Desktop button - hidden on mobile */}
                         <div className="venn-text-cta">
-                            <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
+                            <button onClick={() => { import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'landing', 'ikigai_cta')); onOpenAssessment(); }} className="btn btn-primary">Get Free Access</button>
                         </div>
                     </div>
                     <div className="venn-image">

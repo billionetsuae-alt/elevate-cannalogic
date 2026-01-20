@@ -36,6 +36,12 @@ const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggleFAQ = (index) => {
+        const isOpening = activeIndex !== index;
+        if (isOpening) {
+            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                trackEvent(EVENTS.CLICK, 'landing', `faq_${index + 1}_opened`)
+            );
+        }
         setActiveIndex(activeIndex === index ? null : index);
     };
 

@@ -26,6 +26,51 @@ const VideoSection = () => {
                         playsInline
                         controls
                         className="fullwidth-video"
+                        onPlay={(e) => {
+                            const video = e.target;
+                            if (video.currentTime < 1) {
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.VIDEO_START, 'landing', 'main_video')
+                                );
+                            } else {
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'landing', 'video_resumed')
+                                );
+                            }
+                        }}
+                        onPause={(e) => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.VIDEO_PAUSE, 'landing', 'main_video')
+                            );
+                        }}
+                        onEnded={() => {
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.VIDEO_COMPLETE, 'landing', 'main_video')
+                            );
+                        }}
+                        onTimeUpdate={(e) => {
+                            const video = e.target;
+                            const percentWatched = (video.currentTime / video.duration) * 100;
+
+                            if (!video.dataset.reached25 && percentWatched >= 25) {
+                                video.dataset.reached25 = 'true';
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'landing', 'video_25_percent')
+                                );
+                            }
+                            if (!video.dataset.reached50 && percentWatched >= 50) {
+                                video.dataset.reached50 = 'true';
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'landing', 'video_50_percent')
+                                );
+                            }
+                            if (!video.dataset.reached75 && percentWatched >= 75) {
+                                video.dataset.reached75 = 'true';
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'landing', 'video_75_percent')
+                                );
+                            }
+                        }}
                     />
                 </div>
             </div>

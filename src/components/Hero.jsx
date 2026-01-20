@@ -69,8 +69,8 @@ const Hero = ({ onOpenAssessment, onWatchVideo }) => {
                             </div>
 
                             <div className="hero-actions">
-                                <button onClick={onOpenAssessment} className="btn btn-primary">Get Free Access</button>
-                                <button onClick={onWatchVideo} className="btn btn-outline">Watch Video</button>
+                                <button onClick={() => { import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'landing', 'hero_cta')); onOpenAssessment(); }} className="btn btn-primary">Get Free Access</button>
+                                <button onClick={() => { import('../utils/tracker').then(({ trackEvent, EVENTS }) => trackEvent(EVENTS.CLICK, 'landing', 'hero_video_btn')); onWatchVideo(); }} className="btn btn-outline">Watch Video</button>
                             </div>
                         </div>
                     </div>
