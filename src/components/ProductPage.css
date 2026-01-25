@@ -107,6 +107,13 @@
     /* Reduced padding to bring content up */
 }
 
+@media (max-width: 768px) {
+    .pp-hero {
+        padding-top: 5rem;
+        /* Account for fixed nav */
+    }
+}
+
 .pp-hero-content {
     text-align: center;
     max-width: 800px;
@@ -562,6 +569,8 @@
     box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
     position: relative;
     overflow: hidden;
+    /* Mobile Touch Target Optimization */
+    min-height: 48px;
 }
 
 .pp-cta-button::before {
@@ -4242,4 +4251,126 @@
     .pp-cert-sub {
         display: none;
     }
+}
+
+/* Update Carousel Dots to be small and minimal (Instagram style) */
+.pp-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    z-index: 10;
+    pointer-events: none;
+    /* Let clicks pass through container if needed, dots have pointer-events: auto */
+}
+
+.pp-carousel-dot {
+    width: 6px !important;
+    height: 6px !important;
+    min-width: 6px !important;
+    min-height: 6px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.4) !important;
+    border: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    flex-shrink: 0;
+}
+
+.pp-carousel-dot.active {
+    background: #fff !important;
+    transform: scale(1.2);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Why This Works - Premium Glassmorphism Style */
+.pp-why-works-container {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+/* Subtle glow effect behind */
+.pp-why-works-container::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 100px;
+    height: 100px;
+    background: #4caf50;
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.pp-why-works-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+    color: white;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Green accent line */
+.pp-why-works-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 24px;
+    background: #4caf50;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.pp-why-works-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pp-why-works-item {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    padding: 0.5rem;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.pp-why-works-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.pp-why-works-icon {
+    background: rgba(76, 175, 80, 0.15);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.2);
+    margin-top: 2px;
 }

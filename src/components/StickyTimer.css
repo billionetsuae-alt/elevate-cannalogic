@@ -1,21 +1,24 @@
 /* Sticky Footer Timer Bar */
 .pp-sticky-footer {
     position: fixed;
-    bottom: 2rem;
+    bottom: 1rem;
+    /* Lower it slightly */
     left: 50%;
     transform: translateX(-50%);
-    width: fit-content;
-    min-width: 280px;
-    max-width: 95%;
+    width: 95%;
+    /* Maximize width on mobile */
+    max-width: 500px;
+    /* Cap width */
     background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 100px;
-    padding: 0.35rem 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+    justify-content: space-between;
+    /* Space out items */
+    gap: 0.5rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     animation: timerFadeIn 1s ease-out forwards;
@@ -24,7 +27,9 @@
 .pp-sticky-timer {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    /* Prevent timer from shrinking */
 }
 
 .pp-sticky-label {
@@ -84,6 +89,12 @@
     transition: transform 0.2s;
     text-transform: uppercase;
     /* Match reference button style slightly */
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
 }
 
 .pp-sticky-cta:hover {

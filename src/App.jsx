@@ -296,7 +296,7 @@ function ProductPageWrapper() {
     }, [navigate])
 
     const handleClose = () => {
-        navigate('/')
+        navigate('/home')
     }
 
     // Default user data
@@ -399,7 +399,8 @@ function AppRouter() {
     return (
         <>
             <Routes>
-                <Route path="/" element={<LandingPage onOpenAssessment={openModal} />} />
+                <Route path="/" element={<ProductPageWrapper />} />
+                <Route path="/home" element={<LandingPage onOpenAssessment={openModal} />} />
                 <Route path="/product" element={<ProductPageWrapper />} />
                 <Route path="/product/:recordId" element={<ProductPageWrapper />} />
                 <Route path="/thank-you" element={<ThankYouPageWrapper />} />

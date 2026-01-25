@@ -3,11 +3,12 @@ import './ProductPage.css';
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
 import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
+import ExitIntentPopup from './ExitIntentPopup';
 
 const PACK_OPTIONS = [
-    { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
-    { id: 2, label: '2 Packs', subLabel: '60 Softgels • 60 Days', price: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 7500 },
-    { id: 3, label: '3 Packs', subLabel: '90 Softgels • 90 Days', price: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 11250 }
+    { id: 1, label: 'Relief Starter', subLabel: '30 Softgels • 30 Days', price: 3750, save: null, best: false, totalValue: 5000 },
+    { id: 2, label: 'Balance Builder', subLabel: '60 Softgels • 60 Days', price: 6750, save: 'Save 10%', best: 'Most Popular', totalValue: 7500 },
+    { id: 3, label: 'Complete Wellness Kit', subLabel: '90 Softgels • 90 Days', price: 9000, save: 'Save 20%', best: 'Customers Also Bought', totalValue: 11250 }
 ];
 
 const UNIFIED_PHASE = {
@@ -219,21 +220,6 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
         // If a specific pack is passed (e.g. from click), use it
         // Otherwise use the state selectedPack
-        const packToBuy = packId || selectedPack;
-
-        if (!packToBuy) {
-            setShowPackWarning(true);
-            const packSection = document.getElementById('pack-selection');
-            if (packSection) {
-                packSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            return;
-        }
-
-        // Hide warning if selection is made
-        setShowPackWarning(false);
-
-        // Ensure state is synced if we passed a direct ID (case: click on unselected pack)
         if (packId && packId !== selectedPack) {
             setSelectedPack(packId);
         }
@@ -242,12 +228,30 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     };
 
     // Process payment after checkout form is filled
+    // Process payment after checkout form is filled
     const processPayment = async (checkoutFormData) => {
-        setCheckoutData(checkoutFormData);
+        // Extract pack selection if provided by modal
+        const { selectedPackId, ...userDataRaw } = checkoutFormData;
+
+        // Determine the pack to use: preferring the one from modal, fallback to state
+        const packIdToUse = selectedPackId || selectedPack;
+
+        if (!packIdToUse) {
+            console.error("No pack selected for payment");
+            return;
+        }
+
+        setCheckoutData(userDataRaw);
         setIsCheckoutOpen(false);
 
+        // Update state if different, to keep UI in sync
+        if (packIdToUse !== selectedPack) {
+            setSelectedPack(packIdToUse);
+        }
+
         // Calculate total amount: Pack Price + (Ebook Price if expired and selected)
-        const packPrice = PACK_OPTIONS.find(p => p.id === selectedPack).price;
+        const pack = PACK_OPTIONS.find(p => p.id === packIdToUse);
+        const packPrice = pack.price;
         const ebookPrice = (offerExpired && isEbookSelected) ? 1500 : 0;
         // Total calculations
         const subtotal = packPrice + ebookPrice;
@@ -263,7 +267,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     Payment_Attempted: true,
                     Payment_Attempt_Time: new Date().toISOString(),
                     Payment_Amount_Attempted: totalAmount,
-                    Pack_Selected: PACK_OPTIONS.find(p => p.id === selectedPack).label,
+                    Pack_Selected: pack.label,
                     Razorpay_Order_ID: ''
                 })
             });
@@ -277,19 +281,19 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             amount: totalAmount * 100, // Amount in paise
             currency: 'INR',
             name: 'CannaLogic',
-            description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
+            description: `Elevate Full Spectrum Bundle - ${pack.label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
             image: '/Cannalogic-White.svg',
             prefill: {
-                name: checkoutFormData.fullName || name || '',
+                name: userDataRaw.fullName || name || '',
                 email: userData?.email || '',
-                contact: checkoutFormData.phone || userData?.phone || ''
+                contact: userDataRaw.phone || userData?.phone || ''
             },
             notes: {
-                address: checkoutFormData.fullAddress,
-                pincode: checkoutFormData.pincode,
-                city: checkoutFormData.city,
-                state: checkoutFormData.state,
-                selected_pack: PACK_OPTIONS.find(p => p.id === selectedPack).label
+                address: userDataRaw.fullAddress,
+                pincode: userDataRaw.pincode,
+                city: userDataRaw.city,
+                state: userDataRaw.state,
+                selected_pack: pack.label
             },
             theme: {
                 color: '#4caf50'
@@ -330,23 +334,24 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             order_id: response.razorpay_order_id,
                             signature: response.razorpay_signature,
                             customer: {
-                                name: checkoutFormData.fullName,
+                                name: userDataRaw.fullName,
                                 email: userData?.email,
-                                phone: checkoutFormData.phone,
-                                address: checkoutFormData.fullAddress,
-                                pincode: checkoutFormData.pincode,
-                                city: checkoutFormData.city,
-                                state: checkoutFormData.state
+                                phone: userDataRaw.phone,
+                                address: userDataRaw.fullAddress,
+                                pincode: userDataRaw.pincode,
+                                city: userDataRaw.city,
+                                state: userDataRaw.state
                             },
                             recordId: userData?.recordId,
                             amount: totalAmount,
-                            product: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
-                            pack_details: PACK_OPTIONS.find(p => p.id === selectedPack)
+                            product: `Elevate Full Spectrum Bundle - ${pack.label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
+                            pack_details: pack
                         })
                     });
                 } catch (error) {
                     console.error('Webhook error:', error);
                 }
+
 
                 // Redirect to thank you page
                 if (onPaymentSuccess) {
@@ -429,11 +434,120 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             {/* Hero Section - Restored with Correct Badge */}
             <section className="pp-hero">
                 <div className="pp-container">
-                    <div className="pp-hero-content">
-                        <div className="pp-badge-row">
-                            <div className="pp-badge animated" style={{ background: currentPhase.color + '20', color: currentPhase.color, borderColor: currentPhase.color + '40' }}>
-                                <Leaf size={16} />
-                                <span>Cannabis Full Spectrum Softgels</span>
+                    <div className="pp-hero-content" style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '1rem' }}>
+                        {/* Social Proof Pill */}
+                        <div className="pp-social-proof-pill" style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            background: 'rgba(255, 255, 255, 0.12)',
+                            padding: '8px 16px',
+                            borderRadius: '50px',
+                            marginBottom: '1.5rem',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            backdropFilter: 'blur(4px)'
+                        }}>
+                            <div style={{ display: 'flex', gap: '2px' }}>
+                                {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="#FFD700" color="#FFD700" />)}
+                            </div>
+                            <span style={{ color: '#fff', fontSize: '0.9rem', fontWeight: '600', letterSpacing: '0.3px' }}>
+                                Rated 4.9/5 by Professionals
+                            </span>
+                        </div>
+
+                        <h1 className="pp-hero-headline" style={{
+                            fontSize: 'clamp(1.8rem, 5vw, 2.8rem)',
+                            fontWeight: '800',
+                            lineHeight: '1.2',
+                            marginBottom: '1rem',
+                            color: '#fff',
+                            textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+                        }}>
+                            How to Reduce Daily Stress, Calm Your Mind & Improve Sleep Without Harsh Chemicals
+                        </h1>
+                        <p className="pp-hero-subhead" style={{
+                            fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+                            color: '#e0e0e0',
+                            marginBottom: '1.5rem',
+                            lineHeight: '1.6',
+                            maxWidth: '800px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}>
+                            Even if you've tried everything else — experience the power of <span style={{ color: '#4caf50', fontWeight: 'bold' }}>Natural Hemp + Ayurveda</span> in just a few weeks.
+                        </p>
+
+                        {/* Hero CTA - Immediate Action */}
+                        <button
+                            className="pp-cta-button"
+                            onClick={() => {
+                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                    trackEvent(EVENTS.CLICK, 'product', 'hero_cta_clicked')
+                                );
+                                handleBuyNow();
+                            }}
+                            style={{
+                                marginTop: '0.5rem',
+                                marginBottom: '1.5rem',
+                                width: 'auto',
+                                padding: '1rem 2.5rem',
+                                fontSize: '1.1rem',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                boxShadow: '0 4px 14px 0 rgba(76, 175, 80, 0.39)'
+                            }}
+                        >
+                            <span>Start Stress Relief Now</span>
+                            <ArrowRight size={20} />
+                        </button>
+
+                        {/* Trust & Safety Signals */}
+                        <div className="pp-hero-trust-row" style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-evenly',
+                            gap: '0.5rem',
+                            marginTop: '0.5rem',
+                            flexWrap: 'nowrap',
+                            opacity: 0.95,
+                            padding: '10px',
+                            background: 'rgba(0,0,0,0.2)',
+                            borderRadius: '12px',
+                            backdropFilter: 'blur(5px)',
+                            border: '1px solid rgba(255,255,255,0.05)',
+                            maxWidth: '90%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}>
+                            {/* AYUSH Badge */}
+                            <div className="pp-trust-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '60px' }}>
+                                <img src="/ministry-ayush-emblem.png" alt="Ministry of AYUSH" style={{ height: '32px', objectFit: 'contain', filter: 'brightness(0) invert(1) opacity(0.9)' }} />
+                                <span style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>AYUSH Approved</span>
+                            </div>
+
+                            {/* Natural & Safe Badge */}
+                            <div className="pp-trust-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '60px' }}>
+                                <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Leaf size={24} color="#4caf50" />
+                                </div>
+                                <span style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>100% Natural</span>
+                            </div>
+
+                            {/* Lab Tested */}
+                            <div className="pp-trust-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '60px' }}>
+                                <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <ShieldCheck size={24} color="#4caf50" />
+                                </div>
+                                <span style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Lab Tested</span>
+                            </div>
+
+                            {/* Secure Checkout */}
+                            <div className="pp-trust-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '60px' }}>
+                                <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Lock size={24} color="#4caf50" />
+                                </div>
+                                <span style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SSL Secure</span>
                             </div>
                         </div>
                     </div>
@@ -521,59 +635,29 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                         {/* Right: Pack Selection + Pricing + CTA */}
                         <div className="pp-product-details">
-                            {/* Pack Selection Section - MOVED TO TOP */}
-                            <div id="pack-selection" className="pp-pack-selection-container" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-                                <div className="pp-section-label" style={{ textAlign: 'center', marginBottom: '0.5rem', color: '#8bc34a', width: '100%', display: 'block' }}>Choose Your Elevation Path</div>
-                                {showPackWarning && (
-                                    <div style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: 'bold' }}>
-                                        ⚠ Please select a pack to proceed
-                                    </div>
-                                )}
-                                <div className="pp-pack-grid" style={{ justifyContent: 'center', marginTop: '0' }}>
-                                    {PACK_OPTIONS.map(pack => (
-                                        <div
-                                            key={pack.id}
-                                            className={`pp-pack-card ${selectedPack === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
-                                            onClick={() => {
-                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
-                                                    trackEvent(EVENTS.CLICK, 'product', `select_${pack.id}_pack`)
-                                                );
-                                                handleBuyNow(pack.id);
-                                            }}
-                                        >
-                                            {pack.best && (
-                                                <div className="pp-pack-ribbon">
-                                                    <span>{pack.best}</span>
-                                                </div>
-                                            )}
-                                            <h4 className="pp-pack-title">{pack.label}</h4>
-                                            {/* Sub-label for 1 Pack (and others if needed) */}
-                                            {pack.subLabel && (
-                                                <div className="pp-pack-sublabel">{pack.subLabel}</div>
-                                            )}
-                                            <div className="pp-pack-price">
-                                                <span className="pp-currency">₹</span>
-                                                {pack.price.toLocaleString()}
+
+                            {/* Why This Works - Outcome Focused Copy */}
+                            {/* Why This Works - Outcome Focused Copy */}
+                            <div className="pp-why-works-container">
+                                <h3 className="pp-why-works-title">Why This Works</h3>
+                                <ul className="pp-why-works-list">
+                                    {[
+                                        "Helps reduce stress and anxiety naturally",
+                                        "Supports better sleep quality",
+                                        "Helps with pain and inflammation",
+                                        "100% natural Ayurvedic + hemp formulation"
+                                    ].map((benefit, i) => (
+                                        <li key={i} className="pp-why-works-item">
+                                            <div className="pp-why-works-icon">
+                                                <Check size={14} color="#4caf50" strokeWidth={4} />
                                             </div>
-                                            {pack.save && (
-                                                <div className="pp-pack-save">{pack.save}</div>
-                                            )}
-                                            <button
-                                                className="pp-pack-select-btn"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
-                                                        trackEvent(EVENTS.CLICK, 'product', `pack_${pack.id}_button`)
-                                                    );
-                                                    handleBuyNow(pack.id); // Direct checkout
-                                                }}
-                                            >
-                                                {`Select ${pack.label}`}
-                                            </button>
-                                        </div>
+                                            <span>{benefit}</span>
+                                        </li>
                                     ))}
-                                </div>
+                                </ul>
                             </div>
+
+                            {/* Pack Selection Section - MOVED TO CHECKOUT */}
 
                             {/* Bundle Items - Ebook Only */}
                             <div className="pp-bundle-list-detailed" id="offer-bundle" style={{ marginBottom: '0.5rem', marginTop: '0.5rem' }}>
@@ -608,7 +692,14 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     )}
 
                                     <div className="pp-bundle-thumb">
-                                        <img src="/ebook-cover.jpg" alt="Ebook" />
+                                        <img
+                                            src="/ebook-cover.jpg"
+                                            alt="Ebook"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="60"
+                                            height="80"
+                                        />
                                     </div>
                                     <div className="pp-bundle-content">
                                         <div className="pp-bundle-row-header">
@@ -657,9 +748,31 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 handleBuyNow();
                             }} style={{ marginTop: '0.75rem' }}>
                                 <ShoppingBag size={22} />
-                                <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
+                                <span style={{ fontWeight: '700' }}>Get My Elevate Capsules Today</span>
                                 {!offerExpired && <ArrowRight size={20} />}
                             </button>
+
+                            {/* Risk-Free Guarantee */}
+                            <div className="pp-guarantee-card" style={{
+                                marginTop: '1.5rem',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                borderRadius: '12px',
+                                padding: '1.25rem',
+                                display: 'flex',
+                                gap: '16px',
+                                alignItems: 'center',
+                                border: '1px dashed rgba(76, 175, 80, 0.4)'
+                            }}>
+                                <div style={{ background: 'rgba(76, 175, 80, 0.2)', borderRadius: '50%', padding: '10px', flexShrink: 0 }}>
+                                    <ShieldCheck size={28} color="#4caf50" />
+                                </div>
+                                <div>
+                                    <h4 style={{ color: '#fff', fontSize: '1rem', marginBottom: '4px', fontWeight: '600' }}>7-Day Risk-Free Guarantee</h4>
+                                    <p style={{ color: '#ccc', fontSize: '0.9rem', lineHeight: '1.4', margin: 0 }}>
+                                        Try Elevate for 7 days. If you don’t feel calmer or sleep better, we offer a full refund.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -680,7 +793,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ].map((item, i) => (
                             <div className="pp-ingredient-item" key={i}>
                                 <div className="pp-ingredient-image-container">
-                                    <img src={item.img} alt={item.title} className="pp-ingredient-img" />
+                                    <img
+                                        src={item.img}
+                                        alt={item.title}
+                                        className="pp-ingredient-img"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </div>
                                 <div className="pp-ingredient-content">
                                     <strong>{item.title}</strong>
@@ -700,7 +819,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         </div>
                         <div className="pp-cert-card">
                             <div className="pp-cert-icon-circle" style={{ background: 'transparent', border: 'none' }}>
-                                <img src="/ministry-ayush-emblem.png" alt="Ministry of AYUSH" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                <img
+                                    src="/ministry-ayush-emblem.png"
+                                    alt="Ministry of AYUSH"
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
                             </div>
                             <h4 className="pp-cert-title">Ministry Approved</h4>
                             <p className="pp-cert-sub">Fully compliant with AYUSH regulations and Indian law.</p>
@@ -817,6 +942,40 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
+            {/* Brand Story Section */}
+            <section className="pp-brand-story" style={{ padding: '4rem 1rem', background: '#0a0a0a', textAlign: 'center' }}>
+                <div className="pp-container">
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(76, 175, 80, 0.1)', marginBottom: '1.5rem' }}>
+                        <Leaf size={32} color="#4caf50" />
+                    </div>
+                    <h2 className="pp-section-title" style={{ marginBottom: '1rem' }}>The Cannalogic Philosophy</h2>
+                    <p style={{ maxWidth: '700px', margin: '0 auto 2rem', fontSize: '1.1rem', color: '#ccc', lineHeight: '1.6' }}>
+                        We believe true healing comes from the union of <span style={{ color: '#fff', fontWeight: 'bold' }}>Ancient Ayurvedic Wisdom</span> and <span style={{ color: '#fff', fontWeight: 'bold' }}>Modern Scientific Precision</span>.
+                    </p>
+
+                    <div className="pp-story-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
+                        <div className="pp-story-card" style={{ padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '1rem' }}>Sacred Ingredients</h3>
+                            <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                                We source only the purest Vijaya (Medical Cannabis) from government-authorized cultivators. Every leaf is selected for its potency and purity.
+                            </p>
+                        </div>
+                        <div className="pp-story-card" style={{ padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '1rem' }}>Science-Backed</h3>
+                            <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                                We don't just rely on tradition. Our full-spectrum formulations are lab-tested to ensure exact cannabinoid profiles for consistent, safe results.
+                            </p>
+                        </div>
+                        <div className="pp-story-card" style={{ padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '1rem' }}>Holistic Balance</h3>
+                            <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                                Elevate isn't just about symptoms. It's about restoring Homeostasis—your body's natural state of balance—so you heal from within.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Mindful Use Section (Final Message) */}
             < section className="pp-mindful" >
                 <div className="pp-container">
@@ -874,9 +1033,27 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-testimonials-grid">
                         {[
-                            { name: "Rahul M.", location: "Mumbai", text: "This has completely transformed my morning routine. I feel more centered and aware throughout the day. Highly recommend to anyone on a conscious journey!" },
-                            { name: "Priya S.", location: "Bangalore", text: "Finally found something natural that actually works. The quality is exceptional and I've noticed real changes in my mental clarity and emotional stability." },
-                            { name: "Amit K.", location: "Delhi", text: "I was skeptical at first, but after a month I can honestly say this has helped me tremendously on my journey of self-discovery and inner peace." }
+                            {
+                                name: "Rajiv K.",
+                                role: "IT Director",
+                                location: "Bangalore",
+                                text: "\"I was skeptical but desperate. Within 10 days, I stopped taking painkillers completely. My team has commented on my improved mood and decisiveness in meetings.\"",
+                                verified: true
+                            },
+                            {
+                                name: "Priya M.",
+                                role: "Marketing Executive",
+                                location: "Mumbai",
+                                text: "\"I was taking 4-5 painkillers daily and sleeping 4-5 hours. Within two weeks of using Cannalogic, I'm sleeping 7+ hours and handling stressful situations with unexpected calm.\"",
+                                verified: true
+                            },
+                            {
+                                name: "Vikram S.",
+                                role: "Senior Manager",
+                                location: "Gurgaon",
+                                text: "\"My wife used to say she felt like a single parent. After two weeks on Cannalogic, she told me 'I feel like I got my husband back.' That's worth more than any promotion.\"",
+                                verified: true
+                            }
                         ].map((review, i) => (
                             <div className="pp-testimonial-card" key={i}>
                                 <div className="pp-testimonial-quote">
@@ -914,13 +1091,26 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-faq-grid">
                         {[
-                            { q: "What is Full Spectrum Cannabis Oil?", a: "It represents the complete extraction of the plant, preserving CBD, THC, and minor cannabinoids to create the \"Entourage Effect\" for maximum therapeutic potential, unlike isolated compounds." },
-                            { q: "Is this product legal in India?", a: "Yes, 100%. Our products are approved by the Ministry of Ayush and compliant with all Government of India regulations for Vijaya (Medical Cannabis) products." },
-                            { q: "Will I get \"high\" from using this?", a: "No. Our formulation is chemically balanced to provide therapeutic relief (pain, stress, sleep) without intoxication or psychoactive effects when strictly dosed as prescribed." },
-                            { q: "Do I need a prescription?", a: "Yes, a valid prescription is mandatory by law. We provide a complimentary medical consultation with our certified doctors to assess your eligibility and generate a prescription." },
-                            { q: "What conditions can this help with?", a: "It is effective for managing chronic pain, stress, anxiety, insomnia, and inflammation. It helps regulate your body's Endocannabinoid System (ECS) for overall balance." },
-                            { q: "Are there any side effects?", a: "It is natural and safe. Mild side effects like dry mouth or drowsiness may occur initially as your body adjusts. It is non-addictive and safer than many chemical painkillers." },
-                            { q: "How do I take the softgels?", a: "Take 1 softgel daily after dinner or before bed for sleep/recovery. For stress/pain, take as directed by our physician. Swallow whole with water; do not chew." }
+                            {
+                                q: "Is this legal and safe?",
+                                a: "Yes, 100%. Cannalogic Elevate is approved by the Ministry of AYUSH and is fully compliant with Indian laws regarding medical cannabis (Vijaya). It is non-habit forming and safe for long-term use."
+                            },
+                            {
+                                q: "How quickly will I see results?",
+                                a: "Most users experience a sense of calm within 45-60 minutes of their first dose. For sleep issues, we recommend taking it 1 hour before bed. Deep, long-term balance typically builds over 3-5 days of consistent use."
+                            },
+                            {
+                                q: "Will I get 'high' or have side effects?",
+                                a: "No, you will not get 'high'. Our full-spectrum formula is balanced to provide therapeutic relief without intoxication. Mild drowsiness may occur initially, which is why we suggest starting with the evening dose."
+                            },
+                            {
+                                q: "How do I use it?",
+                                a: "Take 1 softgel daily, preferably after dinner or 1 hour before sleep. Swallow whole with water. You can increase to 2 softgels if needed, but we recommend starting with 1 to let your body adjust."
+                            },
+                            {
+                                q: "Is it AYUSH certified?",
+                                a: "Yes, our formulation is strictly regulated and approved by the Ministry of AYUSH. Every batch is lab-tested for purity, safety, and consistent potency."
+                            }
                         ].map((faq, i) => (
                             <div
                                 className={`pp-faq-item ${openFaq === i ? 'open' : ''}`}
@@ -961,7 +1151,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
-                            <img src="/Cannalogic-White.svg" alt="CannaLogic" className="pp-footer-logo-img" />
+                            <img
+                                src="/Cannalogic-White.svg"
+                                alt="CannaLogic"
+                                className="pp-footer-logo-img"
+                                loading="lazy"
+                            />
                         </div>
                         <p className="pp-footer-copy">© 2024 CannaLogic. All rights reserved.</p>
                     </div>
@@ -978,7 +1173,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 !offerExpired && (
                     <div className="pp-sticky-footer">
                         <div className="pp-sticky-timer">
-                            <span className="pp-sticky-label" style={{ display: 'block', color: 'white', fontSize: '12px', marginBottom: '4px', textAlign: 'center' }}>Free Guide Offer Ends in</span>
+                            <span className="pp-sticky-label" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '11px', marginRight: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Offer Ends in:</span>
                             <div className="pp-sticky-countdown">
                                 <div className="pp-sticky-time-unit">
                                     <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
@@ -997,7 +1192,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             );
                             handleBuyNow();
                         }}>
-                            Claim Now
+                            BUY NOW
                         </button>
                     </div>
                 )
@@ -1008,9 +1203,11 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 isOpen={isCheckoutOpen}
                 onClose={() => setIsCheckoutOpen(false)}
                 userData={userData}
-                selectedPack={PACK_OPTIONS.find(p => p.id === selectedPack)}
+                selectedPack={selectedPack ? PACK_OPTIONS.find(p => p.id === selectedPack) : null}
+                packOptions={PACK_OPTIONS}
                 onProceedToPayment={processPayment}
             />
+            <ExitIntentPopup />
         </div >
     );
 };
