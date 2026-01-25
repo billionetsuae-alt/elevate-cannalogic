@@ -58,7 +58,7 @@ const UNIFIED_PHASE = {
 
 const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     const {
-        name = 'Friend'
+        name = ''
     } = userData || {};
 
     const firstName = name.split(' ')[0];
@@ -284,9 +284,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             description: `Elevate Full Spectrum Bundle - ${pack.label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
             image: '/Cannalogic-White.svg',
             prefill: {
-                name: userDataRaw.fullName || name || '',
+                name: userDataRaw.fullName || '',
                 email: userData?.email || '',
-                contact: userDataRaw.phone || userData?.phone || ''
+                contact: userDataRaw.phone || ''
             },
             notes: {
                 address: userDataRaw.fullAddress,
