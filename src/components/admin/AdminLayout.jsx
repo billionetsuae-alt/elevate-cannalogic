@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, FileText, Users, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, FileText, Users, AlertCircle, MousePointerClick } from 'lucide-react';
 import './Admin.css';
 
 // Context to share data across views
@@ -68,7 +68,8 @@ const processRawRecords = (records, filter = 'all') => {
                 phone: row.Phone || '',
                 permanentLink: row.Permanent_Link || '',
                 status: row.Status || 'Lead',
-                date: createdDate || ''
+                date: createdDate || '',
+                source: row.Source || ''
             });
         } else {
             // Pending/Other
@@ -451,6 +452,11 @@ const AdminLayout = () => {
                         <NavLink to="/admin/leads" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                             <Users size={20} />
                             <span>Leads</span>
+                        </NavLink>
+
+                        <NavLink to="/admin/exit-intent" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                            <MousePointerClick size={20} />
+                            <span>Exit Intent</span>
                         </NavLink>
 
                         <NavLink to="/admin/payment-attempts" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>

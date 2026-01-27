@@ -27,6 +27,7 @@ import OrdersView from './components/admin/OrdersView'
 import InvoicesView from './components/admin/InvoicesView'
 import LeadsView from './components/admin/LeadsView'
 import PaymentAttemptsView from './components/admin/PaymentAttemptsView'
+import ExitIntentView from './components/admin/ExitIntentView'
 
 // Security: Clean up expired localStorage data (30-day expiry)
 const SESSION_EXPIRY_DAYS = 30;
@@ -413,6 +414,7 @@ function AppRouter() {
                     <Route path="orders" element={<OrdersView />} />
                     <Route path="invoices" element={<InvoicesView />} />
                     <Route path="leads" element={<LeadsView />} />
+                    <Route path="exit-intent" element={<ExitIntentView />} />
                     <Route path="payment-attempts" element={<PaymentAttemptsView />} />
                 </Route>
 
