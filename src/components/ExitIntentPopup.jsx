@@ -19,10 +19,10 @@ const ExitIntentPopup = () => {
             }
         };
 
-        // Mobile: Timer (60 seconds)
+        // Mobile: Timer (30 seconds)
         const timer = setTimeout(() => {
             showPopup();
-        }, 60000);
+        }, 30000);
 
         document.addEventListener('mouseleave', handleMouseLeave);
 
@@ -44,20 +44,44 @@ const ExitIntentPopup = () => {
         setIsVisible(false);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email) return;
 
         setStatus('submitting');
 
-        // Simulate API call
-        setTimeout(() => {
+        setStatus('submitting');
+
+        try {
+            // Send to n8n Webhook
+            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/capture-lead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    source: 'exit_intent',
+                    timestamp: new Date().toISOString()
+                }),
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                // Track event
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                    trackEvent(EVENTS.CLICK, 'lead_capture', 'exit_intent_success')
+                );
+            } else {
+                console.error('Submission failed');
+                // Fallback to success UI regardless (don't block user from discount)
+                setStatus('success');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            // Fallback to success UI regardless
             setStatus('success');
-            // In a real app, you'd send this to your CRM/Email tool
-            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
-                trackEvent(EVENTS.CLICK, 'lead_capture', 'exit_intent_success')
-            );
-        }, 1500);
+        }
     };
 
     if (!isVisible) return null;
@@ -76,8 +100,8 @@ const ExitIntentPopup = () => {
                         </div>
                         <h3>Welcome to the Family!</h3>
                         <p>Here is your discount code:</p>
-                        <div className="code-display">ELEVATE10</div>
-                        <p className="small-print">Use this at checkout for 10% off your first order.</p>
+                        <div className="code-display">ELEVATE1000</div>
+                        <p className="small-print">Use this at checkout for ₹1,000 off your first order.</p>
                         <button className="exit-popup-cta" onClick={handleClose}>
                             Shop Now
                         </button>
@@ -90,7 +114,7 @@ const ExitIntentPopup = () => {
                             </div>
                             <h2>Wait! Don't Miss Out</h2>
                             <p>
-                                Get <strong>10% OFF</strong> your first order + our exclusive Wellness Guide when you join our community.
+                                Get <strong>₹1,000 OFF</strong> your first order + our exclusive Wellness Guide when you join our community.
                             </p>
                         </div>
 
@@ -108,7 +132,7 @@ const ExitIntentPopup = () => {
                                 className="exit-popup-cta"
                                 disabled={status === 'submitting'}
                             >
-                                {status === 'submitting' ? 'Unlocking...' : 'Unlock My 10% Discount'}
+                                {status === 'submitting' ? 'Unlocking...' : 'Unlock My ₹1,000 Discount'}
                                 {status !== 'submitting' && <ArrowRight size={18} />}
                             </button>
                         </form>

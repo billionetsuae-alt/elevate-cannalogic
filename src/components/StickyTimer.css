@@ -7,18 +7,20 @@
     transform: translateX(-50%);
     width: 95%;
     /* Maximize width on mobile */
-    max-width: 500px;
-    /* Cap width */
+    max-width: 600px;
+    /* Increased width for longer text */
     background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 100px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.25rem;
+    /* More horizontal padding */
     display: flex;
     align-items: center;
     justify-content: space-between;
     /* Space out items */
-    gap: 0.5rem;
+    gap: 1rem;
+    /* Increased gap */
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     animation: timerFadeIn 1s ease-out forwards;
@@ -27,16 +29,19 @@
 .pp-sticky-timer {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.1rem;
     flex-shrink: 0;
     /* Prevent timer from shrinking */
 }
 
 .pp-sticky-label {
     font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-align: center;
+    margin: 0;
 }
 
 .pp-sticky-countdown {
@@ -134,5 +139,43 @@
 @keyframes blink {
     50% {
         opacity: 0;
+    }
+}
+
+/* Desktop Optimizations */
+@media (min-width: 768px) {
+    .pp-sticky-footer {
+        width: fit-content;
+        min-width: 550px;
+        /* Ensure it's not too small */
+        padding: 0.75rem 2.5rem;
+        bottom: 2rem;
+        gap: 2rem;
+        /* Tighter gap */
+    }
+
+    .pp-sticky-timer {
+        gap: 1.5rem;
+    }
+
+    .pp-sticky-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .pp-sticky-countdown {
+        font-size: 2rem;
+        gap: 1rem;
+    }
+
+    .pp-sticky-time-unit {
+        min-width: 50px;
+    }
+
+    .pp-sticky-cta {
+        font-size: 1.1rem;
+        padding: 0.8rem 2.5rem;
+        min-height: 56px;
     }
 }

@@ -248,7 +248,7 @@ function ProductPageWrapper() {
 
                         // Normalize Airtable field names to camelCase for frontend
                         const normalizedData = {
-                            name: rawData.Name || rawData.name || 'Friend',
+                            name: rawData.Name || rawData.name || '',
                             email: rawData.Email || rawData.email || '',
                             phone: rawData.Phone || rawData.phone || '',
                             age: rawData.Age || rawData.age || '',
@@ -301,7 +301,7 @@ function ProductPageWrapper() {
 
     // Default user data
     const defaultUserData = {
-        name: 'Friend',
+        name: '',
         totalScore: 24,
         maxScore: 32
     }

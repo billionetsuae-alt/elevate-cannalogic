@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, MapPin, User, Phone, Home, Loader2, ChevronLeft, Check, ShieldCheck, Lock } from 'lucide-react';
 import './CheckoutModal.css';
 
-const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, packOptions, onProceedToPayment }) => {
-    const [step, setStep] = useState(1);
+const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, packOptions, onProceedToPayment, offerExpired }) => {
     const [selectedPackId, setSelectedPackId] = useState(initialPack?.id || null);
     const [formData, setFormData] = useState({
         fullName: '',
@@ -24,7 +23,6 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
             import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
                 trackEvent(EVENTS.CLICK, 'checkout', 'checkout_opened');
             });
-            setStep(1); // Reset to step 1 on open
         }
     }, [isOpen]);
 
@@ -108,7 +106,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
             formData.address;
     };
 
-    const handleNextStep = async (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (!isFormValid()) return;
 
@@ -135,9 +133,17 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
         setTimeout(() => {
             setIsSubmitting(false);
-            setStep(2);
+            const fullAddress = `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country} - ${formData.pincode}`;
+
+            // Proceed directly to payment
+            onProceedToPayment({
+                ...formData,
+                fullAddress,
+                selectedPackId: selectedPackId // Use the pre-selected pack
+            });
+
             import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-                trackEvent(EVENTS.CLICK, 'checkout', 'step_1_complete');
+                trackEvent(EVENTS.CLICK, 'checkout', 'form_submitted_pay_now');
             });
         }, 500);
     };
@@ -169,176 +175,152 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
         <div className="checkout-overlay" onClick={onClose}>
             <div className="checkout-modal" onClick={e => e.stopPropagation()}>
 
-                {/* Header Navigation - Purely for Controls */}
                 <div className="checkout-header-nav">
-                    {step === 2 ? (
-                        <button className="checkout-back" onClick={handleBack}>
-                            <ChevronLeft size={24} />
-                        </button>
-                    ) : (
-                        <div style={{ width: '36px' }}></div> /* Spacer for balance */
-                    )}
-
+                    <div style={{ width: '36px' }}></div>
                     <button className="checkout-close" onClick={() => onClose()}>
                         <X size={24} />
                     </button>
                 </div>
 
-                {/* Progress Steps - Dedicated Row */}
-                <div className="checkout-steps">
-                    <div className={`step-dot ${step >= 1 ? 'active' : ''} ${step > 1 ? 'completed' : ''}`}>
-                        {step > 1 ? <Check size={16} /> : '1'}
-                    </div>
-                    <div className={`step-line ${step > 1 ? 'active' : ''}`}></div>
-                    <div className={`step-dot ${step >= 2 ? 'active' : ''}`}>2</div>
+                <div className="checkout-header">
+                    <h2>Guest Checkout</h2>
+                    <p>Shipping Address • Estimated Delivery: 3-5 Days</p>
                 </div>
 
-                {step === 1 ? (
-                    <>
-                        <div className="checkout-header">
-                            <h2>Guest Checkout</h2>
-                            <p>Shipping Address • Estimated Delivery: 3-5 Days</p>
+                <form onSubmit={handleFormSubmit} className="checkout-form">
+                    {/* Full Name */}
+                    <div className="checkout-field">
+                        <label><User size={16} /> Full Name</label>
+                        <input
+                            type="text"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            onFocus={() => handleFieldFocus('fullName')}
+                            placeholder="Enter your full name"
+                            required
+                        />
+                    </div>
+
+                    {/* Phone */}
+                    <div className="checkout-field">
+                        <label><Phone size={16} /> Phone Number</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            onFocus={() => handleFieldFocus('phone')}
+                            placeholder="+91 XXXXXXXXXX"
+                            required
+                        />
+                    </div>
+
+                    {/* Pincode & Address */}
+                    <div className="checkout-field">
+                        <label><MapPin size={16} /> Pincode</label>
+                        <div className="pincode-input-wrapper">
+                            <input
+                                type="text"
+                                name="pincode"
+                                value={formData.pincode}
+                                onChange={handlePincodeChange}
+                                onFocus={() => handleFieldFocus('pincode')}
+                                placeholder="6-digit pincode"
+                                maxLength={6}
+                                required
+                            />
+                            {pincodeLoading && <Loader2 className="pincode-loader" size={18} />}
                         </div>
+                        {pincodeError && <span className="field-error">{pincodeError}</span>}
+                    </div>
 
-                        <form onSubmit={handleNextStep} className="checkout-form">
-                            {/* Full Name */}
-                            <div className="checkout-field">
-                                <label><User size={16} /> Full Name</label>
-                                <input
-                                    type="text"
-                                    name="fullName"
-                                    value={formData.fullName}
-                                    onChange={handleChange}
-                                    onFocus={() => handleFieldFocus('fullName')}
-                                    placeholder="Enter your full name"
-                                    required
-                                />
-                            </div>
+                    <div className="checkout-field">
+                        <label><Home size={16} /> Address</label>
+                        <textarea
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            onFocus={() => handleFieldFocus('address')}
+                            placeholder="House/Flat No., Street, Landmark"
+                            rows={2}
+                            required
+                        />
+                    </div>
 
-                            {/* Phone */}
-                            <div className="checkout-field">
-                                <label><Phone size={16} /> Phone Number</label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleChange}
-                                    onFocus={() => handleFieldFocus('phone')}
-                                    placeholder="+91 XXXXXXXXXX"
-                                    required
-                                />
-                            </div>
-
-                            {/* Pincode & Address */}
-                            <div className="checkout-field">
-                                <label><MapPin size={16} /> Pincode</label>
-                                <div className="pincode-input-wrapper">
-                                    <input
-                                        type="text"
-                                        name="pincode"
-                                        value={formData.pincode}
-                                        onChange={handlePincodeChange}
-                                        onFocus={() => handleFieldFocus('pincode')}
-                                        placeholder="6-digit pincode"
-                                        maxLength={6}
-                                        required
-                                    />
-                                    {pincodeLoading && <Loader2 className="pincode-loader" size={18} />}
-                                </div>
-                                {pincodeError && <span className="field-error">{pincodeError}</span>}
-                            </div>
-
-                            <div className="checkout-field">
-                                <label><Home size={16} /> Address</label>
-                                <textarea
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleChange}
-                                    onFocus={() => handleFieldFocus('address')}
-                                    placeholder="House/Flat No., Street, Landmark"
-                                    rows={2}
-                                    required
-                                />
-                            </div>
-
-                            <div className="checkout-row">
-                                <div className="checkout-field">
-                                    <input type="text" name="city" value={formData.city} readOnly placeholder="City" className="autofilled" />
-                                </div>
-                                <div className="checkout-field">
-                                    <input type="text" name="state" value={formData.state} readOnly placeholder="State" className="autofilled" />
-                                </div>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="checkout-submit"
-                                disabled={!isFormValid() || isSubmitting}
-                            >
-                                {isSubmitting ? <Loader2 className="spin" size={18} /> : 'Next: Select Pack'}
-                            </button>
-
-                            <p className="checkout-secure">🔒 Secure info handling</p>
-                        </form>
-                    </>
-                ) : (
-                    <>
-                        <div className="checkout-header">
-                            <h2>Select Your Pack</h2>
-                            <p>Choose the best plan for your needs</p>
+                    <div className="checkout-row">
+                        <div className="checkout-field">
+                            <input type="text" name="city" value={formData.city} readOnly placeholder="City" className="autofilled" />
                         </div>
+                        <div className="checkout-field">
+                            <input type="text" name="state" value={formData.state} readOnly placeholder="State" className="autofilled" />
+                        </div>
+                    </div>
 
-                        <div className="checkout-packs-list">
-                            {packOptions?.map(pack => (
-                                <div
-                                    key={pack.id}
-                                    className={`checkout-pack-card ${selectedPackId === pack.id ? 'selected' : ''} ${pack.best ? 'featured' : ''}`}
-                                    onClick={() => handlePackSelection(pack)}
-                                >
-                                    {pack.best && <div className="pack-ribbon">{pack.best}</div>}
-                                    <div className="pack-info">
-                                        <h4>{pack.label}</h4>
-                                        <p>{pack.subLabel}</p>
+                    {/* Final Amount Display */}
+                    {initialPack && (
+                        <div className="checkout-summary" style={{
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            padding: '1rem',
+                            borderRadius: '8px',
+                            marginBottom: '1rem',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                        }}>
+                            {/* Coupon Applied Section */}
+                            {!offerExpired && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginBottom: '0.5rem',
+                                    paddingBottom: '0.5rem',
+                                    borderBottom: '1px dashed rgba(255,255,255,0.1)',
+                                    alignItems: 'center'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#4caf50' }}>
+                                        <Check size={16} />
+                                        <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>Code <b>ELEVATE1000</b> Applied</span>
                                     </div>
-                                    <div className="pack-price">
-                                        <span>₹{pack.price.toLocaleString()}</span>
-                                        {pack.save && <span className="pack-save-badge">{pack.save}</span>}
-                                    </div>
+                                    <span style={{ color: '#4caf50', fontWeight: '600' }}>-₹1,000</span>
                                 </div>
-                            ))}
-                        </div>
+                            )}
 
-                        {isSubmitting && (
-                            <div className="processing-overlay">
-                                <Loader2 className="spin" size={32} color="#4caf50" />
-                                <p>Processing Payment...</p>
-                            </div>
-                        )}
-
-                        {/* Trust Footer to fill empty space */}
-                        <div className="checkout-step-2-footer">
-                            <div className="cs-trust-row">
-                                <div className="cs-trust-item">
-                                    <ShieldCheck size={18} className="cs-icon" />
-                                    <span>30-Day Money Back Guarantee</span>
-                                </div>
-                                <div className="cs-trust-item">
-                                    <Lock size={18} className="cs-icon" />
-                                    <span>256-Bit Secure Payment</span>
-                                </div>
-                            </div>
-                            <div className="cs-payment-row">
-                                <span>We Accept:</span>
-                                <div className="cs-pay-icons">
-                                    <span>UPI</span>
-                                    <span>Cards</span>
-                                    <span>NetBanking</span>
-                                    <span>COD</span>
-                                </div>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <span style={{ color: '#aaa', fontSize: '0.9rem' }}>Total Amount ({initialPack.label}):</span>
+                                <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>
+                                    ₹{(!offerExpired && initialPack.discountPrice) ? initialPack.discountPrice.toLocaleString() : initialPack.price.toLocaleString()}
+                                </span>
                             </div>
                         </div>
-                    </>
-                )}
+                    )}
+
+                    <button
+                        type="submit"
+                        className="checkout-submit"
+                        disabled={!isFormValid() || isSubmitting}
+                    >
+                        {isSubmitting ? <Loader2 className="spin" size={18} /> : 'Proceed to Payment'}
+                    </button>
+
+                    <p className="checkout-secure">🔒 Secure info handling</p>
+
+                    {/* Trust Footer - moved here for single step */}
+                    <div className="checkout-step-2-footer" style={{ marginTop: '1.5rem' }}>
+                        <div className="cs-trust-row">
+                            <div className="cs-trust-item">
+                                <ShieldCheck size={16} className="cs-icon" />
+                                <span>30-Day Guarantee</span>
+                            </div>
+                            <div className="cs-trust-item">
+                                <Lock size={16} className="cs-icon" />
+                                <span>Secure Payment</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     );
