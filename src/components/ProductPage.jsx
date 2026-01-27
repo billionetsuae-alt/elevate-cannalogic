@@ -8,8 +8,8 @@ import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, A
 
 const PACK_OPTIONS = [
     { id: 1, label: '1 Pack', subLabel: '30 Softgels • 30 Days', price: 4750, discountPrice: 3750, save: null, best: false, totalValue: 5000 },
-    { id: 2, label: '2 Packs', subLabel: '60 Softgels • 60 Days', price: 9500, discountPrice: 6750, save: 'Save 10%', best: 'Most Chosen', totalValue: 10000 },
-    { id: 3, label: '3 Packs', subLabel: '90 Softgels • 90 Days', price: 14250, discountPrice: 9000, save: 'Save 20%', best: 'Best Value', totalValue: 15000 }
+    { id: 2, label: '2 Packs', subLabel: '60 Softgels • 60 Days', price: 9500, discountPrice: 6750, save: 'Save 29%', best: 'Most Chosen', totalValue: 10000 },
+    { id: 3, label: '3 Packs', subLabel: '90 Softgels • 90 Days', price: 14250, discountPrice: 9000, save: 'Save 37%', best: 'Best Value', totalValue: 15000 }
 ];
 
 const UNIFIED_PHASE = {

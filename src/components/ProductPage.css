@@ -1195,6 +1195,13 @@
     /* Prevent border clipping on sides */
 }
 
+/* Desktop: Add more spacing from top */
+@media (min-width: 768px) {
+    .pp-pack-selection-container {
+        margin-top: 3rem;
+    }
+}
+
 .pp-pack-grid {
     display: flex;
     flex-wrap: wrap;
