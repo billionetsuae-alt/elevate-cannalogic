@@ -266,7 +266,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                             marginBottom: '1rem',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                         }}>
-                            {/* Coupon Applied Section */}
+                            {/* Coupon/Discount Applied Section */}
                             {!offerExpired && (
                                 <div style={{
                                     display: 'flex',
@@ -278,9 +278,15 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#4caf50' }}>
                                         <Check size={16} />
-                                        <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>Code <b>ELEVATE1000</b> Applied</span>
+                                        {initialPack.id === 1 ? (
+                                            <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>Code <b>ELEVATE1000</b> Applied</span>
+                                        ) : (
+                                            <span style={{ fontSize: '0.9rem', fontWeight: '500' }}><b>{initialPack.save}</b> Applied</span>
+                                        )}
                                     </div>
-                                    <span style={{ color: '#4caf50', fontWeight: '600' }}>-₹1,000</span>
+                                    <span style={{ color: '#4caf50', fontWeight: '600' }}>
+                                        -₹{(initialPack.price - initialPack.discountPrice).toLocaleString()}
+                                    </span>
                                 </div>
                             )}
 
@@ -306,6 +312,22 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                     </button>
 
                     <p className="checkout-secure">🔒 Secure info handling</p>
+
+                    {/* Secure Payment Icons */}
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: '8px',
+                        padding: '0.5rem',
+                        marginTop: '0.5rem',
+                        marginBottom: '1rem',
+                        textAlign: 'center'
+                    }}>
+                        <img
+                            src="/razorpaySecure.png"
+                            alt="100% Secure Payment by Razorpay"
+                            style={{ width: '100%', maxWidth: '320px', height: 'auto' }}
+                        />
+                    </div>
 
                     {/* Trust Footer - moved here for single step */}
                     <div className="checkout-step-2-footer" style={{ marginTop: '1.5rem' }}>

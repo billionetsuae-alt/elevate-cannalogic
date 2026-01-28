@@ -89,7 +89,7 @@
     padding: 0.4rem 1rem;
     border-radius: 6px;
     font-size: 0.7rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: white;
     letter-spacing: 0.08em;
 }
@@ -97,8 +97,8 @@
 .hero h1 {
     font-size: 1.75rem;
     color: white;
-    margin-bottom: 1rem;
-    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
     font-weight: 400;
 }
 
@@ -106,7 +106,7 @@
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.7);
     max-width: 550px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     line-height: 1.5;
 }
 
@@ -115,7 +115,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .stat-item {

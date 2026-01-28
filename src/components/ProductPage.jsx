@@ -453,7 +453,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
 
                                 <h1>
-                                    Unlock Higher Consciousness, Emotional Balance & Inner Clarity — Naturally.
+                                    How to achieve <span style={{ color: '#8bc34a', fontWeight: 'bold' }}>deep inner calm</span> and <span style={{ color: '#8bc34a', fontWeight: 'bold' }}>higher awareness</span> without meditation retreats or life-long practice — even while living a <span style={{ color: '#ffc107', borderBottom: '2px solid #ffc107', fontWeight: 'bold' }}>busy modern life</span>
                                 </h1>
 
                                 <p className="hero-subtitle">
@@ -485,16 +485,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     </div>
                                 </div>
 
-                                <div className="hero-dates">
-                                    <div className="date-box">
-                                        <div className="date-label">Status</div>
-                                        <div className="date-value">Invite Only</div>
-                                    </div>
-                                    <div className="date-box">
-                                        <div className="date-label">Availability</div>
-                                        <div className="date-value">Limited Slots</div>
-                                    </div>
-                                </div>
+
 
                                 <div className="hero-actions">
                                     <button onClick={() => {
@@ -746,6 +737,24 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 <span>{offerExpired ? 'Buy Now' : 'Buy Now'}</span>
                                 {!offerExpired && <ArrowRight size={20} />}
                             </button>
+
+                            {/* Secure Payment Badge */}
+                            <div style={{
+                                marginTop: '0.75rem',
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}>
+                                <img
+                                    src="/razorpaySecure.png"
+                                    alt="100% Secure Payment by Razorpay"
+                                    style={{
+                                        maxWidth: '200px',
+                                        height: 'auto',
+                                        opacity: 0.9,
+                                        borderRadius: '4px'
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
