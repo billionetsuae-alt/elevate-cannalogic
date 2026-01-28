@@ -4,6 +4,7 @@ import './Hero.css'; // Imported for Hero styles
 import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
 import ExitIntentPopup from './ExitIntentPopup';
+import HempParticles from './HempParticles';
 import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
 
 const PACK_OPTIONS = [
@@ -434,7 +435,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <section className="hero">
                 <div className="hero-container container">
                     <div className="hero-card">
-                        <div className="hero-bg" style={{ backgroundImage: 'url(/Cannalogic%20Landing%20page.png)' }}>
+                        <div className="hero-bg">
+                            <HempParticles />
                             <div className="hero-overlay"></div>
                         </div>
 
@@ -448,17 +450,72 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <img src="/Cannalogic-White.svg" alt="Cannalogic Logo" className="hero-logo" />
 
                             <div className="content-inner">
-                                <div className="glass-badge">
-                                    LEGAL ◆ SCIENTIFIC ◆ HOLISTIC
-                                </div>
-
-                                <h1>
-                                    How to achieve <span style={{ color: '#8bc34a', fontWeight: 'bold' }}>deep inner calm</span> and <span style={{ color: '#8bc34a', fontWeight: 'bold' }}>higher awareness</span> without meditation retreats or life-long practice — even while living a <span style={{ color: '#ffc107', borderBottom: '2px solid #ffc107', fontWeight: 'bold' }}>busy modern life</span>
+                                <h1 style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: '600' }}>
+                                    How to achieve <span style={{ color: '#8bc34a', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.02em' }}>deep inner calm</span> & <span style={{ color: '#8bc34a', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.02em' }}>higher awareness</span> without meditation retreats or life-long practice<br />— even while living a <span style={{ color: '#ef5350', borderBottom: '2px solid #ef5350', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.02em' }}>busy modern life</span>
                                 </h1>
 
                                 <p className="hero-subtitle">
                                     The Ancient Medicine They Tried to Hide from You. For centuries this sacred plant awakened seekers and threatened the systems that control you.
                                 </p>
+
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: 'rgba(255, 255, 255, 0.05)',
+                                    backdropFilter: 'blur(10px)',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderRadius: '12px',
+                                    padding: '0.8rem 1.5rem',
+                                    marginBottom: '2rem',
+                                    marginTop: '1rem',
+                                    gap: '1rem',
+                                    width: '100%',
+                                    maxWidth: '500px',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto'
+                                }}>
+                                    <img
+                                        src="/thambi.png"
+                                        alt="Thampi Nagarjuna"
+                                        style={{
+                                            width: '70px',
+                                            height: '70px',
+                                            borderRadius: '50%',
+                                            border: '2px solid rgba(139, 195, 74, 0.5)',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                    <div style={{ textAlign: 'left' }}>
+                                        <div style={{
+                                            fontSize: '0.75rem',
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            marginBottom: '0.2rem'
+                                        }}>
+                                            Promoted by
+                                        </div>
+                                        <div style={{
+                                            fontSize: '1.1rem',
+                                            fontWeight: '700',
+                                            color: 'white',
+                                            lineHeight: '1.2'
+                                        }}>
+                                            Thampi Nagarjuna
+                                        </div>
+                                        <div style={{
+                                            fontSize: '0.75rem',
+                                            color: '#8bc34a',
+                                            marginTop: '0.2rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.3rem'
+                                        }}>
+                                            <BadgeCheck size={14} /> FSSAI Licensed • Kerala
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="hero-stats">
                                     <div className="stat-item">
@@ -618,20 +675,20 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                                 <span className="pp-currency">₹</span>
                                                 {offerExpired ? pack.price.toLocaleString() : pack.discountPrice.toLocaleString()}
                                             </div>
-                                            {/* Show Strike-through if offer active - ONLY for Single Pack */}
-                                            {(!offerExpired && pack.id === 1) && (
+                                            {/* Show Strike-through original price for all packs when offer active */}
+                                            {!offerExpired && (
                                                 <div style={{ textDecoration: 'line-through', color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', marginTop: '-0.25rem' }}>
                                                     ₹{pack.price.toLocaleString()}
                                                 </div>
                                             )}
 
-                                            {(!offerExpired && pack.id === 1) && (
-                                                <div className="pp-pack-save" style={{ color: '#ffeb3b', fontWeight: 'bold' }}>Save ₹1,000</div>
+                                            {/* Show save amount for all packs */}
+                                            {!offerExpired && (
+                                                <div className="pp-pack-save" style={{ color: '#ffeb3b', fontWeight: 'bold' }}>
+                                                    Save ₹{(pack.price - pack.discountPrice).toLocaleString()}
+                                                </div>
                                             )}
-                                            {(offerExpired && pack.save) && (
-                                                <div className="pp-pack-save">{pack.save}</div>
-                                            )}
-                                            {(!offerExpired && pack.id !== 1 && pack.save) && (
+                                            {offerExpired && pack.save && (
                                                 <div className="pp-pack-save">{pack.save}</div>
                                             )}
 
@@ -913,18 +970,24 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
             {/* Mindful Use Section (Final Message) */}
-            < section className="pp-mindful" >
+            <section className="pp-mindful">
                 <div className="pp-container">
                     <div className="pp-mindful-content">
                         <div className="pp-mindful-header">
+                            <Sparkles className="pp-mindful-icon" size={32} />
+                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
+                            <p className="pp-mindful-subtitle">
+                                You become your higher self. This works best when paired with <b>intention</b> —gently, naturally, in your own time.
+                            </p>
+
                             {/* Vibrational Energy Chart */}
-                            <div className="pp-vibrational-chart" style={{ marginBottom: '2rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                            <div className="pp-vibrational-chart" style={{ marginBottom: '2rem', marginTop: '1.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
                                 <img
                                     src="/vibrational-energy-chart.png"
                                     alt="Vibrational Energy Chart"
                                     style={{
                                         width: '100%',
-                                        maxWidth: '600px', // Limit width on large screens
+                                        maxWidth: '600px',
                                         height: 'auto',
                                         borderRadius: '12px',
                                         boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
@@ -934,50 +997,45 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 />
                             </div>
 
-                            <Sparkles className="pp-mindful-icon" size={32} />
-                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
-                            <p className="pp-mindful-subtitle">
-                                You become your higher self. This works best when paired with <b>intention</b> —gently, naturally, in your own time.
-                            </p>
                             <div className="pp-mindful-tip">
                                 <Lightbulb size={20} />
                                 <span>Always start with the single dose and increase only if your body feels comfortable.</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="pp-mindful-grid">
-                            <div className="pp-mindful-card">
-                                <h3><Sprout size={20} /> How To Use Mindfully</h3>
-                                <ul>
-                                    <li>Set an intention</li>
-                                    <li>Use in a calm environment</li>
-                                    <li>Avoid Smoking or Drinking Alcohol</li>
-                                    <li>Stay hydrated</li>
-                                    <li>Engage in Calming Activities like Nature walk, Music or Socializing</li>
-                                    <li>Listen to your Soul</li>
-                                    <li>Use consistently, not excessively</li>
-                                </ul>
-                            </div>
+                    <div className="pp-mindful-grid">
+                        <div className="pp-mindful-card">
+                            <h3><Sprout size={20} /> How To Use Mindfully</h3>
+                            <ul>
+                                <li>Set an intention</li>
+                                <li>Use in a calm environment</li>
+                                <li>Avoid Smoking or Drinking Alcohol</li>
+                                <li>Stay hydrated</li>
+                                <li>Engage in Calming Activities like Nature walk, Music or Socializing</li>
+                                <li>Listen to your Soul</li>
+                                <li>Use consistently, not excessively</li>
+                            </ul>
+                        </div>
 
-                            <div className="pp-mindful-card intent">
-                                <h3><Leaf size={20} /> A Note On Intention</h3>
-                                <p>
-                                    Cannabis, when approached consciously, can become more than a substance — it can be a mirror for self-reflection and inner growth. The key is intention.
-                                    <br /><br />
-                                    Before engaging, pause and ask yourself:
-                                    <br />
-                                    <b>Why am I doing this? What am I seeking to understand, heal, or release?</b>
-                                    <br /><br />
-                                    Intention shapes experience. When used mindlessly, it becomes escape. When used mindfully, it becomes exploration.
-                                </p>
-                            </div>
+                        <div className="pp-mindful-card intent">
+                            <h3><Leaf size={20} /> A Note On Intention</h3>
+                            <p>
+                                Cannabis, when approached consciously, can become more than a substance — it can be a mirror for self-reflection and inner growth. The key is intention.
+                                <br /><br />
+                                Before engaging, pause and ask yourself:
+                                <br />
+                                <b>Why am I doing this? What am I seeking to understand, heal, or release?</b>
+                                <br /><br />
+                                Intention shapes experience. When used mindlessly, it becomes escape. When used mindfully, it becomes exploration.
+                            </p>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Testimonials */}
-            < section className="pp-testimonials" >
+            <section className="pp-testimonials">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
@@ -1014,10 +1072,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* FAQ */}
-            < section className="pp-faq" >
+            <section className="pp-faq">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Common Questions</span>
@@ -1066,10 +1124,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* Footer */}
-            < footer className="pp-footer" >
+            <footer className="pp-footer">
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
@@ -1083,7 +1141,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         Please consult your healthcare provider before use.
                     </p>
                 </div>
-            </footer >
+            </footer>
 
             {/* Sticky Footer Timer */}
             {
