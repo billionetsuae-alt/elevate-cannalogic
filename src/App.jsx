@@ -307,21 +307,7 @@ function ProductPageWrapper() {
         maxScore: 32
     }
 
-    if (loading) {
-        return (
-            <div style={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: '#111',
-                color: '#4caf50',
-                fontSize: '1.2rem'
-            }}>
-                Loading your personalized plan...
-            </div>
-        )
-    }
+    // No loading spinner needed - this is now a direct landing page
 
     const handlePaymentSuccess = (paymentData) => {
         // Store payment data and navigate to thank you page

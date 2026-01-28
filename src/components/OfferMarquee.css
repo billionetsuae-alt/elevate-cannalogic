@@ -1,0 +1,40 @@
+.offer-marquee-container {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg, #1a0808 0%, #0f0505 50%, #1a0808 100%);
+    border-top: 1px solid rgba(239, 83, 80, 0.3);
+    border-bottom: 1px solid rgba(239, 83, 80, 0.3);
+    padding: 0.6rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+.offer-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 25s linear infinite;
+}
+
+.offer-marquee-text {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ef5350;
+    letter-spacing: 0.03em;
+    padding-right: 2rem;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-33.333%);
+    }
+}
+
+/* Pause on hover for readability */
+.offer-marquee-container:hover .offer-marquee-track {
+    animation-play-state: paused;
+}

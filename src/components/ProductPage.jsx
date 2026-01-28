@@ -5,6 +5,8 @@ import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
 import ExitIntentPopup from './ExitIntentPopup';
 import HempParticles from './HempParticles';
+import OfferMarquee from './OfferMarquee';
+import VideoSection from './VideoSection';
 import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
 
 const PACK_OPTIONS = [
@@ -560,6 +562,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
+            {/* Offer Marquee */}
+            <OfferMarquee />
+
 
 
 
@@ -1074,6 +1079,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
+            {/* Video Section */}
+            <VideoSection />
+
             {/* FAQ */}
             <section className="pp-faq">
                 <div className="pp-container">
@@ -1148,7 +1156,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 !offerExpired && (
                     <div className="pp-sticky-footer">
                         <div className="pp-sticky-timer">
-                            <span className="pp-sticky-label">Save ₹1,000 (1-Pack)</span>
+                            <span className="pp-sticky-label">🔥 Save up to ₹5,250</span>
                             <div className="pp-sticky-countdown">
                                 <div className="pp-sticky-time-unit">
                                     <span className="pp-sticky-time-value">{Math.floor(timeLeft / 60).toString().padStart(2, '0')}</span>
