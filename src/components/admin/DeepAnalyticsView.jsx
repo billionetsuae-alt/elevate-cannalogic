@@ -133,8 +133,36 @@ const DeepAnalyticsView = () => {
             'personal_info_back': 'Back (Step 1)',
             'contact_info_back': 'Back (Step 2)',
             'submit_assessment': 'Claim Access & Ebook',
+            'abandoned_without_starting': 'Assessment Abandoned (Intro)',
+            'abandoned_step_1': 'Assessment Abandoned (Step 1)',
+            'abandoned_step_2': 'Assessment Abandoned (Step 2 - Contact)',
+            'abandoned_question_1': 'Assessment Abandoned (Q1)',
+            'abandoned_question_2': 'Assessment Abandoned (Q2)',
+            'abandoned_question_3': 'Assessment Abandoned (Q3)',
+            'abandoned_question_4': 'Assessment Abandoned (Q4)',
+            'abandoned_question_5': 'Assessment Abandoned (Q5)',
+            'abandoned_question_6': 'Assessment Abandoned (Q6)',
+            'abandoned_question_7': 'Assessment Abandoned (Q7)',
+            'step_1_started': 'Assessment Step 1 Started',
+            'step_2_started': 'Assessment Step 2 Started',
+            'step_1_completed': 'Assessment Step 1 Completed',
+            'back_from_step_2': 'Assessment Back from Step 2',
+            'validation_error_email': 'Validation Error: Email',
+            'validation_error_phone': 'Validation Error: Phone',
+            'validation_error_age': 'Validation Error: Age',
+            'validation_error_weight': 'Validation Error: Weight',
+            'field_edited_age': 'Field Edited: Age',
+            'field_edited_weight': 'Field Edited: Weight',
+            'focus_name': 'Focus Name',
+            'focus_age': 'Focus Age',
+            'focus_weight': 'Focus Weight',
+            'focus_email': 'Focus Email',
+            'sex_selected_Male': 'Sex Selected: Male',
+            'sex_selected_Female': 'Sex Selected: Female',
+            'sex_selected_Other': 'Sex Selected: Other',
             // Landing page buttons
             'hero_cta': 'Hero - Get Free Access',
+            'hero_buy_now': 'Hero - Start Stress Relief Now',
             'hero_video_btn': 'Hero - Watch Video',
             'sticky_footer_cta': 'Sticky Bar - Get Free Access',
             'discovery_cta': 'Discovery - Get Free Access',
@@ -193,6 +221,7 @@ const DeepAnalyticsView = () => {
             'viewed_testimonials_section': 'Testimonials Viewed',
             // Checkout events
             'checkout_opened': 'Checkout Opened',
+            'form_submitted_pay_now': 'Checkout Form Submitted',
             'checkout_abandoned': 'Checkout Abandoned',
             'pay_button_clicked': 'Pay Button Clicked',
             'focus_fullName': 'Focus Full Name',
@@ -311,7 +340,7 @@ const DeepAnalyticsView = () => {
     const ProductPageTabs = () => {
         const [dropdownOpen, setDropdownOpen] = useState(false);
 
-        const priorityTabs = ['overview', 'packs', 'engagement'];
+        const priorityTabs = ['overview', 'buttons', 'packs', 'video', 'engagement'];
         const advancedMetrics = [
             { id: 'scroll', label: 'Scroll Depth' },
             { id: 'faqs', label: 'FAQ Clicks' },
@@ -602,7 +631,12 @@ const DeepAnalyticsView = () => {
                                     </div>
                                 </div>
                             </div>
+
                         )}
+
+                        {activeCategory === 'buttons' && <ButtonList />}
+
+                        {activeCategory === 'video' && <VideoStats />}
 
                         {activeCategory === 'packs' && (
                             <div className="analytics-list">
@@ -639,11 +673,11 @@ const DeepAnalyticsView = () => {
                                     <span className="row-value">{formatTime(stats.avgTimeOnPage)}</span>
                                 </div>
                                 <div className="table-row">
-                                    <span>Buy Now Clicks</span>
+                                    <span>Buy Now (Main)</span>
                                     <span className="row-value">{stats.buttonClicks.find(b => b.rawName === 'buy_now_main')?.count || 0}</span>
                                 </div>
                                 <div className="table-row">
-                                    <span>Floating CTA Clicks</span>
+                                    <span>Bottom Sticky Bar Click</span>
                                     <span className="row-value">{stats.buttonClicks.find(b => b.rawName === 'claim_now_floating')?.count || 0}</span>
                                 </div>
                             </div>
@@ -713,11 +747,11 @@ const DeepAnalyticsView = () => {
                                 <h3 className="section-title">Carousel Engagement</h3>
                                 <div className="stats-grid">
                                     <div className="stat-box">
-                                        <span className="stat-label">Previous Arrow</span>
+                                        <span className="stat-label">Carousel Previous</span>
                                         <span className="stat-number">{stats.buttonClicks.find(b => b.rawName === 'carousel_prev')?.count || 0}</span>
                                     </div>
                                     <div className="stat-box">
-                                        <span className="stat-label">Next Arrow</span>
+                                        <span className="stat-label">Carousel Next</span>
                                         <span className="stat-number">{stats.buttonClicks.find(b => b.rawName === 'carousel_next')?.count || 0}</span>
                                     </div>
                                 </div>

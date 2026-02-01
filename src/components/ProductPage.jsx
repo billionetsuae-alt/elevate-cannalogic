@@ -1080,7 +1080,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             </section>
 
             {/* Video Section */}
-            <VideoSection />
+            <VideoSection pageName="product" />
 
             {/* FAQ */}
             <section className="pp-faq">

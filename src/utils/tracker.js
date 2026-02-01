@@ -55,6 +55,22 @@ export const trackEvent = async (eventType, pageName, elementId = null, value = 
     } catch (err) {
         console.warn('Analytics Exception:', err);
     }
+
+    // --- Google Analytics Integration ---
+    try {
+        import('react-ga4').then(({ default: ReactGA }) => {
+            ReactGA.event({
+                category: pageName, // e.g., 'landing', 'product'
+                action: eventType,  // e.g., 'click', 'video_start'
+                label: elementId,   // e.g., 'hero_buy_now'
+                value: value ? parseInt(value) : undefined // GA expects integer for value
+            });
+        }).catch(err => console.log('GA Import Error:', err));
+    } catch (gaError) {
+        // Fail silently for GA to not break app flow
+        console.warn('GA Tracking failed', gaError);
+    }
+    // ------------------------------------
 };
 
 export const EVENTS = {

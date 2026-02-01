@@ -1,5 +1,24 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom'
+import ReactGA from 'react-ga4'
+
+// Initialize Google Analytics
+const GA_MEASUREMENT_ID = 'G-MGLK5PPZJS'; // Replace with valid ID
+if (GA_MEASUREMENT_ID) {
+    ReactGA.initialize(GA_MEASUREMENT_ID);
+}
+
+// Component to track page views on route change
+const PageTracker = () => {
+    const location = useLocation();
+
+    useEffect(() => {
+        // Send pageview with a custom path
+        ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
+    }, [location]);
+
+    return null;
+};
 import Hero from './components/Hero'
 import VideoSection from './components/VideoSection'
 import ProblemSection from './components/ProblemSection'
@@ -420,7 +439,10 @@ function AppRouter() {
 function App() {
     return (
         <BrowserRouter>
-            <AppRouter />
+            <PageTracker />
+            <div className="app-container">
+                <AppRouter />
+            </div>
         </BrowserRouter>
     )
 }
