@@ -5,6 +5,7 @@ import './StickyTimer.css';
 import CheckoutModal from './CheckoutModal';
 import ExitIntentPopup from './ExitIntentPopup';
 import HempParticles from './HempParticles';
+import VideoTestimonials from './VideoTestimonials';
 import OfferMarquee from './OfferMarquee';
 import VideoSection from './VideoSection';
 import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
@@ -1039,13 +1040,16 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 </div>
             </section>
 
-            {/* Testimonials */}
+            {/* Real Stories (Video + Text) */}
             <section className="pp-testimonials">
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
                         <h2 className="pp-section-title">What Our Community Says</h2>
                     </div>
+
+                    {/* Video Marquee */}
+                    <VideoTestimonials />
 
                     <div className="pp-testimonials-grid">
                         {[
@@ -1077,13 +1081,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Video Section */}
-            <VideoSection pageName="product" />
+            < VideoSection pageName="product" />
 
             {/* FAQ */}
-            <section className="pp-faq">
+            < section className="pp-faq" >
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Common Questions</span>
@@ -1132,10 +1136,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Footer */}
-            <footer className="pp-footer">
+            < footer className="pp-footer" >
                 <div className="pp-container">
                     <div className="pp-footer-content">
                         <div className="pp-footer-logo">
@@ -1149,7 +1153,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         Please consult your healthcare provider before use.
                     </p>
                 </div>
-            </footer>
+            </footer >
 
             {/* Sticky Footer Timer */}
             {
