@@ -78,19 +78,19 @@ const VideoTestimonials = () => {
                 <Swiper
                     modules={[Autoplay, FreeMode]}
                     spaceBetween={16}
-                    slidesPerView={2.5} // Larger cards as requested
-                    centeredSlides={true} // Keep centered for look
-                    loop={true} // Infinite Loop
-                    speed={6000} // Speed for linear scroll
+                    slidesPerView={1.8} // MAX SIZE: Very bold and premium look
+                    centeredSlides={true}
+                    loop={true}
+                    speed={5000} // Smooth flow
                     autoplay={{
-                        delay: 1, // continuous
-                        disableOnInteraction: false, // Continue after interaction
+                        delay: 1, // continuous (using 0 sometimes glitches in recent swiper versions, 1 is safer)
+                        disableOnInteraction: false,
                         pauseOnMouseEnter: true
                     }}
                     freeMode={true}
                     breakpoints={{
-                        640: { slidesPerView: 3.5, spaceBetween: 20 },
-                        1024: { slidesPerView: 4.5, spaceBetween: 24 }
+                        640: { slidesPerView: 2.8, spaceBetween: 20 },
+                        1024: { slidesPerView: 3.8, spaceBetween: 24 }
                     }}
                     className="video-testimonial-swiper"
                 >
@@ -275,7 +275,7 @@ const FullscreenVideoCard = ({ video, isActive, onNext }) => {
                 style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover', // IMMERSIVE: Fills screen, no black bars
+                    objectFit: 'contain', // Revert to CONTAIN per user request (show full video)
                     background: '#000'
                 }}
             />
