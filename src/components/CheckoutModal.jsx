@@ -17,6 +17,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
     });
     const [pincodeLoading, setPincodeLoading] = useState(false);
     const [pincodeError, setPincodeError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customerId, setCustomerId] = useState(null);
 
@@ -223,7 +224,19 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
     };
 
     const handlePhoneBlur = () => {
-        checkCustomer(formData.phone);
+        // Validate phone number length
+        if (formData.phone && formData.phone.length > 0 && formData.phone.length !== 10) {
+            setPhoneError('Phone number must be exactly 10 digits');
+            return;
+        }
+
+        // Clear error if valid
+        setPhoneError('');
+
+        // Check for existing customer if phone is valid
+        if (formData.phone && formData.phone.length === 10) {
+            checkCustomer(formData.phone);
+        }
     };
 
     const handleFieldFocus = (fieldName) => {
@@ -364,6 +377,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                             placeholder="+91 XXXXXXXXXX"
                             required
                         />
+                        {phoneError && <span className="field-error">{phoneError}</span>}
                     </div>
 
                     {/* Email */}

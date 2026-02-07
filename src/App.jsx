@@ -55,6 +55,7 @@ import ElevateOrders from './components/admin/ElevateOrders'
 import ElevateCoupons from './components/admin/ElevateCoupons'
 import ElevateCustomers from './components/admin/ElevateCustomers'
 import ElevateEmailLogs from './components/admin/ElevateEmailLogs'
+import OrderSuccess from './components/OrderSuccess'
 
 
 
@@ -416,6 +417,7 @@ function AppRouter() {
         <>
             <Routes>
                 <Route path="/" element={<ProductPageWrapper />} />
+                <Route path="/success" element={<OrderSuccess />} />
                 <Route path="/home" element={<LandingPage onOpenAssessment={openModal} />} />
                 <Route path="/product" element={<ProductPageWrapper />} />
                 <Route path="/product/:recordId" element={<ProductPageWrapper />} />

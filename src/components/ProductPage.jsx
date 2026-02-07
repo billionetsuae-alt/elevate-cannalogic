@@ -305,6 +305,68 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             console.error('Failed to create Supabase order:', err);
         }
 
+        // 🎯 TEST BYPASS: Skip Razorpay for test orders
+        if (couponCode && couponCode.toUpperCase() === 'TEST_BYPASS') {
+            console.log('TEST_BYPASS detected - Skipping Razorpay payment');
+
+            // Update order to paid immediately
+            if (supabaseOrderId) {
+                try {
+                    await supabase
+                        .from('elevate_orders')
+                        .update({
+                            status: 'paid',
+                            payment_id: 'TEST_BYPASS_' + Date.now(),
+                            razorpay_order_id: 'TEST_ORDER',
+                            razorpay_signature: 'TEST_SIGNATURE'
+                        })
+                        .eq('id', supabaseOrderId);
+                } catch (err) {
+                    console.error('Failed to update test order:', err);
+                }
+            }
+
+            // Update customer status
+            if (checkoutFormData.customerId) {
+                try {
+                    await supabase
+                        .from('elevate_customers')
+                        .update({ status: 'Customer' })
+                        .eq('id', checkoutFormData.customerId);
+                } catch (err) {
+                    console.error('Failed to update customer status:', err);
+                }
+            }
+
+            // Send confirmation email
+            try {
+                const EMAIL_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/general-email';
+                if (EMAIL_WEBHOOK_URL) {
+                    await fetch(EMAIL_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'order_confirmation',
+                            recipient: userData?.email || checkoutFormData.email || '',
+                            data: {
+                                name: checkoutFormData.fullName.split(' ')[0],
+                                order_id: supabaseOrderId || 'TEST',
+                                total_amount: 0,
+                                items: selectedPackObj.label
+                            }
+                        })
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to send test order email:', error);
+            }
+
+            // Redirect to success page
+            const successUrl = `/success?orderId=${supabaseOrderId || 'TEST'}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
+            window.location.href = successUrl;
+            return; // Exit early, don't open Razorpay
+        }
+
 
         // 🎯 Payment Attempt (Supabase Order Created)
         // No need for legacy webhook 'update-address' anymore
@@ -452,10 +514,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 }
                 // ---------------------------------------------------------
 
-                // Redirect to thank you page
-                if (onPaymentSuccess) {
-                    onPaymentSuccess(response);
-                }
+                // Redirect to success page with order details
+                const successUrl = `/success?orderId=${supabaseOrderId || 'N/A'}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
+                window.location.href = successUrl;
             },
             modal: {
                 ondismiss: async function () {
