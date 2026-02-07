@@ -23,9 +23,7 @@ const DeepAnalyticsView = () => {
     });
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchAnalytics();
-    }, [dateFilter, activePage]);
+
 
     const getDateRange = (filter) => {
         const now = new Date();
@@ -33,95 +31,102 @@ const DeepAnalyticsView = () => {
 
         switch (filter) {
             case 'today': return today;
-            case 'week':
+            case 'week': {
                 const weekAgo = new Date(today);
                 weekAgo.setDate(today.getDate() - 7);
                 return weekAgo;
-            case 'month':
+            }
+            case 'month': {
                 const monthAgo = new Date(today);
                 monthAgo.setMonth(today.getMonth() - 1);
                 return monthAgo;
-            case 'year':
+            }
+            case 'year': {
                 const yearAgo = new Date(today);
                 yearAgo.setFullYear(today.getFullYear() - 1);
                 return yearAgo;
+            }
             default: return new Date(0); // All time
         }
     };
 
-    const fetchAnalytics = async () => {
-        setLoading(true);
-        const startDate = getDateRange(dateFilter);
+    useEffect(() => {
+        const fetchAnalytics = async () => {
+            setLoading(true);
+            const startDate = getDateRange(dateFilter);
 
-        try {
-            // Base query builder
-            const baseQuery = (eventType) => {
-                let query = supabase
-                    .from('analytics_events')
-                    .select('*')
-                    .eq('page_name', activePage)
-                    .gte('created_at', startDate.toISOString());
+            try {
+                // Base query builder
+                const baseQuery = (eventType) => {
+                    let query = supabase
+                        .from('analytics_events')
+                        .select('*')
+                        .eq('page_name', activePage)
+                        .gte('created_at', startDate.toISOString());
 
-                if (eventType) {
-                    query = query.eq('event_type', eventType);
-                }
-                return query;
-            };
+                    if (eventType) {
+                        query = query.eq('event_type', eventType);
+                    }
+                    return query;
+                };
 
-            // 1. Fetch Click Events
-            const { data: clickEvents } = await baseQuery('click');
+                // 1. Fetch Click Events
+                const { data: clickEvents } = await baseQuery('click');
 
-            // Group by element_id
-            const clickCounts = {};
-            clickEvents?.forEach(e => {
-                const key = e.element_id || 'unknown';
-                clickCounts[key] = (clickCounts[key] || 0) + 1;
-            });
-            const buttonClicks = Object.entries(clickCounts)
-                .map(([name, count]) => ({
-                    name: formatButtonName(name),
-                    rawName: name,
-                    count,
-                    percent: clickEvents.length > 0 ? Math.round((count / clickEvents.length) * 100) : 0
-                }))
-                .sort((a, b) => b.count - a.count);
-
-
-            // 2. Fetch Time on Page Events
-            const { data: timeEvents } = await baseQuery('time_on_page');
-
-            let totalTime = 0;
-            timeEvents?.forEach(e => totalTime += parseInt(e.value || 0));
-            const avgTime = timeEvents?.length ? Math.round(totalTime / timeEvents.length) : 0;
+                // Group by element_id
+                const clickCounts = {};
+                clickEvents?.forEach(e => {
+                    const key = e.element_id || 'unknown';
+                    clickCounts[key] = (clickCounts[key] || 0) + 1;
+                });
+                const buttonClicks = Object.entries(clickCounts)
+                    .map(([name, count]) => ({
+                        name: formatButtonName(name),
+                        rawName: name,
+                        count,
+                        percent: clickEvents.length > 0 ? Math.round((count / clickEvents.length) * 100) : 0
+                    }))
+                    .sort((a, b) => b.count - a.count);
 
 
-            // 3. Video Stats
-            const { data: videoEntries } = await baseQuery('video_start');
-            const { data: videoCompletes } = await baseQuery('video_complete');
+                // 2. Fetch Time on Page Events
+                const { data: timeEvents } = await baseQuery('time_on_page');
 
-            const videoStarts = videoEntries?.length || 0;
-            const videoCompletions = videoCompletes?.length || 0;
+                let totalTime = 0;
+                timeEvents?.forEach(e => totalTime += parseInt(e.value || 0));
+                const avgTime = timeEvents?.length ? Math.round(totalTime / timeEvents.length) : 0;
 
 
-            setStats({
-                totalClicks: clickEvents?.length || 0,
-                avgTimeOnPage: avgTime,
-                videoStarts,
-                videoCompletions,
-                buttonClicks,
-                videoStats: {
-                    starts: videoStarts,
-                    completions: videoCompletions,
-                    rate: videoStarts > 0 ? Math.round((videoCompletions / videoStarts) * 100) : 0
-                }
-            });
+                // 3. Video Stats
+                const { data: videoEntries } = await baseQuery('video_start');
+                const { data: videoCompletes } = await baseQuery('video_complete');
 
-        } catch (error) {
-            console.error('Error fetching analytics:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+                const videoStarts = videoEntries?.length || 0;
+                const videoCompletions = videoCompletes?.length || 0;
+
+
+                setStats({
+                    totalClicks: clickEvents?.length || 0,
+                    avgTimeOnPage: avgTime,
+                    videoStarts,
+                    videoCompletions,
+                    buttonClicks,
+                    videoStats: {
+                        starts: videoStarts,
+                        completions: videoCompletions,
+                        rate: videoStarts > 0 ? Math.round((videoCompletions / videoStarts) * 100) : 0
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAnalytics();
+    }, [dateFilter, activePage]);
 
     const formatButtonName = (id) => {
         if (!id) return 'Unknown';

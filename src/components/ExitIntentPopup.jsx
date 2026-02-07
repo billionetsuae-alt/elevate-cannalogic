@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { supabase } from '../utils/supabase';
 import { X, Gift, ArrowRight, Check } from 'lucide-react';
 import './ExitIntentPopup.css';
 
@@ -12,9 +13,10 @@ const ExitIntentPopup = () => {
         const hasSeenPopup = localStorage.getItem('cannalogic_exit_intent_seen');
         if (hasSeenPopup) return;
 
-        // Desktop: Exit Intent (Mouse Leave)
+        // Desktop: Exit Intent (Mouse Leave) - only when leaving viewport
         const handleMouseLeave = (e) => {
-            if (e.clientY <= 0) {
+            // Only trigger if mouse is actually leaving the document (not just moving to top)
+            if (e.clientY <= 0 && e.relatedTarget === null) {
                 showPopup();
             }
         };
@@ -53,20 +55,18 @@ const ExitIntentPopup = () => {
         setStatus('submitting');
 
         try {
-            // Send to n8n Webhook
-            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/capture-lead', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    source: 'exit_intent',
-                    timestamp: new Date().toISOString()
-                }),
-            });
+            // Send to Supabase directly
+            const { error } = await supabase.from('elevate_customers').insert([{
+                email: email,
+                source: 'exit_intent',
+                status: 'Lead',
+                page_url: window.location.href,
+                user_agent: navigator.userAgent
+            }]);
 
-            if (response.ok) {
+            if (error) throw error;
+
+            if (true) { // Success
                 setStatus('success');
                 // Track event
                 import('../utils/tracker').then(({ trackEvent, EVENTS }) =>

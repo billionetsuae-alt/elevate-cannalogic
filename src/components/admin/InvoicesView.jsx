@@ -6,7 +6,7 @@ import InvoiceTemplate from './InvoiceTemplate';
 import DateFilter from './DateFilter';
 
 const InvoicesView = () => {
-    const { data, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
+    const { data, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [generating, setGenerating] = useState(null);
 
@@ -38,7 +38,7 @@ const InvoicesView = () => {
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
-        } catch (err) {
+        } catch {
             // Silent failure
         }
         setGenerating(null);

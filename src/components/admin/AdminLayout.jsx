@@ -4,6 +4,7 @@ import { LayoutDashboard, ShoppingBag, LogOut, BarChart3, FileText, Users, Alert
 import './Admin.css';
 
 // Context to share data across views
+// eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
 
 // Process raw Airtable records into dashboard data
@@ -299,18 +300,21 @@ const getDateRange = (filter) => {
     switch (filter) {
         case 'today':
             return today;
-        case 'week':
+        case 'week': {
             const weekStart = new Date(today);
             weekStart.setDate(today.getDate() - 7);
             return weekStart;
-        case 'month':
+        }
+        case 'month': {
             const monthStart = new Date(today);
             monthStart.setMonth(today.getMonth() - 1);
             return monthStart;
-        case 'year':
+        }
+        case 'year': {
             const yearStart = new Date(today);
             yearStart.setFullYear(today.getFullYear() - 1);
             return yearStart;
+        }
         case 'all':
         default:
             return new Date(0); // Beginning of time
@@ -356,7 +360,7 @@ const AdminLayout = () => {
                             }
                         }
                     }
-                } catch (err) {
+                } catch {
                     // Silent failure
                 }
             }

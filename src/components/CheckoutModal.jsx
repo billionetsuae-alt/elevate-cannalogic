@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { X, MapPin, User, Phone, Home, Loader2, ChevronLeft, Check, ShieldCheck, Lock } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabase';
+import { Loader2, X, User, Phone, MapPin, Home, Check, ShieldCheck, Lock, Tag, Mail } from 'lucide-react';
 import './CheckoutModal.css';
 
 const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, packOptions, onProceedToPayment, offerExpired }) => {
     const [selectedPackId, setSelectedPackId] = useState(initialPack?.id || null);
     const [formData, setFormData] = useState({
         fullName: '',
+        email: '',
         phone: '',
         pincode: '',
         city: '',
@@ -16,6 +18,14 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
     const [pincodeLoading, setPincodeLoading] = useState(false);
     const [pincodeError, setPincodeError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [customerId, setCustomerId] = useState(null);
+
+    // Coupon State
+    const [couponCode, setCouponCode] = useState('');
+    const [couponError, setCouponError] = useState('');
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [validatingCoupon, setValidatingCoupon] = useState(false);
 
     // Track modal open/close and time in checkout
     useEffect(() => {
@@ -31,11 +41,126 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
         if (userData) {
             setFormData(prev => ({
                 ...prev,
-                fullName: userData.name || '',
-                phone: userData.phone || ''
+                fullName: prev.fullName || userData.name || '',
+                phone: prev.phone || userData.phone || ''
             }));
+            if (userData.phone) checkCustomer(userData.phone);
         }
     }, [userData]);
+
+    // Check Supabase for existing customer
+    const checkCustomer = async (phone) => {
+        if (!phone || phone.length < 10) return;
+        try {
+            const { data, error } = await supabase
+                .from('elevate_customers')
+                .select('*')
+                .eq('phone', phone)
+                .maybeSingle();
+
+            if (data) {
+                setCustomerId(data.id);
+                setFormData(prev => ({
+                    ...prev,
+                    fullName: data.name || prev.fullName,
+                    email: data.email || prev.email,
+                    address: data.address || prev.address,
+                    city: data.city || prev.city,
+                    state: data.state || prev.state,
+                    pincode: data.pincode || prev.pincode
+                }));
+            }
+        } catch (err) {
+            // No customer found or error - ignore
+        }
+    };
+
+    const handleApplyCoupon = async () => {
+        if (!couponCode.trim()) return;
+
+        // Client-side check for TEST_BYPASS
+        if (couponCode.trim().toUpperCase() === 'TEST_BYPASS') {
+            setValidatingCoupon(true);
+            // Simulate API delay
+            setTimeout(() => {
+                const currentPrice = (!offerExpired && initialPack?.discountPrice) ? initialPack.discountPrice : initialPack?.price || 0;
+                setDiscountAmount(currentPrice); // 100% discount
+                setAppliedCoupon({
+                    code: 'TEST_BYPASS',
+                    discount_type: 'FIXED',
+                    discount_value: currentPrice
+                });
+                setCouponError('');
+                setValidatingCoupon(false);
+            }, 500);
+            return;
+        }
+
+        setValidatingCoupon(true);
+        setCouponError('');
+        setDiscountAmount(0);
+        setAppliedCoupon(null);
+
+        try {
+            const { data, error } = await supabase
+                .from('elevate_coupons')
+                .select('*')
+                .eq('code', couponCode.toUpperCase())
+                .eq('active', true)
+                .single();
+
+            if (error || !data) {
+                setCouponError('Invalid or expired coupon code');
+                setValidatingCoupon(false);
+                return;
+            }
+
+            // Check Expiry
+            if (data.expiry_date && new Date(data.expiry_date) < new Date()) {
+                setCouponError('Coupon has expired');
+                setValidatingCoupon(false);
+                return;
+            }
+
+            // Check Usage Limit
+            if (data.usage_limit !== null && data.usage_count >= data.usage_limit) {
+                setCouponError('Coupon usage limit reached');
+                setValidatingCoupon(false);
+                return;
+            }
+
+            // Apply Discount
+            let discount = 0;
+            // Determine base price (discounted or regular)
+            const currentPrice = (!offerExpired && initialPack?.discountPrice) ? initialPack.discountPrice : initialPack?.price || 0;
+
+            if (data.discount_type === 'PERCENTAGE') {
+                discount = (currentPrice * data.discount_value) / 100;
+            } else {
+                discount = data.discount_value;
+            }
+
+            // Cap discount at total price
+            discount = Math.min(discount, currentPrice);
+
+            setDiscountAmount(discount);
+            setAppliedCoupon(data);
+            setCouponError('');
+
+        } catch (err) {
+            console.error(err);
+            setCouponError('Error validating coupon');
+        } finally {
+            setValidatingCoupon(false);
+        }
+    };
+
+    const removeCoupon = () => {
+        setAppliedCoupon(null);
+        setDiscountAmount(0);
+        setCouponCode('');
+        setCouponError('');
+    };
 
     // Update selected pack if initialPack changes
     useEffect(() => {
@@ -87,7 +212,18 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        if (name === 'phone') {
+            const numericValue = value.replace(/\D/g, '').slice(0, 10);
+            setFormData(prev => ({ ...prev, phone: numericValue }));
+            return;
+        }
+
         setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handlePhoneBlur = () => {
+        checkCustomer(formData.phone);
     };
 
     const handleFieldFocus = (fieldName) => {
@@ -98,7 +234,9 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
     const isFormValid = () => {
         return formData.fullName &&
+            formData.email &&
             formData.phone &&
+            formData.phone.length === 10 &&
             formData.pincode.length === 6 &&
             formData.city &&
             formData.state &&
@@ -112,23 +250,31 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
         setIsSubmitting(true);
 
-        // Save address to Airtable via webhook (async but don't block too long)
+        // 1. Upsert Customer to Supabase
+        let newCustomerId = customerId;
         try {
-            if (userData?.recordId) {
-                fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        recordId: userData.recordId,
-                        address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country} - ${formData.pincode}`,
-                        pincode: formData.pincode,
-                        city: formData.city,
-                        state: formData.state
-                    })
-                });
-            }
+            const payload = {
+                phone: formData.phone,
+                name: formData.fullName,
+                email: formData.email, // Use captured email
+                address: formData.address,
+                city: formData.city,
+                state: formData.state,
+                pincode: formData.pincode
+            };
+
+            const { data, error } = await supabase
+                .from('elevate_customers')
+                .upsert([payload], { onConflict: 'phone' })
+                .select()
+                .single();
+
+            if (error) throw error;
+            if (data) newCustomerId = data.id;
+
         } catch (error) {
-            console.error('Address save error:', error);
+            console.error('Customer save error:', error);
+            // Non-blocking error, allow payment to proceed
         }
 
         setTimeout(() => {
@@ -139,7 +285,10 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
             onProceedToPayment({
                 ...formData,
                 fullAddress,
-                selectedPackId: selectedPackId // Use the pre-selected pack
+                selectedPackId: selectedPackId, // Use state variable
+                customerId: newCustomerId, // Pass DB ID
+                couponCode: appliedCoupon?.code || null,
+                discountAmount: discountAmount || 0
             });
 
             import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
@@ -211,7 +360,22 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                             value={formData.phone}
                             onChange={handleChange}
                             onFocus={() => handleFieldFocus('phone')}
+                            onBlur={handlePhoneBlur}
                             placeholder="+91 XXXXXXXXXX"
+                            required
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div className="checkout-field">
+                        <label><Mail size={16} /> Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            onFocus={() => handleFieldFocus('email')}
+                            placeholder="john@example.com"
                             required
                         />
                     </div>
@@ -257,6 +421,55 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                         </div>
                     </div>
 
+                    {/* Coupon Input */}
+                    <div className="checkout-field">
+                        <label><Tag size={16} /> Coupon Code</label>
+                        <div className="flex gap-2" style={{ display: 'flex', gap: '10px' }}>
+                            <input
+                                type="text"
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                                placeholder="Have a coupon?"
+                                disabled={!!appliedCoupon}
+                                style={{ flex: 1 }}
+                            />
+                            {!appliedCoupon ? (
+                                <button
+                                    type="button"
+                                    onClick={handleApplyCoupon}
+                                    disabled={validatingCoupon || !couponCode}
+                                    style={{
+                                        background: '#333',
+                                        color: '#fff',
+                                        border: '1px solid #444',
+                                        padding: '0 1rem',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    {validatingCoupon ? <Loader2 className="spin" size={16} /> : 'Apply'}
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={removeCoupon}
+                                    style={{
+                                        background: '#f44336',
+                                        color: '#fff',
+                                        border: 'none',
+                                        padding: '0 1rem',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <X size={16} />
+                                </button>
+                            )}
+                        </div>
+                        {couponError && <span className="field-error" style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>{couponError}</span>}
+                        {appliedCoupon && <span style={{ color: '#4caf50', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>Coupon applied successfully!</span>}
+                    </div>
+
                     {/* Final Amount Display */}
                     {initialPack && (
                         <div className="checkout-summary" style={{
@@ -300,6 +513,38 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                                     ₹{(!offerExpired && initialPack.discountPrice) ? initialPack.discountPrice.toLocaleString() : initialPack.price.toLocaleString()}
                                 </span>
                             </div>
+
+                            {/* Additional Coupon Discount Display */}
+                            {appliedCoupon && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginTop: '0.5rem',
+                                    paddingTop: '0.5rem',
+                                    borderTop: '1px solid rgba(255,255,255,0.1)'
+                                }}>
+                                    <span style={{ color: '#4caf50', fontSize: '0.9rem' }}>Extra Discount ({appliedCoupon.code}):</span>
+                                    <span style={{ color: '#4caf50', fontWeight: '600' }}>-₹{discountAmount.toLocaleString()}</span>
+                                </div>
+                            )}
+
+                            {/* Final Total */}
+                            {appliedCoupon && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginTop: '0.5rem',
+                                    paddingTop: '0.5rem',
+                                    borderTop: '1px dashed rgba(255,255,255,0.3)'
+                                }}>
+                                    <span style={{ color: '#fff', fontSize: '1rem', fontWeight: 'bold' }}>Final Pay:</span>
+                                    <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#4caf50' }}>
+                                        ₹{(((!offerExpired && initialPack.discountPrice) ? initialPack.discountPrice : initialPack.price) - discountAmount).toLocaleString()}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     )}
 

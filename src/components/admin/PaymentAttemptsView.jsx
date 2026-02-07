@@ -4,7 +4,7 @@ import { AdminContext } from './AdminLayout';
 import DateFilter from './DateFilter';
 
 const PaymentAttemptsView = () => {
-    const { data, rawRecords, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
+    const { data, rawRecords, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [expandedId, setExpandedId] = useState(null);
     const [filterReason, setFilterReason] = useState('all');

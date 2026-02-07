@@ -4,7 +4,7 @@ import { AdminContext } from './AdminLayout';
 import DateFilter from './DateFilter';
 
 const OrdersView = () => {
-    const { data, refreshData, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
+    const { data, dateFilter, setDateFilter, DATE_FILTERS } = useContext(AdminContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
 

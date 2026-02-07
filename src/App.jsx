@@ -48,7 +48,17 @@ import LeadsView from './components/admin/LeadsView'
 import PaymentAttemptsView from './components/admin/PaymentAttemptsView'
 import ExitIntentView from './components/admin/ExitIntentView'
 
-// Security: Clean up expired localStorage data (30-day expiry)
+// NEW Elevate Admin
+import ElevateAdminLayout from './components/admin/ElevateAdminLayout'
+import ElevateDashboard from './components/admin/ElevateDashboard'
+import ElevateOrders from './components/admin/ElevateOrders'
+import ElevateCoupons from './components/admin/ElevateCoupons'
+import ElevateCustomers from './components/admin/ElevateCustomers'
+import ElevateEmailLogs from './components/admin/ElevateEmailLogs'
+
+
+
+
 const SESSION_EXPIRY_DAYS = 30;
 const cleanupExpiredData = () => {
     const keys = Object.keys(localStorage).filter(k => k.startsWith('elevate_'));
@@ -411,7 +421,7 @@ function AppRouter() {
                 <Route path="/product/:recordId" element={<ProductPageWrapper />} />
                 <Route path="/thank-you" element={<ThankYouPageWrapper />} />
 
-                {/* Admin Routes */}
+                {/* Existing Admin Logic */}
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AnalyticsView />} />
@@ -421,6 +431,15 @@ function AppRouter() {
                     <Route path="leads" element={<LeadsView />} />
                     <Route path="exit-intent" element={<ExitIntentView />} />
                     <Route path="payment-attempts" element={<PaymentAttemptsView />} />
+                </Route>
+
+                {/* NEW ELEVATE ADMIN (Supabase) */}
+                <Route path="/elevate-admin" element={<ElevateAdminLayout />}>
+                    <Route index element={<ElevateDashboard />} />
+                    <Route path="orders" element={<ElevateOrders />} />
+                    <Route path="coupons" element={<ElevateCoupons />} />
+                    <Route path="customers" element={<ElevateCustomers />} />
+                    <Route path="email-logs" element={<ElevateEmailLogs />} />
                 </Route>
 
                 {/* Default route */}

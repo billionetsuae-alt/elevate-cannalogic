@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabase';
 import './AssessmentModal.css';
 import {
     Sparkles, Brain, Scale, HelpCircle,
@@ -382,7 +383,7 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             });
         }
 
-        // Background Submission - Clean payload matching Airtable columns
+        // Background Submission - Clean payload matching Supabase columns
         const payload = {
             name: formData.name,
             age: parseInt(formData.age),
@@ -394,33 +395,49 @@ const AssessmentModal = ({ isOpen, onClose, onQuizComplete }) => {
             utm_medium: urlParams.get('utm_medium') || '',
             utm_campaign: urlParams.get('utm_campaign') || '',
             status: 'Lead',
-            submittedAt: new Date().toISOString(),
-            userAgent: navigator.userAgent,
-            pageUrl: window.location.href
+            page_url: window.location.href,
+            user_agent: navigator.userAgent
+            // created_at is automatic
         };
 
         try {
-            const response = await fetch('https://n8n-642200223.kloudbeansite.com/webhook/elevate-assessment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            const { data, error } = await supabase
+                .from('elevate_customers')
+                .insert([payload])
+                .select()
+                .single();
 
-            let recordId = null;
-            try {
-                const result = await response.json();
-                recordId = result.id || result.recordId || (result.fields && result.fields.id);
-            } catch (e) {
-                console.error('Error parsing webhook response:', e);
-            }
+            if (error) throw error;
 
-            if (recordId) {
+            if (data) {
+                const recordId = data.id;
                 userData.recordId = recordId;
                 localStorage.setItem(`elevate_assessment_${recordId}`, JSON.stringify(userData));
                 localStorage.setItem('elevate_user_data', JSON.stringify(userData));
+
+                // Dispatch event for other components (like ProductPage if listening)
                 window.dispatchEvent(new CustomEvent('airtableRecordReady', {
                     detail: { recordId, tempId }
                 }));
+
+                // 2. Trigger Ebook Delivery Webhook
+                try {
+                    // Ebook Delivery Webhook
+                    const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
+
+                    if (EBOOK_WEBHOOK_URL) {
+                        await fetch(EBOOK_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                recipient: payload.email,
+                                name: payload.name.split(' ')[0]
+                            })
+                        });
+                    }
+                } catch (error) {
+                    console.error('Failed to trigger ebook delivery:', error);
+                }
             }
         } catch (error) {
             console.error('Submission error:', error);
