@@ -361,6 +361,27 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 console.error('Failed to send test order email:', error);
             }
 
+            // Send ebook delivery email (only if offer active OR customer paid for it)
+            const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
+
+            if (shouldSendEbook) {
+                try {
+                    const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
+                    if (EBOOK_WEBHOOK_URL) {
+                        await fetch(EBOOK_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                recipient: userData?.email || checkoutFormData.email || '',
+                                name: checkoutFormData.fullName.split(' ')[0]
+                            })
+                        });
+                    }
+                } catch (error) {
+                    console.error('Failed to send ebook delivery:', error);
+                }
+            }
+
             // Redirect to success page
             const successUrl = `/success?orderId=${supabaseOrderId || 'TEST'}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
             window.location.href = successUrl;
@@ -492,8 +513,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     console.error('Failed to trigger order confirmation email:', error);
                 }
 
-                // 2. Ebook Delivery Email (if applicable)
-                if (ebookPrice > 0) {
+                // 2. Ebook Delivery Email (send if offer active OR customer paid for it)
+                const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
+
+                if (shouldSendEbook) {
                     try {
                         // Ebook Delivery Webhook
                         const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
