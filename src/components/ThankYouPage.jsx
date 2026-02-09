@@ -63,13 +63,13 @@ const ThankYouPage = ({ userData, paymentData, onGoHome }) => {
                 <div className="thankyou-contact">
                     <p>Questions? Reach out to us:</p>
                     <div className="contact-options">
-                        <a href="mailto:support@cannalogic.in" className="contact-item">
+                        <a href="mailto:hello@cannalogic.in" className="contact-item">
                             <Mail size={18} />
-                            <span>support@cannalogic.in</span>
+                            <span>hello@cannalogic.in</span>
                         </a>
-                        <a href="tel:+918048799897" className="contact-item">
+                        <a href="tel:+918431975346" className="contact-item">
                             <Phone size={18} />
-                            <span>+91 80 4879 9897</span>
+                            <span>+91 8431975346</span>
                         </a>
                     </div>
                 </div>

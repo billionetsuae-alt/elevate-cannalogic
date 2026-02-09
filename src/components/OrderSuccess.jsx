@@ -50,7 +50,7 @@ const OrderSuccess = () => {
                     // Fetch order data
                     const { data: order, error: orderError } = await supabase
                         .from('elevate_orders')
-                        .select('*')
+                        .select('*') // Select * to get amount and items
                         .eq('id', orderId)
                         .single();
 
@@ -72,6 +72,26 @@ const OrderSuccess = () => {
                                 setCustomerData(customer);
                             }
                         }
+                    } else {
+                        // Attempt to fetch by readable_id if UUID fetch failed
+                        const { data: orderReadable, error: orderReadableError } = await supabase
+                            .from('elevate_orders')
+                            .select('*')
+                            .eq('readable_id', orderId)
+                            .single();
+
+                        if (orderReadable && !orderReadableError) {
+                            setOrderData(orderReadable);
+                            setEbookSent(true);
+                            if (orderReadable.customer_id) {
+                                const { data: customer } = await supabase
+                                    .from('elevate_customers')
+                                    .select('*')
+                                    .eq('id', orderReadable.customer_id)
+                                    .single();
+                                if (customer) setCustomerData(customer);
+                            }
+                        }
                     }
                 } catch (err) {
                     console.error('Failed to fetch order details:', err);
@@ -85,6 +105,27 @@ const OrderSuccess = () => {
 
         fetchOrderDetails();
     }, [orderId]);
+
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 0
+        }).format(amount || 0);
+    };
+
+    const getProductLabel = () => {
+        if (!orderData?.items) return 'Elevate Full Spectrum Bundle';
+        const items = orderData.items;
+        // Handle if items is a string (JSON) or object
+        if (typeof items === 'string') {
+            try {
+                const parsed = JSON.parse(items);
+                return parsed.label || items;
+            } catch (e) { return items; }
+        }
+        return items.label || 'Elevate Full Spectrum Bundle';
+    };
 
     return (
         <div className="success-page">
@@ -106,8 +147,10 @@ const OrderSuccess = () => {
                 </div>
 
                 {/* Main Thank You Message */}
-                <h1 className="success-title">Thank You for Purchasing</h1>
-                <h2 className="success-brand">CannaLogic Elevate</h2>
+                <h1 className="success-title">Thank You, {customerData?.full_name?.split(' ')[0] || 'Friend'}!</h1>
+                <p className="success-subtitle" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1.1rem', marginBottom: '2rem' }}>
+                    Your payment was successful. Welcome to your transformation journey!
+                </p>
 
                 {/* Ebook Section - Only show if ebook was sent */}
                 {ebookSent && (
@@ -128,65 +171,62 @@ const OrderSuccess = () => {
                     <div className="order-details-card">
                         <div className="order-details-header">
                             <Package size={24} />
-                            <h3>Order Details</h3>
+                            <h3>Order Confirmation</h3>
                         </div>
 
                         <div className="order-details-body">
+                            {/* Product Row */}
                             <div className="detail-item">
-                                <span className="detail-icon">#</span>
+                                <span className="detail-icon">🌿</span>
                                 <div className="detail-content">
-                                    <span className="detail-label">Order Number</span>
-                                    <span className="detail-value text-xl font-bold text-green-400">
-                                        {/* Prefer readable_id (CLxxxx), fallback to short UUID */}
-                                        {orderData.readable_id || `#${orderId.slice(0, 8)}`}
-                                    </span>
+                                    <span className="detail-label">Product</span>
+                                    <span className="detail-value">{getProductLabel()}</span>
                                 </div>
                             </div>
 
-                            {customerData?.full_name && (
+                            {/* Amount Row */}
+                            {orderData.amount !== undefined && (
                                 <div className="detail-item">
-                                    <span className="detail-icon">👤</span>
+                                    <span className="detail-icon">₹</span>
                                     <div className="detail-content">
-                                        <span className="detail-label">Name</span>
-                                        <span className="detail-value">{customerData.full_name}</span>
-                                    </div>
-                                </div>
-                            )}
-
-                            {customerData?.address && (
-                                <div className="detail-item">
-                                    <MapPin size={18} className="detail-icon-svg" />
-                                    <div className="detail-content">
-                                        <span className="detail-label">Delivery Address</span>
-                                        <span className="detail-value">
-                                            {customerData.address}
-                                            {customerData.city && `, ${customerData.city}`}
-                                            {customerData.state && `, ${customerData.state}`}
-                                            {customerData.pincode && ` - ${customerData.pincode}`}
+                                        <span className="detail-label">Amount Paid</span>
+                                        <span className="detail-value text-xl font-bold text-green-400" style={{ fontSize: '1.25rem', color: '#4caf50' }}>
+                                            {formatCurrency(orderData.amount)}
                                         </span>
                                     </div>
                                 </div>
                             )}
 
-                            {customerData?.phone && (
-                                <div className="detail-item">
-                                    <Phone size={18} className="detail-icon-svg" />
-                                    <div className="detail-content">
-                                        <span className="detail-label">Phone Number</span>
-                                        <span className="detail-value">{customerData.phone}</span>
-                                    </div>
+                            <div className="detail-item">
+                                <span className="detail-icon">#</span>
+                                <div className="detail-content">
+                                    <span className="detail-label">Order Number</span>
+                                    <span className="detail-value font-mono">
+                                        {orderData.readable_id || `#${orderId.slice(0, 8)}`}
+                                    </span>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 )}
 
-                {/* Dispatch Message */}
-                <div className="dispatch-message">
-                    <div className="dispatch-icon">
-                        <Package size={28} />
+                {/* What Happens Next Section */}
+                <div className="success-steps">
+                    <h3>What Happens Next?</h3>
+                    <div className="steps-list">
+                        <div className="step-item">
+                            <div className="step-number">1</div>
+                            <span className="step-text">You'll receive an order confirmation email shortly</span>
+                        </div>
+                        <div className="step-item">
+                            <div className="step-number">2</div>
+                            <span className="step-text">Our team will reach out within 24 hours to schedule your consultation</span>
+                        </div>
+                        <div className="step-item">
+                            <div className="step-number">3</div>
+                            <span className="step-text">Your Elevate Bundle will be shipped within 2-3 business days</span>
+                        </div>
                     </div>
-                    <p>Your order will be dispatched within <strong>24 hours</strong></p>
                 </div>
 
                 {/* Action Button */}
@@ -202,8 +242,9 @@ const OrderSuccess = () => {
 
                 {/* Support Message */}
                 <p className="support-message">
-                    Need help? Contact us at{' '}
-                    <a href="mailto:hello@cannalogic.in">hello@cannalogic.in</a>
+                    Need help? Contact us at<br />
+                    <a href="mailto:hello@cannalogic.in" style={{ marginRight: '1rem' }}>hello@cannalogic.in</a>
+                    <a href="tel:8431975346">8431975346</a>
                 </p>
             </div>
         </div>
@@ -211,4 +252,6 @@ const OrderSuccess = () => {
 };
 
 export default OrderSuccess;
+
+
 

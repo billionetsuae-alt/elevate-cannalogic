@@ -398,6 +398,57 @@
     box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
 }
 
+/* Next Steps Sequence */
+.success-steps {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.85s backwards;
+}
+
+.success-steps h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #4caf50;
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
 /* Support Message */
 .support-message {
     color: rgba(255, 255, 255, 0.5);
