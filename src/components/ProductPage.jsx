@@ -1025,7 +1025,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     src="/razorpaySecure.png"
                                     alt="100% Secure Payment by Razorpay"
                                     style={{
-                                        maxWidth: '200px',
+                                        width: '100%',
+                                        maxWidth: '100%',
                                         height: 'auto',
                                         opacity: 0.9,
                                         borderRadius: '4px'
