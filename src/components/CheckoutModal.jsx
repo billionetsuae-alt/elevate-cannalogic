@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import { Loader2, X, User, Phone, MapPin, Home, Check, ShieldCheck, Lock, Tag, Mail } from 'lucide-react';
 import './CheckoutModal.css';
@@ -259,6 +259,13 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+
+        // Prevent duplicate submissions
+        if (isSubmitting) {
+
+            return;
+        }
+
         if (!isFormValid()) return;
 
         setIsSubmitting(true);
@@ -589,15 +596,23 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                     </div>
 
                     {/* Trust Footer - moved here for single step */}
-                    <div className="checkout-step-2-footer" style={{ marginTop: '1.5rem' }}>
-                        <div className="cs-trust-row">
-                            <div className="cs-trust-item">
-                                <ShieldCheck size={16} className="cs-icon" />
-                                <span>30-Day Guarantee</span>
+                    {/* Trust Footer - Redesigned */}
+                    <div className="checkout-step-2-footer" style={{ marginTop: '1.5rem', padding: 0, border: 'none', background: 'transparent' }}>
+                        <div className="checkout-guarantee-box">
+                            <div className="guarantee-badge-section">
+                                <div className="guarantee-seal-ring">
+                                    <ShieldCheck size={32} strokeWidth={1.5} />
+                                </div>
                             </div>
-                            <div className="cs-trust-item">
-                                <Lock size={16} className="cs-icon" />
-                                <span>Secure Payment</span>
+                            <div className="guarantee-info-section">
+                                <div className="guarantee-title-row">
+                                    <h4>30-Day Money Back Guarantee</h4>
+                                </div>
+                                <div className="guarantee-split-line"></div>
+                                <div className="guarantee-desc-row">
+                                    <p>Not satisfied? <span className="highlight-text">Full Refund.</span></p>
+                                    <p className="sub-desc">Zero questions asked.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

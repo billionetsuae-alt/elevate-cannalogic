@@ -648,3 +648,93 @@
     font-weight: 600;
     color: rgba(255, 255, 255, 0.8);
 }
+
+/* Money Back Guarantee Box */
+/* Money Back Guarantee Box - Refined Design */
+.checkout-guarantee-box {
+    background: radial-gradient(circle at top left, rgba(76, 175, 80, 0.1), rgba(0, 0, 0, 0.2) 80%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+/* Add a subtle shine effect */
+.checkout-guarantee-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent);
+}
+
+.guarantee-badge-section {
+    flex-shrink: 0;
+}
+
+.guarantee-seal-ring {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid rgba(76, 175, 80, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.15);
+}
+
+.guarantee-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.guarantee-title-row h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #4caf50;
+    /* Green/Gold tint */
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.guarantee-split-line {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.guarantee-desc-row p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.4;
+}
+
+.guarantee-desc-row .highlight-text {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(76, 175, 80, 0.5);
+    text-underline-offset: 2px;
+}
+
+.guarantee-desc-row .sub-desc {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+}

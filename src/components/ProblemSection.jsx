@@ -38,7 +38,7 @@ const ProblemSection = ({ onOpenAssessment }) => {
                     <p className="section-label mobile-label">Levels of Consciousness</p>
 
                     <div className="energy-image">
-                        <img src="/vibrational-energy-chart.png" alt="Vibrational Energy Chart" />
+                        <img src="/vibrational-energy-chart-arrow.png" alt="Vibrational Energy Chart" />
                     </div>
 
                     <div className="energy-text">

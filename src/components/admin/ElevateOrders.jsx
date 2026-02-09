@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase';
+import { logEmail } from '../../utils/emailLogger';
 import { Search, Filter, RefreshCw, Mail, Phone, MapPin, ChevronDown, ChevronUp, Check, X, Users, ShoppingBag, Package } from 'lucide-react';
 
 const ElevateOrders = () => {
@@ -83,6 +84,12 @@ const ElevateOrders = () => {
                                 }
                             })
                         });
+                        logEmail(
+                            order?.customer_info?.email || '',
+                            emailType,
+                            'sent',
+                            { order_id: orderId, new_status: newStatus }
+                        );
                     }
                 }
             } catch (error) {

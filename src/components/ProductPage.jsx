@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import './ProductPage.css';
 import './Hero.css'; // Imported for Hero styles
 import './StickyTimer.css';
@@ -8,7 +8,9 @@ import HempParticles from './HempParticles';
 import VideoTestimonials from './VideoTestimonials';
 import OfferMarquee from './OfferMarquee';
 import VideoSection from './VideoSection';
+import WhatsAppButton from './WhatsAppButton';
 import { supabase } from '../utils/supabase';
+import { logEmail } from '../utils/emailLogger';
 import { Star, Check, Clock, Shield, Award, Leaf, ChevronRight, Package, Info, ArrowRight, Rocket, CreditCard, Lock, Gift, Phone, Mail, ChevronLeft, ChevronDown, ShieldCheck, BadgeCheck, Quote, Zap, Brain, Lightbulb, Sprout, Crown, Sparkles, Pill, ShoppingBag, Stethoscope } from 'lucide-react';
 
 const PACK_OPTIONS = [
@@ -268,19 +270,22 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
         // 1. Create Order in Supabase (Pending)
         let supabaseOrderId = null;
         try {
+            // Note: TEST_BYPASS is now a real coupon in the DB, so we don't need to filter it out!
+            // It will be applied as a 100% discount, resulting in totalAmount = 0.
+
             const orderPayload = {
                 customer_id: checkoutFormData.customerId || null,
                 amount: totalAmount,
                 items: {
                     pack: selectedPackObj,
-                    ebook: ebookPrice > 0,
+                    ebook: ebookPrice > 0, // This is just metadata now
                     pack_price: packPrice,
                     ebook_price: ebookPrice,
                     subtotal: subtotal,
                     discount: discountAmount || 0
                 },
                 status: 'pending',
-                coupon_code: couponCode || null,
+                coupon_code: couponCode || null, // Save the actual coupon used (even TEST_BYPASS)
                 customer_info: {
                     name: checkoutFormData.fullName,
                     phone: checkoutFormData.phone,
@@ -305,328 +310,308 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             console.error('Failed to create Supabase order:', err);
         }
 
-        // 🎯 TEST BYPASS: Skip Razorpay for test orders
-        if (couponCode && couponCode.toUpperCase() === 'TEST_BYPASS') {
-            console.log('TEST_BYPASS detected - Skipping Razorpay payment');
+        // 🎯 LOGIC BRANCH: Free Order (Coupon 100%) vs Paid Order (Razorpay)
 
-            // Update order to paid immediately
+        // Scenario A: Free Order (Total Amount is 0)
+        // This covers TEST_BYPASS and any other 100% discount coupons
+        if (totalAmount <= 0) {
+
+
             if (supabaseOrderId) {
                 try {
-                    await supabase
-                        .from('elevate_orders')
-                        .update({
-                            status: 'paid',
-                            payment_id: 'TEST_BYPASS_' + Date.now(),
-                            razorpay_order_id: 'TEST_ORDER',
-                            razorpay_signature: 'TEST_SIGNATURE'
-                        })
-                        .eq('id', supabaseOrderId);
-                } catch (err) {
-                    console.error('Failed to update test order:', err);
-                }
-            }
-
-            // Update customer status
-            if (checkoutFormData.customerId) {
-                try {
-                    await supabase
-                        .from('elevate_customers')
-                        .update({ status: 'Customer' })
-                        .eq('id', checkoutFormData.customerId);
-                } catch (err) {
-                    console.error('Failed to update customer status:', err);
-                }
-            }
-
-            // Send confirmation email
-            try {
-                const EMAIL_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/general-email';
-                if (EMAIL_WEBHOOK_URL) {
-                    await fetch(EMAIL_WEBHOOK_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            type: 'order_confirmation',
-                            recipient: userData?.email || checkoutFormData.email || '',
-                            data: {
-                                name: checkoutFormData.fullName.split(' ')[0],
-                                order_id: supabaseOrderId || 'TEST',
-                                total_amount: 0,
-                                items: selectedPackObj.label
-                            }
-                        })
-                    });
-                }
-            } catch (error) {
-                console.error('Failed to send test order email:', error);
-            }
-
-            // Send ebook delivery email (only if offer active OR customer paid for it)
-            const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
-
-            if (shouldSendEbook) {
-                try {
-                    const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
-                    if (EBOOK_WEBHOOK_URL) {
-                        await fetch(EBOOK_WEBHOOK_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                recipient: userData?.email || checkoutFormData.email || '',
-                                name: checkoutFormData.fullName.split(' ')[0]
-                            })
+                    // Call Secure RPC to complete free order
+                    const { data, error } = await supabase
+                        .rpc('complete_free_order', {
+                            p_order_id: supabaseOrderId
                         });
+
+                    if (error) {
+                        console.error('❌ Failed to complete free order:', error);
+                        // Fallback/Retry logic could go here
+                    } else {
+
+
+                        // Send confirmation email
+                        try {
+                            const EMAIL_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/general-email';
+                            if (EMAIL_WEBHOOK_URL) {
+                                await fetch(EMAIL_WEBHOOK_URL, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        type: 'order_confirmation',
+                                        recipient: userData?.email || checkoutFormData.email || '',
+                                        data: {
+                                            name: checkoutFormData.fullName.split(' ')[0],
+                                            order_id: supabaseOrderId,
+                                            total_amount: 0,
+                                            items: selectedPackObj.label
+                                        }
+                                    })
+                                });
+                                logEmail(
+                                    userData?.email || checkoutFormData.email || '',
+                                    'order_confirmation',
+                                    'sent',
+                                    { order_id: supabaseOrderId, amount: 0, type: 'free' }
+                                );
+                            }
+                        } catch (error) {
+                            console.error('Failed to send order email:', error);
+                        }
+
+                        // Send Ebook Email (if applicable)
+                        // Logic is now effectively handled by the DB, but we optimistically check here for email sending
+                        // The DB function sets ebook_included. We check our local logic for the email trigger.
+                        const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
+
+                        if (shouldSendEbook) {
+                            try {
+                                const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
+                                if (EBOOK_WEBHOOK_URL) {
+                                    await fetch(EBOOK_WEBHOOK_URL, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            recipient: userData?.email || checkoutFormData.email || '',
+                                            name: checkoutFormData.fullName.split(' ')[0]
+                                        })
+                                    });
+                                    logEmail(
+                                        userData?.email || checkoutFormData.email || '',
+                                        'ebook_delivery',
+                                        'sent',
+                                        { generated_for: checkoutFormData.fullName.split(' ')[0] }
+                                    );
+                                }
+                            } catch (error) {
+                                console.error('❌ Failed to send ebook delivery:', error);
+                            }
+                        }
+
+                        // Redirect to success page
+                        const successUrl = `/success?orderId=${supabaseOrderId}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
+                        window.location.href = successUrl;
+                        return; // Exit
                     }
-                } catch (error) {
-                    console.error('Failed to send ebook delivery:', error);
+
+                } catch (err) {
+                    console.error('Failed to process free order:', err);
                 }
             }
-
-            // Redirect to success page
-            const successUrl = `/success?orderId=${supabaseOrderId || 'TEST'}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
-            window.location.href = successUrl;
-            return; // Exit early, don't open Razorpay
         }
 
-
-        // 🎯 Payment Attempt (Supabase Order Created)
-        // No need for legacy webhook 'update-address' anymore
-
-        // Configure Razorpay options
-        const options = {
-            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-            amount: totalAmount * 100, // Amount in paise
-            currency: 'INR',
-            name: 'CannaLogic',
-            description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
-            image: '/Cannalogic-White.svg',
-            prefill: {
-                name: checkoutFormData.fullName || name || '',
-                email: userData?.email || '',
-                contact: checkoutFormData.phone || userData?.phone || ''
-            },
-            notes: {
-                address: checkoutFormData.fullAddress,
-                pincode: checkoutFormData.pincode,
-                city: checkoutFormData.city,
-                state: checkoutFormData.state,
-                selected_pack: PACK_OPTIONS.find(p => p.id === selectedPack).label,
-                supabase_order_id: supabaseOrderId,
-                coupon_code: couponCode || ''
-            },
-            theme: {
-                color: '#4caf50'
-            },
-            handler: async function (response) {
-                // Track payment success
-                const paymentEndTime = Date.now();
-                const timeInModal = paymentModalStartTime ? Math.round((paymentEndTime - paymentModalStartTime) / 1000) : 0;
-
-                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-                    trackEvent(EVENTS.CLICK, 'payment', 'payment_success', totalAmount);
-                    trackEvent(EVENTS.CLICK, 'payment', 'payment_id', response.razorpay_payment_id);
-                    if (timeInModal > 0) {
-                        trackEvent(EVENTS.CLICK, 'payment', 'time_in_payment_modal', timeInModal);
-                    }
-                });
-
-                // 2. Update Supabase Order to PAID
-                if (supabaseOrderId) {
-                    try {
-                        await supabase
-                            .from('elevate_orders')
-                            .update({
-                                status: 'paid',
-                                payment_id: response.razorpay_payment_id,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature
-                            })
-                            .eq('id', supabaseOrderId);
-                    } catch (err) {
-                        console.error('Failed to update Supabase order status:', err);
-                    }
-                }
-
-                // Increment Coupon Usage
-                if (couponCode) {
-                    try {
-                        const { data: coupon } = await supabase.from('elevate_coupons').select('usage_count').eq('code', couponCode).single();
-                        if (coupon) {
-                            await supabase.from('elevate_coupons').update({ usage_count: (coupon.usage_count || 0) + 1 }).eq('code', couponCode);
-                        }
-                    } catch (e) {
-                        console.error('Failed to update coupon usage:', e);
-                    }
-                }
-
-                // Try to capture payment method (if available via Razorpay API)
-                try {
-                    // Note: Payment method details require server-side fetch from Razorpay API
-                    // This is a placeholder for client-side tracking
-                    import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-                        trackEvent(EVENTS.CLICK, 'payment', 'payment_completed');
-                    });
-                } catch (e) {
-                    // Fail silently
-                }
-                // Payment successful
-
-
-                // 3. Update Customer Status to 'Customer'
-                if (checkoutFormData.customerId) {
-                    try {
-                        await supabase
-                            .from('elevate_customers')
-                            .update({ status: 'Customer' })
-                            .eq('id', checkoutFormData.customerId);
-                    } catch (err) {
-                        console.error('Failed to update customer status:', err);
-                    }
-                }
-
-                // ---------------------------------------------------------
-                // NEW: Trigger Centralized Email Workflows
-                // ---------------------------------------------------------
-
-                // 1. Order Confirmation Email
-                try {
-                    // General Email Webhook
-                    const EMAIL_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/general-email';
-
-                    if (EMAIL_WEBHOOK_URL) {
-                        await fetch(EMAIL_WEBHOOK_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                type: 'order_confirmation',
-                                recipient: userData?.email || '', // Ensure we have email
-                                data: {
-                                    name: checkoutFormData.fullName.split(' ')[0], // First name
-                                    order_id: supabaseOrderId || 'N/A',
-                                    total_amount: totalAmount,
-                                    items: PACK_OPTIONS.find(p => p.id === selectedPack).label
-                                }
-                            })
-                        });
-                    }
-                } catch (error) {
-                    console.error('Failed to trigger order confirmation email:', error);
-                }
-
-                // 2. Ebook Delivery Email (send if offer active OR customer paid for it)
-                const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
-
-                if (shouldSendEbook) {
-                    try {
-                        // Ebook Delivery Webhook
-                        const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
-
-                        if (EBOOK_WEBHOOK_URL) {
-                            await fetch(EBOOK_WEBHOOK_URL, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    recipient: userData?.email || '',
-                                    name: checkoutFormData.fullName.split(' ')[0]
-                                })
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Failed to trigger ebook delivery:', error);
-                    }
-                }
-                // ---------------------------------------------------------
-
-                // Redirect to success page with order details
-                const successUrl = `/success?orderId=${supabaseOrderId || 'N/A'}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
-                window.location.href = successUrl;
-            },
-            modal: {
-                ondismiss: async function () {
-                    // Track payment modal dismissed
+        // Scenario B: Paid Order (Razorpay)
+        else {
+            // Configure Razorpay options
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount: totalAmount * 100, // Amount in paise
+                currency: 'INR',
+                name: 'CannaLogic',
+                description: `Elevate Full Spectrum Bundle - ${PACK_OPTIONS.find(p => p.id === selectedPack).label}${ebookPrice > 0 ? ' + Ebook' : ''}`,
+                image: '/Cannalogic-White.svg',
+                prefill: {
+                    name: checkoutFormData.fullName || name || '',
+                    email: userData?.email || '',
+                    contact: checkoutFormData.phone || userData?.phone || ''
+                },
+                notes: {
+                    address: checkoutFormData.fullAddress,
+                    pincode: checkoutFormData.pincode,
+                    city: checkoutFormData.city,
+                    state: checkoutFormData.state,
+                    selected_pack: PACK_OPTIONS.find(p => p.id === selectedPack).label,
+                    supabase_order_id: supabaseOrderId,
+                    coupon_code: couponCode || ''
+                },
+                theme: {
+                    color: '#4caf50'
+                },
+                handler: async function (response) {
+                    // Track payment success
                     const paymentEndTime = Date.now();
                     const timeInModal = paymentModalStartTime ? Math.round((paymentEndTime - paymentModalStartTime) / 1000) : 0;
 
                     import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-                        trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_closed');
-                        trackEvent(EVENTS.CLICK, 'payment', 'payment_abandoned');
+                        trackEvent(EVENTS.CLICK, 'payment', 'payment_success', totalAmount);
+                        trackEvent(EVENTS.CLICK, 'payment', 'payment_id', response.razorpay_payment_id);
                         if (timeInModal > 0) {
-                            trackEvent(EVENTS.CLICK, 'payment', 'time_in_modal_before_abandon', timeInModal);
+                            trackEvent(EVENTS.CLICK, 'payment', 'time_in_payment_modal', timeInModal);
                         }
                     });
 
-                    // 3. Update Supabase Order to CANCELLED (if needed)
-                    // We might not want to cancel immediately if they just closed the modal to check details, 
-                    // but usually closing the modal means they abandoned.
-                    // Let's mark as cancelled for now to keep data clean, or 'pending' if we want to follow up.
-                    // 'cancelled' is better for definitive state.
+                    // 2. Update Supabase Order to PAID using Secure RPC
                     if (supabaseOrderId) {
                         try {
-                            await supabase
-                                .from('elevate_orders')
-                                .update({ status: 'cancelled' })
-                                .eq('id', supabaseOrderId);
-                        } catch (err) { console.error(err); }
+                            const { data, error } = await supabase
+                                .rpc('complete_pay_order', {
+                                    p_order_id: supabaseOrderId,
+                                    p_payment_id: response.razorpay_payment_id,
+                                    p_razorpay_order_id: response.razorpay_order_id,
+                                    p_razorpay_signature: response.razorpay_signature
+                                });
+
+                            if (error) {
+                                console.error('Failed to update Supabase order status:', error);
+                            } else {
+
+
+                                // Send Ebook Email (Optimistic check)
+                                const shouldSendEbook = !offerExpired || (offerExpired && isEbookSelected && ebookPrice > 0);
+                                if (shouldSendEbook) {
+                                    try {
+                                        const EBOOK_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/ebook-delivery';
+                                        if (EBOOK_WEBHOOK_URL) {
+                                            fetch(EBOOK_WEBHOOK_URL, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    recipient: userData?.email || checkoutFormData.email || '',
+                                                    name: checkoutFormData.fullName.split(' ')[0]
+                                                })
+                                            });
+                                            logEmail(
+                                                userData?.email || checkoutFormData.email || '',
+                                                'ebook_delivery',
+                                                'sent',
+                                                { generated_for: checkoutFormData.fullName.split(' ')[0] }
+                                            );
+                                        }
+                                    } catch (e) { console.error(e); }
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Failed to execute payment RPC:', err);
+                        }
                     }
 
-                    if (userData?.recordId) {
-                        try {
-                            await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
+                    // 3. Send Order Confirmation Email
+                    try {
+                        const EMAIL_WEBHOOK_URL = 'https://n8n-642200223.kloudbeansite.com/webhook/general-email';
+                        if (EMAIL_WEBHOOK_URL) {
+                            await fetch(EMAIL_WEBHOOK_URL, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    recordId: userData.recordId,
-                                    Payment_Failure_Reason: 'Payment cancelled by user'
+                                    type: 'order_confirmation',
+                                    recipient: userData?.email || checkoutFormData.email || '',
+                                    data: {
+                                        name: checkoutFormData.fullName.split(' ')[0],
+                                        order_id: supabaseOrderId || 'PENDING',
+                                        total_amount: totalAmount,
+                                        items: selectedPackObj.label
+                                    }
                                 })
                             });
-                        } catch (error) {
-                            console.error('Payment cancellation tracking failed:', error);
+                            logEmail(
+                                userData?.email || checkoutFormData.email || '',
+                                'order_confirmation',
+                                'sent',
+                                { order_id: supabaseOrderId, amount: totalAmount, type: 'paid' }
+                            );
+                        }
+                    } catch (error) {
+                        console.error('Failed to send confirmation email:', error);
+                    }
+
+                    // 4. Redirect to Success Page
+                    // Pass email for display
+                    // if (onPaymentSuccess) { // Assuming onPaymentSuccess is a prop or context function
+                    //     onPaymentSuccess();
+                    // } else {
+                    // Redirect to success page with orderId
+                    const successUrl = `/success?orderId=${supabaseOrderId}&email=${encodeURIComponent(userData?.email || checkoutFormData.email || '')}`;
+                    window.location.href = successUrl;
+                    // }
+                },
+                modal: {
+                    ondismiss: async function () {
+                        // Track payment modal dismissed
+                        const paymentEndTime = Date.now();
+                        const timeInModal = paymentModalStartTime ? Math.round((paymentEndTime - paymentModalStartTime) / 1000) : 0;
+
+                        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                            trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_closed');
+                            trackEvent(EVENTS.CLICK, 'payment', 'payment_abandoned');
+                            if (timeInModal > 0) {
+                                trackEvent(EVENTS.CLICK, 'payment', 'time_in_modal_before_abandon', timeInModal);
+                            }
+                        });
+
+                        // 3. Update Supabase Order to CANCELLED (if needed)
+                        // We might not want to cancel immediately if they just closed the modal to check details,
+                        // but usually closing the modal means they abandoned.
+                        // Let's mark as cancelled for now to keep data clean, or 'pending' if we want to follow up.
+                        // 'cancelled' is better for definitive state.
+                        if (supabaseOrderId) {
+                            try {
+                                await supabase
+                                    .from('elevate_orders')
+                                    .update({ status: 'cancelled' })
+                                    .eq('id', supabaseOrderId);
+                            } catch (err) { console.error(err); }
+                        }
+
+                        if (userData?.recordId) {
+                            try {
+                                await fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        recordId: userData.recordId,
+                                        Payment_Failure_Reason: 'Payment cancelled by user'
+                                    })
+                                });
+                            } catch (error) {
+                                console.error('Payment cancellation tracking failed:', error);
+                            }
                         }
                     }
                 }
-            }
-        };
+            };
 
-        // Track payment modal opened and start timer
-        let paymentModalStartTime = Date.now();
-        import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-            trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_opened', totalAmount);
-        });
-
-        // Now open Razorpay
-        const razorpay = new window.Razorpay(options);
-
-        // Track Razorpay payment.failed event
-        razorpay.on('payment.failed', async function (response) {
+            // Track payment modal opened and start timer
+            let paymentModalStartTime = Date.now();
             import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
-                trackEvent(EVENTS.CLICK, 'payment', 'payment_failed');
-                trackEvent(EVENTS.CLICK, 'payment', `payment_error_${response.error.code}`);
-                trackEvent(EVENTS.CLICK, 'payment', 'payment_failure_reason', response.error.description);
+                trackEvent(EVENTS.CLICK, 'payment', 'payment_modal_opened', totalAmount);
             });
 
-            // Update Supabase Order to Cancelled/Failed
-            if (supabaseOrderId) {
-                await supabase
-                    .from('elevate_orders')
-                    .update({ status: 'cancelled', payment_id: response.error.metadata?.payment_id })
-                    .eq('id', supabaseOrderId);
-            }
+            // Now open Razorpay
+            const razorpay = new window.Razorpay(options);
 
-            // Also track via webhook
-            if (userData?.recordId) {
-                fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        recordId: userData.recordId,
-                        Payment_Failed: true,
-                        Payment_Failure_Reason: `${response.error.code}: ${response.error.description}`
-                    })
-                }).catch(err => console.error('Failed to track payment error:', err));
-            }
-        });
+            // Track Razorpay payment.failed event
+            razorpay.on('payment.failed', async function (response) {
+                import('../utils/tracker').then(({ trackEvent, EVENTS }) => {
+                    trackEvent(EVENTS.CLICK, 'payment', 'payment_failed');
+                    trackEvent(EVENTS.CLICK, 'payment', `payment_error_${response.error.code}`);
+                    trackEvent(EVENTS.CLICK, 'payment', 'payment_failure_reason', response.error.description);
+                });
 
-        razorpay.open();
+                // Update Supabase Order to Cancelled/Failed
+                if (supabaseOrderId) {
+                    await supabase
+                        .from('elevate_orders')
+                        .update({ status: 'cancelled', payment_id: response.error.metadata?.payment_id })
+                        .eq('id', supabaseOrderId);
+                }
+
+                // Also track via webhook
+                if (userData?.recordId) {
+                    fetch('https://n8n-642200223.kloudbeansite.com/webhook/update-address', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            recordId: userData.recordId,
+                            Payment_Failed: true,
+                            Payment_Failure_Reason: `${response.error.code}: ${response.error.description}`
+                        })
+                    }).catch(err => console.error('Failed to track payment error:', err));
+                }
+            });
+
+            razorpay.open();
+        }
     };
 
     return (
@@ -1192,7 +1177,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             {/* Vibrational Energy Chart */}
                             <div className="pp-vibrational-chart" style={{ marginBottom: '2rem', marginTop: '1.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
                                 <img
-                                    src="/vibrational-energy-chart.png"
+                                    src="/vibrational-energy-chart-arrow.png"
                                     alt="Vibrational Energy Chart"
                                     style={{
                                         width: '100%',
@@ -1400,6 +1385,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
             {/* Exit Intent Popup */}
             <ExitIntentPopup />
+
+            {/* Floating WhatsApp Button */}
+            <WhatsAppButton />
         </div >
     );
 };
