@@ -51,10 +51,6 @@ const ThankYouPage = ({ userData, paymentData, onGoHome }) => {
                         </li>
                         <li>
                             <span className="step-number">2</span>
-                            <span>Our team will reach out within 24 hours to schedule your consultation</span>
-                        </li>
-                        <li>
-                            <span className="step-number">3</span>
                             <span>Your Elevate Bundle will be shipped within 2-3 business days</span>
                         </li>
                     </ul>

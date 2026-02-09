@@ -220,10 +220,6 @@ const OrderSuccess = () => {
                         </div>
                         <div className="step-item">
                             <div className="step-number">2</div>
-                            <span className="step-text">Our team will reach out within 24 hours to schedule your consultation</span>
-                        </div>
-                        <div className="step-item">
-                            <div className="step-number">3</div>
                             <span className="step-text">Your Elevate Bundle will be shipped within 2-3 business days</span>
                         </div>
                     </div>
