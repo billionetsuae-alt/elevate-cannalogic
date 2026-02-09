@@ -15,16 +15,6 @@
     transition: all 0.3s ease;
     text-decoration: none;
     cursor: pointer;
-    /* Hidden state by default */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-}
-
-.whatsapp-float.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
 }
 
 @media (max-width: 768px) {

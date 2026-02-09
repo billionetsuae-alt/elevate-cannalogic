@@ -1,38 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './WhatsAppButton.css';
 
 const WhatsAppButton = () => {
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const toggleVisibility = () => {
-            // Calculate scroll percentage
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight;
-            const winHeight = window.innerHeight;
-
-            const scrollPercent = (scrollTop + winHeight) / docHeight;
-
-            // Show if scrolled more than 80% (0.8)
-            if (scrollPercent > 0.8) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
-
-        window.addEventListener('scroll', toggleVisibility);
-
-        // Initial check
-        toggleVisibility();
-
-        return () => window.removeEventListener('scroll', toggleVisibility);
-    }, []);
-
     return (
         <a
             href="https://wa.me/918078953348?text=I%20have%20a%20query"
-            className={`whatsapp-float ${isVisible ? 'visible' : ''}`}
+            className="whatsapp-float"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
