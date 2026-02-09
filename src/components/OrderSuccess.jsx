@@ -11,7 +11,7 @@ const OrderSuccess = () => {
     const [orderData, setOrderData] = useState(null);
     const [customerData, setCustomerData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [ebookSent, setEbookSent] = useState(false);
+    const [ebookSent, setEbookSent] = useState(true);
 
     const orderId = searchParams.get('orderId') || 'N/A';
     const email = searchParams.get('email') || '';
@@ -22,29 +22,25 @@ const OrderSuccess = () => {
 
         // Enhanced confetti effect
         if (window.confetti) {
-            // Initial burst
-            window.confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ['#4caf50', '#81c784', '#66bb6a']
-            });
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-            // Delayed second burst
-            setTimeout(() => {
-                window.confetti({
-                    particleCount: 100,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 }
-                });
-                window.confetti({
-                    particleCount: 100,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 }
-                });
-            }, 400);
+            const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+            const interval = setInterval(function () {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+
+                // since particles fall down, start a bit higher than random
+                window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
 
         // Fetch order and customer details
@@ -61,9 +57,8 @@ const OrderSuccess = () => {
                     if (order && !orderError) {
                         setOrderData(order);
 
-                        // Determine if ebook was sent based on order metadata
-                        // Check if ebook was included (you may need to add this field to orders table)
-                        setEbookSent(order.ebook_included || false);
+                        // Always show ebook sent (default)
+                        setEbookSent(true);
 
                         // Fetch customer data
                         if (order.customer_id) {
@@ -93,11 +88,13 @@ const OrderSuccess = () => {
 
     return (
         <div className="success-page">
-            {/* Decorative leaf images */}
-            <img src="/cannabis-leaf-spiritual.jpg" alt="" className="leaf-decoration leaf-top-left" />
-            <img src="/real-glowing-leaf.png" alt="" className="leaf-decoration leaf-bottom-right" />
-
             <div className={`success-container ${showContent ? 'show' : ''}`}>
+
+                {/* Leaf Image - Prominently Displayed */}
+                <div className="success-leaf-container">
+                    <img src="/success_leaf_cluster.png" alt="Cannabis Leaf Cluster" className="success-main-leaf" />
+                </div>
+
                 {/* Success Icon with Custom SVG Checkmark */}
                 <div className="success-icon-wrapper">
                     <div className="success-icon-circle">
@@ -115,9 +112,7 @@ const OrderSuccess = () => {
                 {/* Ebook Section - Only show if ebook was sent */}
                 {ebookSent && (
                     <div className="ebook-section">
-                        <div className="ebook-cover-wrapper">
-                            <img src="/ebook.png" alt="Cannabis Transformation Ebook" className="ebook-cover" />
-                        </div>
+                        <img src="/ebook.png" alt="Cannabis Transformation Ebook" className="ebook-cover" />
                         <div className="ebook-message">
                             <Mail size={20} className="ebook-icon" />
                             <p>
@@ -141,7 +136,10 @@ const OrderSuccess = () => {
                                 <span className="detail-icon">#</span>
                                 <div className="detail-content">
                                     <span className="detail-label">Order Number</span>
-                                    <span className="detail-value">#{orderId}</span>
+                                    <span className="detail-value text-xl font-bold text-green-400">
+                                        {/* Prefer readable_id (CLxxxx), fallback to short UUID */}
+                                        {orderData.readable_id || `#${orderId.slice(0, 8)}`}
+                                    </span>
                                 </div>
                             </div>
 
