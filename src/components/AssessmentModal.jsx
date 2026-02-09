@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import './AssessmentModal.css';
 import {
-    Sparkles, Brain, Scale, HelpCircle,
-    Flower2, Waves, Cloud, MessageCircleQuestion,
-    Flame, Sprout, Lightbulb, Eye,
-    Target, Star, FileText, Moon,
-    Leaf, Handshake, Search, Ban,
+    Sparkles, Brain, Scale,
+    Flower2, Waves, Cloud,
+    Flame, Sprout, Eye,
+    Star, Moon,
+    Handshake, Search, Ban,
     Zap, Compass, CircleHelp,
-    Dumbbell, Map, CircleDashed, Pause,
-    Rocket, Calendar, CalendarDays, Hourglass,
+    Dumbbell, Map, CircleDashed,
+    Rocket, Hourglass,
     Clock, Heart, Check, ArrowRight,
     ChevronLeft, Mail, Phone, User,
-    Package, ShieldCheck, Award, Truck, Gift
+    Package, ShieldCheck, Gift
 } from 'lucide-react';
 
 // Quiz questions data with updated 1-5 scoring (Low to High Vibration)

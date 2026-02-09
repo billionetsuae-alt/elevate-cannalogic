@@ -1387,7 +1387,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
             <ExitIntentPopup />
 
             {/* Floating WhatsApp Button */}
-            <WhatsAppButton />
+            {!isCheckoutOpen && <WhatsAppButton />}
         </div >
     );
 };
