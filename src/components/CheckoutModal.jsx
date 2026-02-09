@@ -352,7 +352,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                 </div>
 
                 <div className="checkout-header">
-                    <h2>Guest Checkout</h2>
+                    <h2>Secure Checkout</h2>
                     <p>Shipping Address • Estimated Delivery: 3-5 Days</p>
                 </div>
 
