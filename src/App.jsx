@@ -55,6 +55,7 @@ import ElevateOrders from './components/admin/ElevateOrders'
 import ElevateCoupons from './components/admin/ElevateCoupons'
 import ElevateCustomers from './components/admin/ElevateCustomers'
 import ElevateEmailLogs from './components/admin/ElevateEmailLogs'
+import ElevateCommunity from './components/admin/ElevateCommunity'
 import OrderSuccess from './components/OrderSuccess'
 
 
@@ -441,6 +442,7 @@ function AppRouter() {
                     <Route path="orders" element={<ElevateOrders />} />
                     <Route path="coupons" element={<ElevateCoupons />} />
                     <Route path="customers" element={<ElevateCustomers />} />
+                    <Route path="community" element={<ElevateCommunity />} />
                     <Route path="email-logs" element={<ElevateEmailLogs />} />
                 </Route>
 

@@ -1311,13 +1311,12 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
                     <div className="pp-faq-grid">
                         {[
-                            { q: "What is Full Spectrum Cannabis Oil?", a: "It represents the complete extraction of the plant, preserving CBD, THC, and minor cannabinoids to create the \"Entourage Effect\" for maximum therapeutic potential, unlike isolated compounds." },
-                            { q: "Is this product legal in India?", a: "Yes, 100%. Our products are approved by the Ministry of Ayush and compliant with all Government of India regulations for Vijaya (Medical Cannabis) products." },
-                            { q: "Will I get \"high\" from using this?", a: "No. Our formulation is chemically balanced to provide therapeutic relief (pain, stress, sleep) without intoxication or psychoactive effects when strictly dosed as prescribed." },
-                            { q: "Do I need a prescription?", a: "Yes, a valid prescription is mandatory by law. We provide a complimentary medical consultation with our certified doctors to assess your eligibility and generate a prescription." },
-                            { q: "What conditions can this help with?", a: "It is effective for managing chronic pain, stress, anxiety, insomnia, and inflammation. It helps regulate your body's Endocannabinoid System (ECS) for overall balance." },
-                            { q: "Are there any side effects?", a: "It is natural and safe. Mild side effects like dry mouth or drowsiness may occur initially as your body adjusts. It is non-addictive and safer than many chemical painkillers." },
-                            { q: "How do I take the softgels?", a: "Take 1 softgel daily after dinner or before bed for sleep/recovery. For stress/pain, take as directed by our physician. Swallow whole with water; do not chew." }
+                            { q: "How do I take the softgels?", a: "Take 1 softgel 30 mins before food Morning for calm and focus. Evening for relaxation and sleep. Swallow whole with water; do not chew." },
+                            { q: "How many days to see results?", a: "The immediate difference can be noticed within 1 to 2 hours and can last up to 5 to 6 hours." },
+                            { q: "Is it habit forming?", a: "It is an Ayurvedic product, non-addictive, and can be stopped at any time." },
+                            { q: "What is Full spectrum cannabis extract?", a: "It represents the complete extraction of the plant, preserving CBD, THC, and minor cannabinoids to create the \"Entourage Effect\" for maximum therapeutic potential, unlike isolated compounds." },
+                            { q: "Can I use it when driving?", a: "No. It is not recommended to use this product while driving or operating heavy machinery." },
+                            { q: "Is this product legal in India?", a: "Yes, 100%. Our products are approved by the Ministry of Ayush and compliant with all Indian regulations for Medical Cannabis products." }
                         ].map((faq, i) => (
                             <div
                                 className={`pp-faq-item ${openFaq === i ? 'open' : ''}`}
@@ -1352,6 +1351,90 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     </div>
                 </div>
             </section >
+
+            {/* Join Inner Circle Form */}
+            {/* Join Inner Circle Form */}
+            <section className="pp-join-circle">
+                <div className="pp-join-container">
+                    <div className="pp-join-icon">
+                        <Gift size={48} color="#4caf50" />
+                    </div>
+                    <h2 className="pp-join-title">Get early access to exclusive offers</h2>
+                    <p className="pp-join-subtitle">
+                        Join our inner circle. No spam. Only value.
+                    </p>
+
+                    <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.target);
+                        const data = Object.fromEntries(formData.entries());
+                        const btn = e.target.querySelector('button');
+                        const originalText = btn.innerHTML;
+
+                        try {
+                            btn.disabled = true;
+                            btn.innerHTML = 'Joining...';
+
+                            const { error } = await supabase
+                                .from('elevate_community_joins')
+                                .insert([{
+                                    name: data.name,
+                                    email: data.email,
+                                    source: 'product_page_footer'
+                                }]);
+
+                            if (error) throw error;
+
+                            btn.innerHTML = 'Welcome! 🎉';
+                            btn.style.background = '#4caf50';
+                            btn.style.color = 'white';
+                            e.target.reset();
+
+                            import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                trackEvent(EVENTS.CLICK, 'community', 'join_success')
+                            );
+
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.disabled = false;
+                                btn.style.background = '';
+                                btn.style.color = '';
+                            }, 3000);
+
+                        } catch (err) {
+                            console.error(err);
+                            btn.innerHTML = 'Error. Try Again.';
+                            btn.style.background = '#ff5252';
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.disabled = false;
+                                btn.style.background = '';
+                            }, 3000);
+                        }
+                    }} className="pp-join-form">
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            required
+                            className="pp-join-input"
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            required
+                            className="pp-join-input"
+                        />
+                        <button
+                            type="submit"
+                            className="pp-join-btn"
+                        >
+                            Join Now
+                        </button>
+                    </form>
+                </div>
+            </section>
 
             {/* Footer */}
             < footer className="pp-footer" >

@@ -15,105 +15,60 @@ const ElevateAdminLayout = () => {
         navigate('/admin/login');
     };
 
-    const closeSidebar = () => setSidebarOpen(false);
-
     return (
         <ElevateAdminContext.Provider value={{}}>
-            <div className="admin-layout">
-                {/* Mobile Hamburger Button */}
-                <button
-                    className="mobile-menu-btn"
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    aria-label="Toggle menu"
-                >
-                    <Menu size={24} />
-                </button>
+            <div className="admin-layout" style={{ background: 'radial-gradient(circle at top center, #1a1a1a 0%, #0a0a0a 100%)' }}>
 
-                {/* Mobile Overlay */}
-                {sidebarOpen && (
-                    <div
-                        className="mobile-overlay"
-                        onClick={closeSidebar}
-                    />
-                )}
+                {/* Floating Navigation Bar */}
+                <nav className="admin-floating-nav">
+                    <div className="admin-floating-logo">
+                        <img src="/Cannalogic-White.svg" alt="Cannalogic Admin" />
+                    </div>
 
-                {/* Sidebar */}
-                <aside className={`admin-sidebar ${sidebarOpen ? 'mobile-open' : ''}`}>
-                    {/* Mobile Close Button */}
-                    <button
-                        className="mobile-close-btn"
-                        onClick={closeSidebar}
-                        aria-label="Close menu"
-                    >
-                        <X size={24} />
-                    </button>
+                    <div className="admin-floating-links">
+                        <NavLink to="/elevate-admin" end className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <LayoutDashboard />
+                            <span>Dashboard</span>
+                        </NavLink>
 
-                    <div>
-                        <div className="admin-logo">
-                            <img src="/Cannalogic-White.svg" alt="Cannalogic Admin" />
-                        </div>
+                        <NavLink to="/elevate-admin/orders" className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <ShoppingBag />
+                            <span>Orders</span>
+                        </NavLink>
 
-                        <nav className="admin-nav">
-                            <NavLink
-                                to="/elevate-admin"
-                                end
-                                className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                                onClick={closeSidebar}
-                            >
-                                <LayoutDashboard />
-                                <span>Dashboard</span>
-                            </NavLink>
+                        <NavLink to="/elevate-admin/community" className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <Users />
+                            <span>Community</span>
+                        </NavLink>
 
-                            <NavLink
-                                to="/elevate-admin/orders"
-                                className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                                onClick={closeSidebar}
-                            >
-                                <ShoppingBag />
-                                <span>Orders</span>
-                            </NavLink>
+                        <NavLink to="/elevate-admin/coupons" className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <Ticket />
+                            <span>Coupons</span>
+                        </NavLink>
 
-                            <NavLink
-                                to="/elevate-admin/coupons"
-                                className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                                onClick={closeSidebar}
-                            >
-                                <Ticket />
-                                <span>Coupons</span>
-                            </NavLink>
+                        <NavLink to="/elevate-admin/customers" className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <Users />
+                            <span>Customers</span>
+                        </NavLink>
 
-                            <NavLink
-                                to="/elevate-admin/customers"
-                                className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                                onClick={closeSidebar}
-                            >
-                                <Users />
-                                <span>Customers</span>
-                            </NavLink>
-
-                            <NavLink
-                                to="/elevate-admin/email-logs"
-                                className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                                onClick={closeSidebar}
-                            >
-                                <Mail />
-                                <span>Email Logs</span>
-                            </NavLink>
-                        </nav>
+                        <NavLink to="/elevate-admin/email-logs" className={({ isActive }) => `admin-floating-link ${isActive ? 'active' : ''}`}>
+                            <Mail />
+                            <span>Email Logs</span>
+                        </NavLink>
                     </div>
 
                     <button
-                        onClick={() => { handleLogout(); closeSidebar(); }}
-                        className="admin-nav-item"
-                        style={{ marginTop: 'auto', border: 'none', background: 'transparent', width: '100%', justifyContent: 'flex-start', cursor: 'pointer' }}
+                        onClick={handleLogout}
+                        className="admin-floating-link"
+                        style={{ background: 'rgba(239, 83, 80, 0.1)', color: '#ef5350', border: '1px solid rgba(239, 83, 80, 0.2)' }}
                     >
-                        <LogOut />
+                        <LogOut size={18} />
                         <span>Logout</span>
                     </button>
-                </aside>
+                </nav>
 
                 {/* Main Content */}
-                <main className="admin-content">
+                <main className="admin-content floating-mode">
                     <Outlet />
                 </main>
             </div>
