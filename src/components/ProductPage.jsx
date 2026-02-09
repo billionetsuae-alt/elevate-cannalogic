@@ -356,6 +356,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                         data: {
                                             name: checkoutFormData.fullName.split(' ')[0],
                                             order_id: supabaseOrderId,
+                                            readable_id: readableId,
                                             total_amount: 0,
                                             items: selectedPackObj.label
                                         }
@@ -365,7 +366,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     userData?.email || checkoutFormData.email || '',
                                     'order_confirmation',
                                     'sent',
-                                    { order_id: supabaseOrderId, amount: 0, type: 'free' }
+                                    { order_id: supabaseOrderId, readable_id: readableId, amount: 0, type: 'free' }
                                 );
                             }
                         } catch (error) {
@@ -522,6 +523,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                     data: {
                                         name: checkoutFormData.fullName.split(' ')[0],
                                         order_id: supabaseOrderId || 'PENDING',
+                                        readable_id: readableId || 'PENDING',
                                         total_amount: totalAmount,
                                         items: selectedPackObj.label
                                     }
@@ -531,7 +533,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 userData?.email || checkoutFormData.email || '',
                                 'order_confirmation',
                                 'sent',
-                                { order_id: supabaseOrderId, amount: totalAmount, type: 'paid' }
+                                { order_id: supabaseOrderId, readable_id: readableId, amount: totalAmount, type: 'paid' }
                             );
                         }
                     } catch (error) {
