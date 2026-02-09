@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
-import { Loader2, X, User, Phone, MapPin, Home, Check, ShieldCheck, Lock, Tag, Mail } from 'lucide-react';
+import { Loader2, X, User, Phone, MapPin, Home, Check, ShieldCheck, Tag, Mail } from 'lucide-react';
 import './CheckoutModal.css';
 
 const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, packOptions, onProceedToPayment, offerExpired }) => {
@@ -356,6 +356,15 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
                     <p>Shipping Address • Estimated Delivery: 3-5 Days</p>
                 </div>
 
+                {/* Money Back Guarantee - Compact Top Version */}
+                <div className="checkout-guarantee-compact">
+                    <ShieldCheck size={24} className="compact-shield" />
+                    <div className="compact-text">
+                        <span className="compact-title">30-Day Money Back Guarantee</span>
+                        <span className="compact-subtitle">Not satisfied? <b>Full Refund.</b></span>
+                    </div>
+                </div>
+
                 <form onSubmit={handleFormSubmit} className="checkout-form">
                     {/* Full Name */}
                     <div className="checkout-field">
@@ -597,25 +606,7 @@ const CheckoutModal = ({ isOpen, onClose, userData, selectedPack: initialPack, p
 
                     {/* Trust Footer - moved here for single step */}
                     {/* Trust Footer - Redesigned */}
-                    <div className="checkout-step-2-footer" style={{ marginTop: '1.5rem', padding: 0, border: 'none', background: 'transparent' }}>
-                        <div className="checkout-guarantee-box">
-                            <div className="guarantee-badge-section">
-                                <div className="guarantee-seal-ring">
-                                    <ShieldCheck size={32} strokeWidth={1.5} />
-                                </div>
-                            </div>
-                            <div className="guarantee-info-section">
-                                <div className="guarantee-title-row">
-                                    <h4>30-Day Money Back Guarantee</h4>
-                                </div>
-                                <div className="guarantee-split-line"></div>
-                                <div className="guarantee-desc-row">
-                                    <p>Not satisfied? <span className="highlight-text">Full Refund.</span></p>
-                                    <p className="sub-desc">Zero questions asked.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </form>
             </div>
         </div>
