@@ -1206,9 +1206,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                     <div className="pp-mindful-content">
                         <div className="pp-mindful-header">
                             <Sparkles className="pp-mindful-icon" size={32} />
-                            <h2 className="pp-section-title">Your Journey to Higher Alignment</h2>
+                            <h2 className="pp-section-title">Helps Your Journey to Higher Alignment</h2>
                             <p className="pp-mindful-subtitle">
-                                You become your higher self. This works best when paired with <b>intention</b> —gently, naturally, in your own time.
+                                You grow into your higher self —
+                                from <span style="color:#c0392b;">shame, guilt, and fear</span> to <span style="color:#27ae60;">joy, peace, and enlightenment</span>.
                             </p>
 
                             {/* Vibrational Energy Chart */}
