@@ -3669,11 +3669,15 @@
 
 .pp-benefits-grid-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    /* Increased gap for 2 columns */
     padding: 0 2rem 1.5rem 2rem;
-    /* Adjusted for seamless loop */
     width: 100%;
+    max-width: 900px;
+    /* Limit width to keep it centered */
+    margin: 0 auto;
+    /* Center the grid container */
 }
 
 .pp-benefit-col {

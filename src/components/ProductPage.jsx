@@ -81,21 +81,28 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
     // Benefit words for auto-glow animation
     const benefitWords = [
-        // Column 1 - Mental
-        'Mental Clarity', 'Cognitive Function', 'Focus & Flow', 'Reduced Brain Fog',
-        'Sharp Memory', 'Strategic Thinking', 'Intellectual Insight', 'Processing Speed',
-        'Mental Resilience', 'Clear Intentions', 'Heightened Perception', 'Thought Organization',
-        'Quick Wit', 'Problem Solving', 'Learning Capacity', 'Mindful Awareness',
-        // Column 2 - Emotional
-        'Inner Peace', 'Emotional Balance', 'Reduced Anxiety', 'Stress Relief',
-        'Deep Sleep', 'Nervous System Regulation', 'Mood Elevation', 'Calm Confidence',
-        'Emotional Depth', 'Gentle Softening', 'Heart Opening', 'Less Reactivity',
-        'Patience', 'Self-Compassion', 'Joyful Presence', 'Serenity',
-        // Column 3 - Physical
-        'Physical Ease', 'Muscle Relaxation', 'Pain Management', 'Lower Inflammation',
-        'Body Awareness', 'Vitality', 'Homeostasis', 'Deep Rest',
-        'Immune Support', 'Cellular Repair', 'Better Digestion', 'Energy Flow',
-        'Physical Stamina', 'Tension Release', 'Grounding', 'Somatic Healing'
+        'Mental Clarity',
+        'Mind Expansion',
+        'Emotional Balance',
+        'Enhanced Creativity',
+        'Divergent Thinking',
+        'Inner Peace',
+        'Reduced Anxiety',
+        'Stress Relief',
+        'Calm Nervous System',
+        'Heart Opening',
+        'Mindfulness',
+        'Self Compassion',
+        'Flow State',
+        'Muscle Relaxation',
+        'Body Awareness',
+        'Deep Sleep',
+        'Relaxed Breathing',
+        'Meditative Depth',
+        'Self Love',
+        'Higher Consciousness',
+        'Deeper Relationship',
+        'Spiritual Awakening'
     ];
 
     // Standardized Common Phase (No dynamic scoring)
@@ -1161,7 +1168,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 {[...Array(2)].map((_, loopIndex) => (
                                     <div key={loopIndex} className="pp-benefits-grid-content">
                                         <div className="pp-benefit-col col-slow">
-                                            {benefitWords.slice(0, 16).map((word, idx) => (
+                                            {benefitWords.slice(0, 11).map((word, idx) => (
                                                 <span
                                                     key={idx}
                                                     className="glow-active"
@@ -1171,17 +1178,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             ))}
                                         </div>
                                         <div className="pp-benefit-col col-medium">
-                                            {benefitWords.slice(16, 32).map((word, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="glow-active"
-                                                >
-                                                    {word}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        <div className="pp-benefit-col col-fast">
-                                            {benefitWords.slice(32, 48).map((word, idx) => (
+                                            {benefitWords.slice(11, 22).map((word, idx) => (
                                                 <span
                                                     key={idx}
                                                     className="glow-active"
