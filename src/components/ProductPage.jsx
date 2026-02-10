@@ -1208,10 +1208,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <Sparkles className="pp-mindful-icon" size={32} />
                             <h2 className="pp-section-title">Helps Your Journey to Higher Alignment</h2>
                             <p className="pp-mindful-subtitle">
-                                    You grow into your higher self —
-                                    from <span style={{ color: "#c0392b" }}>shame, guilt, and fear</span>
+                                    From <span style={{ color: "#c0392b" }}>shame, guilt, and fear</span>
                                     {" "}to{" "}
-                                    <span style={{ color: "#27ae60" }}>joy, peace, and enlightenment</span>.
+                                    <span style={{ color: "#27ae60" }}>joy, peace, and enlightenment</span>🌱.
                             </p>
 
                             {/* Vibrational Energy Chart */}
