@@ -562,6 +562,9 @@
     box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
     position: relative;
     overflow: hidden;
+    width: calc(100% - 24px);
+    /* Prevent pulse overflow */
+    margin: 0 auto;
 }
 
 .pp-cta-button::before {
@@ -577,6 +580,27 @@
 
 .pp-cta-button:hover::before {
     left: 100%;
+}
+
+/* Free Text Pulse */
+@keyframes text-green-pulse {
+
+    0%,
+    100% {
+        color: #4caf50;
+        text-shadow: 0 0 5px rgba(76, 175, 80, 0);
+    }
+
+    50% {
+        color: #69f0ae;
+        text-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        transform: scale(1.05);
+    }
+}
+
+.animate-free-text {
+    animation: text-green-pulse 1.5s infinite;
+    display: inline-block;
 }
 
 .pp-cta-button:hover {

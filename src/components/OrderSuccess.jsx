@@ -60,6 +60,16 @@ const OrderSuccess = () => {
                         // Always show ebook sent (default)
                         setEbookSent(true);
 
+                        // Meta Pixel - Purchase Event
+                        if (window.fbq) {
+                            window.fbq('track', 'Purchase', {
+                                value: order.amount,
+                                currency: 'INR',
+                                content_name: 'Elevate Program',
+                                content_ids: ['elevate_program']
+                            });
+                        }
+
                         // Fetch customer data
                         if (order.customer_id) {
                             const { data: customer, error: customerError } = await supabase

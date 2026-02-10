@@ -767,7 +767,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             trackEvent(EVENTS.CLICK, 'product', 'hero_buy_now')
                                         );
                                         handleBuyNow();
-                                    }} className="btn btn-primary">
+                                    }} className="btn btn-primary btn-live">
                                         Start Stress Relief Now
                                     </button>
                                 </div>
@@ -971,7 +971,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                                 {!offerExpired ? (
                                                     <>
                                                         <span style={{ textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9em' }}>₹1,500</span>
-                                                        <span className="pp-row-price" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
+                                                        <span className="pp-row-price animate-free-text" style={{ color: '#4caf50', fontWeight: 'bold' }}>FREE</span>
                                                     </>
                                                 ) : (
                                                     <span className="pp-row-price" style={{ color: 'white', fontWeight: 'bold' }}>₹1,500</span>
@@ -1004,7 +1004,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
 
 
 
-                            <button className="pp-cta-button" onClick={() => {
+                            <button className="pp-cta-button btn-live" onClick={() => {
                                 import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
                                     trackEvent(EVENTS.CLICK, 'product', 'buy_now_main')
                                 );
@@ -1471,7 +1471,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                 </div>
                             </div>
                         </div>
-                        <button className="pp-sticky-cta" onClick={() => {
+                        <button className="pp-sticky-cta btn-live" onClick={() => {
                             import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
                                 trackEvent(EVENTS.CLICK, 'product', 'claim_now_floating')
                             );
@@ -1493,8 +1493,8 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 offerExpired={offerExpired}
             />
 
-            {/* Exit Intent Popup */}
-            <ExitIntentPopup />
+            {/* Exit Intent Popup - DISABLED via User Request */}
+            {/* <ExitIntentPopup /> */}
 
             {/* Floating WhatsApp Button */}
             {!isCheckoutOpen && <WhatsAppButton />}

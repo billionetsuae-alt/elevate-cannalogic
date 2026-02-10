@@ -25,6 +25,17 @@
   --radius-2xl: 1rem;
 }
 
+/* Live Button Animation */
+@keyframes pulse-live {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.btn-live {
+    animation: pulse-live 2s infinite;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
