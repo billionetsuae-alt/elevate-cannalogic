@@ -117,9 +117,9 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
     // Carousel images
     const carouselImages = [
         { src: '/bundle-hero.png', alt: 'Elevate Full Spectrum Bundle' },
-        { src: '/2nd_Image_Carousel.png', alt: 'Elevate Bottle - Close Up' }, // New 2nd image
+        { src: '/2 Carousel.png', alt: 'Elevate Bottle - Close Up' },
+        { src: '/3 Carousel.png', alt: 'Elevate Product Display' },
         { src: '/ebook-mockup.jpg', alt: 'Cannabis Transformation Guide' },
-        // { src: '/ebook-cover.jpg', alt: 'Ebook Cover' }
     ];
 
     // Countdown timer effect
@@ -791,47 +791,57 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                         {/* Left: Hero Image Carousel */}
                         <div className="pp-product-gallery">
                             <div className="pp-carousel-container"
-                                onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)}
+                                onTouchStart={(e) => {
+                                    setTouchStart(e.targetTouches[0].clientX);
+                                    setTouchEnd(e.targetTouches[0].clientX); // Reset touchEnd to prevent stale state swipes
+                                }}
                                 onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)}
                                 onTouchEnd={() => {
-                                    if (touchStart - touchEnd > 75) {
-                                        // Swipe left - next image
-                                        setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
-                                    }
-                                    if (touchStart - touchEnd < -75) {
-                                        // Swipe right - previous image
-                                        setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+                                    const diff = touchStart - touchEnd;
+                                    const threshold = 75;
+
+                                    // Only swipe if there was significant movement (prevents tap-swipes)
+                                    if (Math.abs(diff) > threshold) {
+                                        if (diff > 0) {
+                                            // Swipe left - next image
+                                            setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+                                        } else {
+                                            // Swipe right - previous image
+                                            setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+                                        }
                                     }
                                 }}
                             >
-                                <img
-                                    src={carouselImages[carouselIndex].src}
-                                    alt={carouselImages[carouselIndex].alt}
-                                    className="pp-main-image single-hero"
-                                />
+                                <div className="pp-carousel-image-wrapper">
+                                    <img
+                                        src={carouselImages[carouselIndex].src}
+                                        alt={carouselImages[carouselIndex].alt}
+                                        className="pp-main-image single-hero"
+                                    />
 
-                                {/* Carousel Dots */}
-                                <div className="pp-carousel-dots">
-                                    {carouselImages.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            className={`pp-carousel-dot ${index === carouselIndex ? 'active' : ''}`}
-                                            onClick={() => {
-                                                import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
-                                                    trackEvent(EVENTS.CLICK, 'product', `carousel_dot_${index + 1}`)
-                                                );
-                                                setCarouselIndex(index);
-                                            }}
-                                            aria-label={`Go to image ${index + 1}`}
-                                        />
-                                    ))}
+                                    {/* Carousel Dots - Positioned over image */}
+                                    <div className="pp-carousel-dots">
+                                        {carouselImages.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                className={`pp-carousel-dot ${index === carouselIndex ? 'active' : ''}`}
+                                                onClick={() => {
+                                                    import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
+                                                        trackEvent(EVENTS.CLICK, 'product', `carousel_dot_${index + 1}`)
+                                                    );
+                                                    setCarouselIndex(index);
+                                                }}
+                                                aria-label={`Go to image ${index + 1}`}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
 
-                                {/* Navigation Arrows for Desktop */}
-                                {carouselImages.length > 1 && (
-                                    <>
+                                {/* Carousel Arrow Controls - Below image */}
+                                <div className="pp-carousel-arrow-controls">
+                                    {carouselImages.length > 1 && (
                                         <button
-                                            className="pp-carousel-arrow pp-carousel-arrow-left"
+                                            className="pp-carousel-arrow-btn"
                                             onClick={() => {
                                                 import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
                                                     trackEvent(EVENTS.CLICK, 'product', 'carousel_prev')
@@ -840,10 +850,13 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             }}
                                             aria-label="Previous image"
                                         >
-                                            <ChevronLeft size={28} />
+                                            <ChevronLeft size={18} />
                                         </button>
+                                    )}
+
+                                    {carouselImages.length > 1 && (
                                         <button
-                                            className="pp-carousel-arrow pp-carousel-arrow-right"
+                                            className="pp-carousel-arrow-btn"
                                             onClick={() => {
                                                 import('../utils/tracker').then(({ trackEvent, EVENTS }) =>
                                                     trackEvent(EVENTS.CLICK, 'product', 'carousel_next')
@@ -852,10 +865,10 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                                             }}
                                             aria-label="Next image"
                                         >
-                                            <ChevronRight size={28} />
+                                            <ChevronRight size={18} />
                                         </button>
-                                    </>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </div>
 
