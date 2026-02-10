@@ -1272,7 +1272,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                 <div className="pp-container">
                     <div className="pp-section-header">
                         <span className="pp-section-label">Real Stories</span>
-                        <h2 className="pp-section-title">What Our Community Says</h2>
+                        <h2 className="pp-section-title">Customer Testimonials</h2>
                     </div>
 
                     {/* Video Marquee */}
