@@ -1210,7 +1210,7 @@ const ProductPage = ({ userData, onClose, onPaymentSuccess }) => {
                             <p className="pp-mindful-subtitle">
                                     From <span style={{ color: "#c0392b" }}>shame, guilt, and fear</span>
                                     {" "}to{" "}
-                                    <span style={{ color: "#27ae60" }}>joy, peace, and enlightenment</span>🌱.
+                                    <span style={{ color: "#27ae60" }}>joy, peace, and enlightenment</span>.
                             </p>
 
                             {/* Vibrational Energy Chart */}
